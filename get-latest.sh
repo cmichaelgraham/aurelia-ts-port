@@ -15,7 +15,6 @@ git clone git://github.com/aurelia/loader-default
 git clone git://github.com/aurelia/task-queue
 git clone git://github.com/aurelia/logging
 git clone git://github.com/aurelia/logging-console
-git clone git://github.com/aurelia/history
 git clone git://github.com/aurelia/history-browser
 git clone git://github.com/aurelia/event-aggregator
 git clone git://github.com/aurelia/framework
@@ -27,6 +26,11 @@ git clone git://github.com/aurelia/templating-router
 git clone git://github.com/aurelia/route-recognizer
 git clone git://github.com/aurelia/bootstrapper
 git clone git://github.com/aurelia/html-template-element
+git clone git://github.com/aurelia/validation
+git clone git://github.com/aurelia/app-contacts
+git clone git://github.com/aurelia/skeleton-navigation
+git clone git://github.com/aurelia/animator-css
+git clone git://github.com/aurelia/skeleton-plugin
 
 cd ..
 
@@ -128,5 +132,25 @@ cp -fR aurelia-latest-repos/bootstrapper/src/* aurelia-latest/bootstrapper
 echo "copying *** html-template-element ***"
 mkdir -p aurelia-latest/html-template-element
 cp -fR aurelia-latest-repos/html-template-element/src/* aurelia-latest/html-template-element
+
+echo "copying *** validation ***"
+mkdir -p aurelia-latest/validation
+cp -fR aurelia-latest-repos/validation/src/* aurelia-latest/validation
+
+echo "copying *** app-contacts ***"
+mkdir -p aurelia-latest/app-contacts
+cp -fR aurelia-latest-repos/app-contacts/src/* aurelia-latest/app-contacts
+
+echo "copying *** skeleton-navigation ***"
+mkdir -p aurelia-latest/skeleton-navigation
+cp -fR aurelia-latest-repos/skeleton-navigation/src/* aurelia-latest/skeleton-navigation
+
+echo "copying *** animator-css ***"
+mkdir -p aurelia-latest/animator-css
+cp -fR aurelia-latest-repos/animator-css/src/* aurelia-latest/animator-css
+
+echo "copying *** skeleton-plugin ***"
+mkdir -p aurelia-latest/skeleton-plugin
+cp -fR aurelia-latest-repos/skeleton-plugin/src/* aurelia-latest/skeleton-plugin
 
 rm -fR aurelia-latest-repos
