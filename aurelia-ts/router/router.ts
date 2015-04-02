@@ -1,5 +1,5 @@
-import {RouteRecognizer} from 'aurelia-route-recognizer';
-import {join} from 'aurelia-path';
+import {RouteRecognizer} from '../route-recognizer/index';
+import {join} from '../path/index';
 import {NavigationContext} from './navigation-context';
 import {NavigationInstruction} from './navigation-instruction';
 import {RouterConfiguration} from './router-configuration';

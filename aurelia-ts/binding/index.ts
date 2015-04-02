@@ -1,4 +1,4 @@
-import {Decorators, Metadata} from 'aurelia-metadata';
+import {Decorators, Metadata} from '../metadata/index';
 import {ValueConverter} from './value-converter';
 
 export {EventManager} from './event-manager';

@@ -1,5 +1,5 @@
-import * as LogManager from 'aurelia-logging';
-import {Metadata} from 'aurelia-metadata';
+import * as LogManager from '../logging/index';
+import {Metadata} from '../metadata/index';
 
 var logger = LogManager.getLogger('aurelia');
 

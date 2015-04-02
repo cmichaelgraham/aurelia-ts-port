@@ -12,5 +12,5 @@ export * from 'aurelia-templating';
 export * from 'aurelia-loader';
 export * from 'aurelia-task-queue';
 
-import * as TheLogManager from 'aurelia-logging';
+import * as TheLogManager from '../logging/index';
 export var LogManager = TheLogManager;

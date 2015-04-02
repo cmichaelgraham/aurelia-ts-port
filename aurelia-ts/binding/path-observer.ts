@@ -1,7 +1,7 @@
 export class PathObserver {
   constructor(leftObserver, getRightObserver, value){
     this.leftObserver = leftObserver;
-    
+
     this.disposeLeft = leftObserver.subscribe((newValue) => {
       var newRightValue = this.updateRight(getRightObserver(newValue));
       this.notify(newRightValue);

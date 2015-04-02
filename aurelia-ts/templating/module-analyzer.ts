@@ -1,6 +1,6 @@
-import {Metadata, ResourceType} from 'aurelia-metadata';
-import {TemplateRegistryEntry} from 'aurelia-loader';
-import {ValueConverter} from 'aurelia-binding';
+import {Metadata, ResourceType} from '../metadata/index';
+import {TemplateRegistryEntry} from '../loader/index';
+import {ValueConverter} from '../binding/index';
 import {CustomElement} from './custom-element';
 import {AttachedBehavior} from './attached-behavior';
 import {TemplateController} from './template-controller';

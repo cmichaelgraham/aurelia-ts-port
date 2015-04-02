@@ -1,4 +1,4 @@
-import {Behavior} from 'aurelia-templating';
+import {Behavior} from '../templating/index';
 
 function addStyleString(str) {
   var node = document.createElement('style');

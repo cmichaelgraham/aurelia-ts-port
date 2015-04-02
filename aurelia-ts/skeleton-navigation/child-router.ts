@@ -1,4 +1,4 @@
-import {Router} from 'aurelia-router';
+import {Router} from '../router/index';
 
 export class ChildRouter{
   static inject() { return [Router]; }

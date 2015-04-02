@@ -1,4 +1,4 @@
-import {relativeToFile} from 'aurelia-path';
+import {relativeToFile} from '../path/index';
 
 export class TemplateDependency {
   constructor(src, name){

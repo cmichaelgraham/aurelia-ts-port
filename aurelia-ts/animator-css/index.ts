@@ -1,4 +1,4 @@
-import {Animator} from 'aurelia-templating';
+import {Animator} from '../templating/index';
 import {CssAnimator} from './animator';
 
 export {CssAnimator} from './animator';

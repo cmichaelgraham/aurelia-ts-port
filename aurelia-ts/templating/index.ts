@@ -1,4 +1,4 @@
-import {Metadata} from 'aurelia-metadata';
+import {Metadata} from '../metadata/index';
 import {BehaviorProperty, OptionsProperty} from './property';
 import {AttachedBehavior} from './attached-behavior';
 import {ChildObserver} from './children';

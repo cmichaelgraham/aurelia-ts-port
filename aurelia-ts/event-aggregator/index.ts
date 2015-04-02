@@ -67,7 +67,7 @@ export class EventAggregator {
 export function includeEventsIn(obj){
   var ea = new EventAggregator();
 
-  obj.subscribe = function(event, callback){ 
+  obj.subscribe = function(event, callback){
     return ea.subscribe(event, callback);
   };
 

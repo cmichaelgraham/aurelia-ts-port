@@ -1,4 +1,4 @@
-import {HttpClient} from 'aurelia-http-client';
+import {HttpClient} from '../http-client/index';
 
 var url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=rainier&tagmode=any&format=json';
 

@@ -36,7 +36,7 @@ class NameBinder {
     }
 
     this.source = source;
-    source[this.property] = this.target;   
+    source[this.property] = this.target;
   }
 
   unbind(){

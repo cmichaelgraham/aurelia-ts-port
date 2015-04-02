@@ -1,5 +1,5 @@
-import {Metadata} from 'aurelia-metadata';
-import {AggregateError} from 'aurelia-logging';
+import {Metadata} from './/metadata/index';
+import {AggregateError} from '../logging/index';
 import {Resolver, Registration, Factory} from './metadata';
 
 var emptyParameters = Object.freeze([]);

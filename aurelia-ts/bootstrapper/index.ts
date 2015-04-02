@@ -1,5 +1,5 @@
-import {Aurelia, LogManager} from 'aurelia-framework';
-import {ConsoleAppender} from 'aurelia-logging-console';
+import {Aurelia, LogManager} from '../framework/index';
+import {ConsoleAppender} from '../logging-console/index';
 
 var logger = LogManager.getLogger('bootstrapper');
 

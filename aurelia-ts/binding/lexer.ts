@@ -14,8 +14,8 @@ export class Token {
     return this;
   }
 
-  withValue(value) { 
-    this.value = value; 
+  withValue(value) {
+    this.value = value;
     return this;
   }
 
@@ -136,7 +136,7 @@ export class Scanner {
     this.advance();
 
     var text = one;
-    
+
     if (this.peek === code) {
       this.advance();
       text += two;
@@ -196,7 +196,7 @@ export class Scanner {
         if (!isDigit(this.peek)){
           this.error('Invalid exponent', -1);
         }
-        
+
         simple = false;
       } else {
         break;
@@ -212,7 +212,7 @@ export class Scanner {
 
   scanString() {
     assert(this.peek === $SQ || this.peek === $DQ);
-    
+
     var start = this.index;
     var quote = this.peek;
 
@@ -242,7 +242,7 @@ export class Scanner {
           }
 
           unescaped = parseInt(hex, 16);
-          
+
           for (var i = 0; i < 5; ++i) {
             this.advance();
           }

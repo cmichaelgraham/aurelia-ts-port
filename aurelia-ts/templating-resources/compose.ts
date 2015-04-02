@@ -1,5 +1,5 @@
-import {Container} from 'aurelia-dependency-injection';
-import {Behavior, CompositionEngine, ViewSlot, ViewResources} from 'aurelia-templating';
+import {Container} from '../dependency-injection/index';
+import {Behavior, CompositionEngine, ViewSlot, ViewResources} from '../templating/index';
 
 export class Compose {
   static metadata(){

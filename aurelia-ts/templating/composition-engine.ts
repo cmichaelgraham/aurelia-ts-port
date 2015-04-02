@@ -1,4 +1,4 @@
-import {Origin,Metadata} from 'aurelia-metadata';
+import {Origin,Metadata} from '../metadata/index';
 import {ViewStrategy, UseView} from './view-strategy';
 import {ViewEngine} from './view-engine';
 import {CustomElement} from './custom-element';

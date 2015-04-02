@@ -1,4 +1,4 @@
-import {ResourceType} from 'aurelia-metadata';
+import {ResourceType} from '../metadata/index';
 
 if (typeof String.prototype.endsWith !== 'function') {
   String.prototype.endsWith = function(suffix) {

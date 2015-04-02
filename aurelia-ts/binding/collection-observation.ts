@@ -11,7 +11,7 @@ export class ModifyCollectionObserver {
     this.collection = collection;
     this.lengthPropertyName = collection instanceof Map ? 'size' : 'length';
   }
-    
+
   subscribe(callback){
     var callbacks = this.callbacks;
     callbacks.push(callback);

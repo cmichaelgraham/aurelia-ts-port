@@ -1,5 +1,5 @@
 import nprogress from 'nprogress';
-import {Behavior} from 'aurelia-framework';
+import {Behavior} from '../framework/index';
 
 export class LoadingIndicator {
   static metadata(){

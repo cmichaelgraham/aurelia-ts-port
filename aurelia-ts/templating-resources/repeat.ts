@@ -1,5 +1,5 @@
-import {ObserverLocator, calcSplices, getChangeRecords} from 'aurelia-binding';
-import {Behavior, BoundViewFactory, ViewSlot} from 'aurelia-templating';
+import {ObserverLocator, calcSplices, getChangeRecords} from '../binding/index';
+import {Behavior, BoundViewFactory, ViewSlot} from '../templating/index';
 
 export class Repeat {
   static metadata(){

@@ -1,4 +1,4 @@
-import {TaskQueue} from 'aurelia-task-queue';
+import {TaskQueue} from '../task-queue/index';
 import {getArrayObserver} from './array-observation';
 import {getMapObserver} from './map-observation';
 import {EventManager} from './event-manager';
@@ -16,7 +16,7 @@ import {
   DataAttributeObserver,
   StyleObserver
 } from './element-observation';
-import {All} from 'aurelia-dependency-injection';
+import {All} from '../dependency-injection/index';
 import {
   hasDeclaredDependencies,
   ComputedPropertyObserver

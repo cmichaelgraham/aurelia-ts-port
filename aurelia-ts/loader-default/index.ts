@@ -1,5 +1,5 @@
-import {Origin} from 'aurelia-metadata';
-import {Loader} from 'aurelia-loader';
+import {Origin} from '../metadata/index';
+import {Loader} from '../loader/index';
 
 if(!window.System || !window.System.import){
   var sys = window.System = window.System || {};

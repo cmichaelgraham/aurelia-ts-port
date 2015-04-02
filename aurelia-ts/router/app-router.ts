@@ -1,9 +1,9 @@
-import {Container} from 'aurelia-dependency-injection';
-import {History} from 'aurelia-history';
+import {Container} from '../dependency-injection/index';
+import {History} from '../history/index';
 import {Router} from './router';
 import {PipelineProvider} from './pipeline-provider';
 import {isNavigationCommand} from './navigation-commands';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregator} from '../event-aggregator/index';
 
 export class AppRouter extends Router {
   static inject(){ return [Container, History, PipelineProvider, EventAggregator]; }

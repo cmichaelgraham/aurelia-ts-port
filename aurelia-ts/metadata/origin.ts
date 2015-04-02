@@ -32,7 +32,7 @@ export class Origin {
   */
   static get(fn){
     var origin = originStorage.get(fn);
-    
+
     if(origin !== undefined){
       return origin;
     }

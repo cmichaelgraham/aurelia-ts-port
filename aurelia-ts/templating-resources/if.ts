@@ -1,4 +1,4 @@
-import {Behavior, BoundViewFactory, ViewSlot} from 'aurelia-templating';
+import {Behavior, BoundViewFactory, ViewSlot} from '../templating/index';
 
 export class If {
   static metadata(){

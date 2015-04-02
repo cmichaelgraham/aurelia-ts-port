@@ -1,5 +1,5 @@
-import {Metadata, Origin} from 'aurelia-metadata';
-import {relativeToFile} from 'aurelia-path';
+import {Metadata, Origin} from '../metadata/index';
+import {relativeToFile} from '../path/index';
 
 export class ViewStrategy {
   makeRelativeTo(baseUrl){}

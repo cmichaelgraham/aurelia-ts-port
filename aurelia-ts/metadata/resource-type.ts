@@ -13,7 +13,7 @@ export class ResourceType {
   * @param {Object} target The target that is decorated by this ResourceType metadata.
   * @return {Promise} Returns a promise for itself, resolving when all dependent resources are loaded.
   */
-  load(container, target){ 
+  load(container, target){
     return this;
   }
 

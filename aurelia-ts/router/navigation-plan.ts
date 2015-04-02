@@ -43,7 +43,7 @@ export function buildNavigationPlan(navigationContext, forceLifecycleMinimum) {
               .createNavigationContext(childInstruction);
 
             return buildNavigationPlan(
-              viewPortPlan.childNavigationContext, 
+              viewPortPlan.childNavigationContext,
               viewPortPlan.strategy == INVOKE_LIFECYCLE)
               .then(childPlan => {
                 viewPortPlan.childNavigationContext.plan = childPlan;

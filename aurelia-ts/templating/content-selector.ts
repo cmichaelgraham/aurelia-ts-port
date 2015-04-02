@@ -67,7 +67,7 @@ export class ContentSelector {
   }
 
   matches(node){
-    return this.all || 
+    return this.all ||
       (node.nodeType === 1 && node.matches(this.selector));
   }
 
@@ -77,7 +77,7 @@ export class ContentSelector {
         i, ii;
 
     for(i = 0, ii = group.length; i < ii; ++i){
-      parent.insertBefore(group[i], anchor); 
+      parent.insertBefore(group[i], anchor);
     }
 
     this.groups.push(group);
@@ -90,7 +90,7 @@ export class ContentSelector {
           i, ii;
 
       for(i = 0, ii = group.length; i < ii; ++i){
-        parent.insertBefore(group[i], anchor); 
+        parent.insertBefore(group[i], anchor);
       }
     }
 

@@ -1,4 +1,4 @@
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregator} from '../event-aggregator/index';
 import {WebAPI} from './web-api';
 import {ContactUpdated, ContactViewed} from './messages';
 

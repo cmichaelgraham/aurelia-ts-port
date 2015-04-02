@@ -1,4 +1,4 @@
-import {Behavior} from 'aurelia-templating';
+import {Behavior} from '../templating/index';
 
 var SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 

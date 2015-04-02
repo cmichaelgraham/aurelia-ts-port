@@ -1,5 +1,5 @@
-import {Behavior} from 'aurelia-templating';
-import * as LogManager from 'aurelia-logging';
+import {Behavior} from '../templating/index';
+import * as LogManager from '../logging/index';
 
 export class GlobalBehavior {
   static metadata(){

@@ -1,7 +1,7 @@
-import {BindingLanguage} from 'aurelia-templating';
-import {Parser, ObserverLocator, BindingExpression, NameExpression, ONE_WAY} from 'aurelia-binding';
+import {BindingLanguage} from '../templating/index';
+import {Parser, ObserverLocator, BindingExpression, NameExpression, ONE_WAY} from '../binding/index';
 import {SyntaxInterpreter} from './syntax-interpreter';
-import * as LogManager from 'aurelia-logging';
+import * as LogManager from '../logging/index';
 
 var info = {},
     logger = LogManager.getLogger('templating-binding');

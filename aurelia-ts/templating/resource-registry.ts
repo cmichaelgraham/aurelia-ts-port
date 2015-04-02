@@ -1,4 +1,4 @@
-import {relativeToFile} from 'aurelia-path';
+import {relativeToFile} from '../path/index';
 
 function register(lookup, name, resource, type){
   if(!name){

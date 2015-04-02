@@ -1,4 +1,4 @@
-import {Router} from 'aurelia-router';
+import {Router} from '../router/index';
 import {WebAPI} from './web-api';
 
 export class App {
