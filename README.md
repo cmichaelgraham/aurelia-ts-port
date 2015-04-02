@@ -1,4 +1,4 @@
-# [aurelia-ts-port](https://github.com/cmichaelgraham/aurelia-ts-port)
+# [spike-aurelia-ts-port](https://github.com/cmichaelgraham/spike-aurelia-ts-port)
 
 > a spike to attempt to port aurelia code into typescript
 
@@ -18,7 +18,7 @@ The atom editor, with its built-in, updated, almost-typescript-1.5 atom-typescri
 3. install atom
 4. install atom-typescript: run `apm install atom-typescript`
 5. open the clone folder in atom
-6. <f6> to build the typescript files
+6. <f6> to build typescript files
 
 ## process steps - to add (or update) aurelia repos (or add new files):
 
