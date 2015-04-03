@@ -1,9 +1,10 @@
 export class CssAnimator {
+  public animationStack;
   constructor(){
     this.animationStack = [];
   }
 
-  addMultipleEventListener(el, s, fn) {
+  addMultipleEventListener(el, s, fn, b) {
     var evts = s.split(' '),
       i, ii;
 

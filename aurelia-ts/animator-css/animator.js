@@ -3,7 +3,7 @@ define(["require", "exports"], function (require, exports) {
         function CssAnimator() {
             this.animationStack = [];
         }
-        CssAnimator.prototype.addMultipleEventListener = function (el, s, fn) {
+        CssAnimator.prototype.addMultipleEventListener = function (el, s, fn, b) {
             var evts = s.split(' '), i, ii;
             for (i = 0, ii = evts.length; i < ii; ++i) {
                 el.addEventListener(evts[i], fn, false);
