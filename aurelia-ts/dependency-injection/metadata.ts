@@ -27,7 +27,9 @@ export class Registration {
 * @param {Object} [key] The key to register as.
 */
 export class TransientRegistration extends Registration {
+  public key;
   constructor(key){
+    super();
     this.key = key;
   }
 
@@ -53,7 +55,10 @@ export class TransientRegistration extends Registration {
 * @param {Object} [key] The key to register as.
 */
 export class SingletonRegistration extends Registration {
+  public key;
+  public registerInChild;
   constructor(keyOrRegisterInChild, registerInChild=false){
+    super();
     if(typeof keyOrRegisterInChild === 'boolean'){
       this.registerInChild = keyOrRegisterInChild;
     }else{
@@ -104,7 +109,9 @@ export class Resolver {
 * @param {Object} key The key to lazily resolve.
 */
 export class Lazy extends Resolver {
+  public key;
   constructor(key){
+    super();
     this.key = key;
   }
 
@@ -143,7 +150,9 @@ export class Lazy extends Resolver {
 * @param {Object} key The key to lazily resolve all matches for.
 */
 export class All extends Resolver {
+  public key;
   constructor(key){
+    super();
     this.key = key;
   }
 
@@ -181,7 +190,10 @@ export class All extends Resolver {
 * @param {Boolean} [checkParent=false] Indicates whether or not the parent container hierarchy should be checked.
 */
 export class Optional extends Resolver {
+  public key;
+  public checkParent;
   constructor(key, checkParent=false){
+    super();
     this.key = key;
     this.checkParent = checkParent;
   }
@@ -225,7 +237,9 @@ export class Optional extends Resolver {
 * @param {Object} key The key to resolve from the parent container.
 */
 export class Parent extends Resolver {
+  public key;
   constructor(key){
+    super();
     this.key = key;
   }
 

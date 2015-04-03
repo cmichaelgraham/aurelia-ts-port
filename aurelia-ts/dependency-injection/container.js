@@ -1,4 +1,4 @@
-define(["require", "exports", './/metadata/index', '../logging/index', './metadata'], function (require, exports, _index, _index_1, _metadata) {
+define(["require", "exports", '..//metadata/index', '../logging/index', './metadata'], function (require, exports, _index, _index_1, _metadata) {
     var emptyParameters = Object.freeze([]);
     // Fix Function#name on browsers that do not support it (IE):
     function test() {
@@ -259,7 +259,7 @@ define(["require", "exports", './/metadata/index', '../logging/index', './metada
                 }
             }
             catch (e) {
-                throw new _index_1.AggregateError("Error instantiating " + fn.name + ".", e, true);
+                throw _index_1.AggregateError("Error instantiating " + fn.name + ".", e, true);
             }
         };
         Container.prototype.getOrCreateEntry = function (key) {

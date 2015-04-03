@@ -1,4 +1,4 @@
-import {Metadata} from './/metadata/index';
+import {Metadata} from '..//metadata/index';
 import {AggregateError} from '../logging/index';
 import {Resolver, Registration, Factory} from './metadata';
 
@@ -25,6 +25,11 @@ if (!test.name) {
 * @constructor
 */
 export class Container {
+  public constructionInfo;
+  public entries;
+  public root;
+  public parent;
+  public locateParameterInfoElsewhere;
   constructor(constructionInfo) {
     this.constructionInfo = constructionInfo || new Map();
     this.entries = new Map();
@@ -112,7 +117,7 @@ export class Container {
   * @param {Function} fn The constructor function to use when the dependency needs to be instantiated.
   * @param {Object} [key] The key that identifies the dependency at resolution time; usually a constructor function.
   */
-  autoRegister(fn, key){
+  autoRegister(fn, key?){
     var registration;
 
     if (fn === null || fn === undefined){
@@ -290,7 +295,7 @@ export class Container {
         return fn.apply(context, args) || context;
       }
     }catch(e){
-      throw new AggregateError(`Error instantiating ${fn.name}.`, e, true);
+      throw AggregateError(`Error instantiating ${fn.name}.`, e, true);
     }
   }
 
@@ -323,7 +328,7 @@ export class Container {
   }
 
   createConstructionInfo(fn){
-    var info = {isFactory: Metadata.on(fn).has(Factory)};
+    var info:any = {isFactory: Metadata.on(fn).has(Factory)};
 
     if(fn.inject !== undefined){
       if(typeof fn.inject === 'function'){

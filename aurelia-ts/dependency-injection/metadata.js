@@ -39,6 +39,7 @@ define(["require", "exports"], function (require, exports) {
     var TransientRegistration = (function (_super) {
         __extends(TransientRegistration, _super);
         function TransientRegistration(key) {
+            _super.call(this);
             this.key = key;
         }
         /**
@@ -67,6 +68,7 @@ define(["require", "exports"], function (require, exports) {
         __extends(SingletonRegistration, _super);
         function SingletonRegistration(keyOrRegisterInChild, registerInChild) {
             if (registerInChild === void 0) { registerInChild = false; }
+            _super.call(this);
             if (typeof keyOrRegisterInChild === 'boolean') {
                 this.registerInChild = keyOrRegisterInChild;
             }
@@ -123,6 +125,7 @@ define(["require", "exports"], function (require, exports) {
     var Lazy = (function (_super) {
         __extends(Lazy, _super);
         function Lazy(key) {
+            _super.call(this);
             this.key = key;
         }
         /**
@@ -163,6 +166,7 @@ define(["require", "exports"], function (require, exports) {
     var All = (function (_super) {
         __extends(All, _super);
         function All(key) {
+            _super.call(this);
             this.key = key;
         }
         /**
@@ -202,6 +206,7 @@ define(["require", "exports"], function (require, exports) {
         __extends(Optional, _super);
         function Optional(key, checkParent) {
             if (checkParent === void 0) { checkParent = false; }
+            _super.call(this);
             this.key = key;
             this.checkParent = checkParent;
         }
@@ -245,6 +250,7 @@ define(["require", "exports"], function (require, exports) {
     var Parent = (function (_super) {
         __extends(Parent, _super);
         function Parent(key) {
+            _super.call(this);
             this.key = key;
         }
         /**

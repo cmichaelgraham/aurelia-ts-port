@@ -5,6 +5,11 @@ import {ContactUpdated,ContactViewed} from './messages';
 import {areEqual} from './utility';
 
 export class ContactDetail {
+  public app;
+  public api;
+  public ea;
+  public contact;
+  public originalContact;
   static inject() { return [App,WebAPI,EventAggregator]; }
   constructor(app,api,ea){
     this.app = app;
