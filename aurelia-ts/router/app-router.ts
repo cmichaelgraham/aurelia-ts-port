@@ -7,6 +7,14 @@ import {EventAggregator} from '../event-aggregator/index';
 
 export class AppRouter extends Router {
   static inject(){ return [Container, History, PipelineProvider, EventAggregator]; }
+  public pipelineProvider;
+  public events;
+  public history;
+  public queue;
+  public isNavigating;
+  public isActive;
+  public container;
+  public options;
   constructor(container, history, pipelineProvider, events) {
     super(container, history);
     this.pipelineProvider = pipelineProvider;

@@ -151,6 +151,7 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
             if (viewPortPlan.childNavigationContext) {
                 findActivatable(viewPortPlan.childNavigationContext, callbackName, list, controller.router || router);
             }
+            return true;
         });
         return list;
     }
@@ -165,7 +166,7 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
             return !!output.shouldContinueProcessing;
         }
         if (typeof output === 'string') {
-            return exports.affirmations.indexOf(value.toLowerCase()) !== -1;
+            return exports.affirmations.indexOf(output.toLowerCase()) !== -1;
         }
         if (typeof output === 'undefined') {
             return true;
