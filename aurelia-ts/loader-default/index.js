@@ -40,7 +40,7 @@ define(["require", "exports", '../metadata/index', '../loader/index'], function 
             _super.call(this);
             this.moduleRegistry = {};
             var that = this;
-            if (System.polyfilled) {
+            if (window.System.polyfilled) {
                 define('view', [], {
                     'load': function (name, req, onload, config) {
                         var entry = that.getOrCreateTemplateRegistryEntry(name), address;
@@ -57,7 +57,7 @@ define(["require", "exports", '../metadata/index', '../loader/index'], function 
                 });
             }
             else {
-                System.set('view', System.newModule({
+                window.System.set('view', window.System.newModule({
                     'fetch': function (load, fetch) {
                         var id = load.name.substring(0, load.name.indexOf('!'));
                         var entry = load.metadata.templateRegistryEntry = that.getOrCreateTemplateRegistryEntry(id);
@@ -77,12 +77,12 @@ define(["require", "exports", '../metadata/index', '../loader/index'], function 
         }
         DefaultLoader.prototype.loadModule = function (id) {
             var _this = this;
-            return System.normalize(id).then(function (newId) {
+            return window.System.normalize(id).then(function (newId) {
                 var existing = _this.moduleRegistry[newId];
                 if (existing) {
                     return existing;
                 }
-                return System.import(newId).then(function (m) {
+                return window.System.import(newId).then(function (m) {
                     _this.moduleRegistry[newId] = m;
                     return ensureOriginOnExports(m, newId);
                 });
@@ -97,11 +97,11 @@ define(["require", "exports", '../metadata/index', '../loader/index'], function 
             return Promise.all(loads);
         };
         DefaultLoader.prototype.loadTemplate = function (url) {
-            if (System.polyfilled) {
-                return System.import('view!' + url);
+            if (window.System.polyfilled) {
+                return window.System.import('view!' + url);
             }
             else {
-                return System.import(url + '!view');
+                return window.System.import(url + '!view');
             }
         };
         return DefaultLoader;

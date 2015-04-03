@@ -1,8 +1,11 @@
 import {Origin} from '../metadata/index';
 import {Loader} from '../loader/index';
 
-if(!window.System || !window.System.import){
-  var sys = window.System = window.System || {};
+declare var require: any;
+declare var define: any;
+
+if(!(<any>window).System || !(<any>window).System.import){
+  var sys = (<any>window).System = (<any>window).System || {};
 
   sys.polyfilled = true;
   sys.map = {};
@@ -40,13 +43,14 @@ function ensureOriginOnExports(executed, name){
 }
 
 export class DefaultLoader extends Loader {
+  public moduleRegistry;
   constructor(){
     super();
 
     this.moduleRegistry = {};
     var that = this;
 
-    if(System.polyfilled){
+    if((<any>window).System.polyfilled){
       define('view', [], {
         'load': function (name, req, onload, config) {
           var entry = that.getOrCreateTemplateRegistryEntry(name),
@@ -66,8 +70,8 @@ export class DefaultLoader extends Loader {
         }
       });
     }else{
-      System.set('view', System.newModule({
-        'fetch': function(load, fetch) {
+      (<any>window).System.set('view', (<any>window).System.newModule({
+        'fetch': function(load, fetch):any {
           var id = load.name.substring(0, load.name.indexOf('!'));
           var entry = load.metadata.templateRegistryEntry = that.getOrCreateTemplateRegistryEntry(id);
 
@@ -88,13 +92,13 @@ export class DefaultLoader extends Loader {
   }
 
   loadModule(id){
-    return System.normalize(id).then(newId => {
+    return (<any>window).System.normalize(id).then(newId => {
       var existing = this.moduleRegistry[newId];
       if(existing){
         return existing;
       }
 
-      return System.import(newId).then(m => {
+      return (<any>window).System.import(newId).then(m => {
         this.moduleRegistry[newId] = m;
         return ensureOriginOnExports(m, newId);
       });
@@ -112,12 +116,12 @@ export class DefaultLoader extends Loader {
   }
 
   loadTemplate(url){
-    if(System.polyfilled){
-      return System.import('view!' + url);
+    if((<any>window).System.polyfilled){
+      return (<any>window).System.import('view!' + url);
     }else{
-      return System.import(url + '!view');
+      return (<any>window).System.import(url + '!view');
     }
   }
 }
 
-window.AureliaLoader = DefaultLoader;
+(<any>window).AureliaLoader = DefaultLoader;
