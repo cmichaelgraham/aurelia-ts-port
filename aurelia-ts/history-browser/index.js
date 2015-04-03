@@ -103,6 +103,7 @@ define(["require", "exports", '../history/index'], function (require, exports, _
                 }
                 else if (this._hasPushState && atRoot && loc.hash) {
                     this.fragment = this.getHash().replace(routeStripper, '');
+                    this.history.replaceState({}, document.title, this.root + this.fragment + loc.search);
                 }
             }
             if (!this.options.silent) {
