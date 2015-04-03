@@ -22,7 +22,7 @@
     }
   }
 
-  var err = new Error(msg);
+  var err:any = new Error(msg);
   if (inner) {
     err.innerError = inner;
   }
@@ -168,6 +168,7 @@ export function setLevel(level){
 * @constructor
 */
 export class Logger {
+  public id;
   constructor(id, key){
     if(key !== loggerConstructionKey){
       throw new Error('You cannot instantiate "Logger". Use the "getLogger" API instead.');
