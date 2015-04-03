@@ -1,4 +1,5 @@
 export class Animator {
+  static instance;
   static configureDefault(container, animatorInstance){
     container.registerInstance(Animator, Animator.instance = (animatorInstance || new Animator()));
   }

@@ -1,4 +1,9 @@
 export class BehaviorInstance {
+  public behavior;
+  public executionContext;
+  public isAttached;
+  public boundProperties;
+  public view;
   constructor(behavior, executionContext, instruction){
     this.behavior = behavior;
     this.executionContext = executionContext;

@@ -8,14 +8,28 @@ import {hyphenate} from './util';
 
 var defaultInstruction = { suppressBind:false },
     contentSelectorFactoryOptions = { suppressBind:true },
-    hasShadowDOM = !!HTMLElement.prototype.createShadowRoot,
+    hasShadowDOM = !!(<any>HTMLElement.prototype).createShadowRoot,
     valuePropertyName = 'value';
 
 export class UseShadowDOM {}
 export class SkipContentProcessing {}
 
 export class CustomElement extends ResourceType {
-  constructor(tagName){
+  public name;
+  public properties;
+  public attributes;
+  public targetShadowDOM;
+  public skipContentProcessing;
+  public usesShadowDOM;
+  public viewStrategy;
+  public moduleId;
+  public viewFactory;
+  public apiName;
+  public contentFactory;
+  public childExpression;
+  public target;
+  constructor(tagName?){
+    super();
     this.name = tagName;
     this.properties = [];
     this.attributes = {};
@@ -49,7 +63,7 @@ export class CustomElement extends ResourceType {
     };
 
     if(!viewStrategy.moduleId){
-      viewStrategy.moduleId = Origin.get(target).moduleId;
+      viewStrategy.moduleId = (<any>Origin.get(target)).moduleId;
     }
 
     return viewStrategy.loadViewFactory(container.get(ViewEngine), options).then(viewFactory => {
@@ -81,7 +95,7 @@ export class CustomElement extends ResourceType {
     return node;
   }
 
-  create(container, instruction=defaultInstruction, element=null){
+  create(container, instruction:any=defaultInstruction, element=null){
     var executionContext = instruction.executionContext || container.get(this.target),
         behaviorInstance = new BehaviorInstance(this, executionContext, instruction),
         viewFactory = instruction.viewFactory || this.viewFactory,
@@ -113,7 +127,7 @@ export class CustomElement extends ResourceType {
               (contentSelector, group) => contentSelector.add(group)
               );
 
-            behaviorInstance.contentView = contentView;
+            (<any>behaviorInstance).contentView = contentView;
           }
         }
 

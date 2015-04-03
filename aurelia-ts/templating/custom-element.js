@@ -25,6 +25,7 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
     var CustomElement = (function (_super) {
         __extends(CustomElement, _super);
         function CustomElement(tagName) {
+            _super.call(this);
             this.name = tagName;
             this.properties = [];
             this.attributes = {};

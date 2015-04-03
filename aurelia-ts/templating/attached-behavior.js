@@ -8,6 +8,7 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
     var AttachedBehavior = (function (_super) {
         __extends(AttachedBehavior, _super);
         function AttachedBehavior(attribute) {
+            _super.call(this);
             this.name = attribute;
             this.properties = [];
             this.attributes = {};

@@ -1,6 +1,9 @@
 var noMutations = [];
 
 export class ChildObserver {
+  public selector;
+  public changeHandler;
+  public property;
   constructor(property, changeHandler, selector){
     this.selector = selector;
     this.changeHandler = changeHandler;
@@ -13,11 +16,16 @@ export class ChildObserver {
 }
 
 export class ChildObserverBinder {
+  public selector;
+  public target;
+  public property;
+  public behavior;
+  public changeHandler;
+  public observer;
   constructor(selector, target, property, behavior, changeHandler){
     this.selector = selector;
     this.target = target;
     this.property = property;
-    this.target = target;
     this.behavior = behavior;
     this.changeHandler = changeHandler;
     this.observer = new MutationObserver(this.onChange.bind(this));

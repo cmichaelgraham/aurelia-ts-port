@@ -2,7 +2,7 @@ import {hyphenate} from './util';
 import {ONE_WAY,TWO_WAY,ONE_TIME} from '../binding/index';
 
 export class BehaviorProperty {
-  constructor(name, changeHandler, attribute, defaultValue, defaultBindingMode){
+  constructor(name, changeHandler, attribute, defaultValue?, defaultBindingMode?){
     this.name = name;
     this.changeHandler = changeHandler;
     this.attribute = attribute || hyphenate(name);

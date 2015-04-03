@@ -10,7 +10,7 @@ define(["require", "exports"], function (require, exports) {
             insertionPoint = groups[index][0];
             index--;
         }
-        return insertionPoint || anchor;
+        return insertionPoint; // todo fix this: || anchor;
     }
     var ContentSelector = (function () {
         function ContentSelector(anchor, selector) {

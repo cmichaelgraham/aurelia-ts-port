@@ -5,7 +5,7 @@ import {ChildObserver} from './children';
 import {BehaviorProperty} from './property';
 import {hyphenate} from './util';
 
-export function configureBehavior(container, behavior, target, valuePropertyName) {
+export function configureBehavior(container, behavior, target, valuePropertyName?) {
   var proto = target.prototype,
       taskQueue = container.get(TaskQueue),
       meta = Metadata.on(target),

@@ -1,5 +1,5 @@
-if (Element && !Element.prototype.matches) {
-    var proto = Element.prototype;
+if (Element && !(<any>Element.prototype).matches) {
+    var proto:any = Element.prototype;
     proto.matches = proto.matchesSelector ||
       proto.mozMatchesSelector || proto.msMatchesSelector ||
       proto.oMatchesSelector || proto.webkitMatchesSelector;
@@ -15,7 +15,7 @@ function findInsertionPoint(groups, index){
     index--;
   }
 
-  return insertionPoint || anchor;
+  return insertionPoint // todo fix this: || anchor;
 }
 
 export class ContentSelector {
@@ -55,6 +55,10 @@ export class ContentSelector {
     }
   }
 
+  public anchor;
+  public selector;
+  public all;
+  public groups;
   constructor(anchor, selector){
     this.anchor = anchor;
     this.selector = selector;

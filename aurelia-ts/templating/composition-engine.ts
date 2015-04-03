@@ -5,6 +5,7 @@ import {CustomElement} from './custom-element';
 
 export class CompositionEngine {
   static inject(){ return [ViewEngine]; }
+  public viewEngine;
   constructor(viewEngine){
     this.viewEngine = viewEngine;
   }

@@ -17,7 +17,7 @@ define(["require", "exports"], function (require, exports) {
         * @return {Promise} Returns a promise for itself, resolving when all dependent resources are loaded.
         */
         ResourceType.prototype.load = function (container, target) {
-            return this;
+            return Promise.resolve(this);
         };
         /**
         * Implemented by resources to allow them to register themselved in a resource registry.

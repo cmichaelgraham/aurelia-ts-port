@@ -4,7 +4,14 @@ import {configureBehavior} from './behaviors';
 import {hyphenate} from './util';
 
 export class AttachedBehavior extends ResourceType {
+  public name;
+  public properties;
+  public attributes;
+  public target;
+  public apiName;
+  public childExpression;
   constructor(attribute){
+    super();
     this.name = attribute;
     this.properties = [];
     this.attributes = {};
