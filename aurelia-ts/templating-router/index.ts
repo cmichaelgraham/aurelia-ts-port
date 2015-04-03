@@ -1,4 +1,4 @@
-import {Router, AppRouter, RouteLoader} from 'aurelia-router';
+import {Router, AppRouter, RouteLoader} from '../router/index';
 import {TemplatingRouteLoader} from './route-loader';
 import {RouterView} from './router-view';
 

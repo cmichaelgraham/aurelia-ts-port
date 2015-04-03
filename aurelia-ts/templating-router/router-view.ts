@@ -1,7 +1,7 @@
-import {Container} from 'aurelia-dependency-injection';
-import {ViewSlot, ViewStrategy} from 'aurelia-templating';
-import {Router} from 'aurelia-router';
-import {Metadata, Origin} from 'aurelia-metadata';
+import {Container} from '../dependency-injection/index';
+import {ViewSlot, ViewStrategy} from '../templating/index';
+import {Router} from '../router/index';
+import {Metadata, Origin} from '../metadata/index';
 
 export class RouterView {
   static metadata(){ return Metadata.customElement('router-view').noView(); }
