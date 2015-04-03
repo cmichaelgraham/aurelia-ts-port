@@ -36,16 +36,21 @@ export function headerTransformer(client, processor, message, xhr){
   message.headers.configureXHR(xhr);
 }
 
+declare var ArrayBufferView: {
+  prototype: ArrayBufferView;
+  new ():ArrayBufferView;
+}
+
 export function contentTransformer(client, processor, message, xhr){
-  if(window.FormData && message.content instanceof FormData){
+  if((<any>window).FormData && message.content instanceof FormData){
     return;
   }
 
-  if(window.Blob && message.content instanceof Blob){
+  if((<any>window).Blob && message.content instanceof Blob){
     return;
   }
 
-  if(window.ArrayBufferView && message.content instanceof ArrayBufferView){
+  if((<any>window).ArrayBufferView && message.content instanceof ArrayBufferView){
     return;
   }
 

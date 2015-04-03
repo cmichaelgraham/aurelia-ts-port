@@ -9,6 +9,9 @@ import {JSONPRequestMessage} from './jsonp-request-message';
 * @constructor
 */
 export class RequestBuilder {
+	public client;
+	public transformers;
+	public useJsonp;
 	constructor (client) {
 		this.client = client;
 		this.transformers = client.requestTransformers.slice(0);

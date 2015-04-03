@@ -6,7 +6,13 @@ import {
 } from './transformers';
 
 export class JSONPRequestMessage {
-  constructor(uri, callbackParameterName){
+  public method;
+  public uri;
+  public content;
+  public headers;
+  public responseType;
+  public callbackParameterName;
+  constructor(uri?, callbackParameterName?){
     this.method = 'JSONP';
     this.uri = uri;
     this.content = undefined;
@@ -17,6 +23,14 @@ export class JSONPRequestMessage {
 }
 
 class JSONPXHR {
+  public method;
+  public uri;
+  public callbackName;
+  public callbackParameterName;
+  public status;
+  public statusText;
+  public response;
+
   open(method, uri){
     this.method = method;
     this.uri = uri;
@@ -34,7 +48,7 @@ class JSONPXHR {
         this.status = 200;
         this.statusText = 'OK';
         this.response = data;
-        this.onload(this);
+        (<any>this).onload(this);
       }
     };
 
@@ -42,20 +56,20 @@ class JSONPXHR {
     script.src = uri;
     document.body.appendChild(script);
 
-    if(this.timeout !== undefined){
+    if((<any>this).timeout !== undefined){
       setTimeout(() => {
         if(this.status === undefined){
           this.status = 0;
-          this.ontimeout(new Error('timeout'));
+          (<any>this).ontimeout(new Error('timeout'));
         }
-      }, this.timeout);
+      }, (<any>this).timeout);
     }
   }
 
   abort(){
     if(this.status === undefined){
       this.status = 0;
-      this.onabort(new Error('abort'));
+      (<any>this).onabort(new Error('abort'));
     }
   }
 

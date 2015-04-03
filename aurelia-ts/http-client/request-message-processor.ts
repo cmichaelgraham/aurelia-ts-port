@@ -14,6 +14,9 @@ function buildFullUri(message){
 }
 
 export class RequestMessageProcessor {
+  public XHRType;
+  public transformers;
+  public xhr;
   constructor(xhrType, transformers){
     this.XHRType = xhrType;
     this.transformers = transformers;

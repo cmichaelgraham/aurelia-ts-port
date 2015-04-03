@@ -1,4 +1,5 @@
 export class Headers {
+  public headers;
   constructor(headers={}){
     this.headers = headers;
   }

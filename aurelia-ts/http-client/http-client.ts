@@ -15,7 +15,7 @@ function trackRequestEnd(client, processor){
   client.isRequesting = client.pendingRequests.length > 0;
 
   if(!client.isRequesting){
-    var evt = new window.CustomEvent('aurelia-http-client-requests-drained', { bubbles: true, cancelable: true });
+    var evt = new (<any>window).CustomEvent('aurelia-http-client-requests-drained', { bubbles: true, cancelable: true });
     setTimeout(() => document.dispatchEvent(evt), 1);
   }
 }
@@ -27,6 +27,10 @@ function trackRequestEnd(client, processor){
 * @constructor
 */
 export class HttpClient {
+  public requestTransformers;
+  public requestProcessorFactories;
+  public pendingRequests;
+  public isRequesting;
   constructor(){
     this.requestTransformers = [];
     this.requestProcessorFactories = new Map();
@@ -46,7 +50,7 @@ export class HttpClient {
   configure(fn){
     var builder = new RequestBuilder(this);
     fn(builder);
-    this.requestTransformers = builder.transformers;
+    this.requestTransformers = (<any>builder).transformers;
     return this;
   }
 
@@ -61,7 +65,7 @@ export class HttpClient {
     let builder = new RequestBuilder(this);
 
     if(uri) {
-      builder.withUri(uri);
+      (<any>builder).withUri(uri);
     }
 
     return builder;
@@ -115,7 +119,7 @@ export class HttpClient {
    * @return {Promise} A cancellable promise object.
    */
   delete(uri){
-    return this.createRequest(uri).asDelete().send();
+    return (<any>this.createRequest(uri)).asDelete().send();
   }
 
   /**
@@ -126,7 +130,7 @@ export class HttpClient {
    * @return {Promise} A cancellable promise object.
    */
   get(uri){
-    return this.createRequest(uri).asGet().send();
+    return (<any>this.createRequest(uri)).asGet().send();
   }
 
   /**
@@ -137,7 +141,7 @@ export class HttpClient {
    * @return {Promise} A cancellable promise object.
    */
   head(uri){
-    return this.createRequest(uri).asHead().send();
+    return (<any>this.createRequest(uri)).asHead().send();
   }
 
   /**
@@ -148,7 +152,7 @@ export class HttpClient {
    * @return {Promise} A cancellable promise object.
    */
   jsonp(uri, callbackParameterName='jsoncallback'){
-    return this.createRequest(uri).asJsonp(callbackParameterName).send();
+    return (<any>this.createRequest(uri)).asJsonp(callbackParameterName).send();
   }
 
   /**
@@ -159,7 +163,7 @@ export class HttpClient {
    * @return {Promise} A cancellable promise object.
    */
   options(uri){
-    return this.createRequest(uri).asOptions().send();
+    return (<any>this.createRequest(uri)).asOptions().send();
   }
 
   /**
@@ -171,7 +175,7 @@ export class HttpClient {
    * @return {Promise} A cancellable promise object.
    */
   put(uri, content){
-    return this.createRequest(uri).asPut().withContent(content).send();
+    return (<any>this.createRequest(uri)).asPut().withContent(content).send();
   }
 
   /**
@@ -183,7 +187,7 @@ export class HttpClient {
    * @return {Promise} A cancellable promise object.
    */
   patch(uri, content){
-    return this.createRequest(uri).asPatch().withContent(content).send();
+    return (<any>this.createRequest(uri)).asPatch().withContent(content).send();
   }
 
   /**
@@ -195,6 +199,6 @@ export class HttpClient {
    * @return {Promise} A cancellable promise object.
    */
   post(uri, content){
-    return this.createRequest(uri).asPost().withContent(content).send();
+    return (<any>this.createRequest(uri)).asPost().withContent(content).send();
   }
 }

@@ -10,7 +10,12 @@ import {
 } from './transformers';
 
 export class HttpRequestMessage {
-  constructor(method, uri, content, headers){
+  public method;
+  public uri;
+  public content;
+  public headers;
+  public responseType;
+  constructor(method?, uri?, content?, headers?){
     this.method = method;
     this.uri = uri;
     this.content = content;
