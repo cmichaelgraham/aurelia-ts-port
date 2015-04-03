@@ -1,4 +1,6 @@
 class Handler {
+  public messageType;
+  public callback;
   constructor(messageType, callback){
     this.messageType = messageType;
     this.callback = callback;
@@ -12,6 +14,8 @@ class Handler {
 }
 
 export class EventAggregator {
+  public eventLookup;
+  public messageHandlers;
   constructor(){
     this.eventLookup = {};
     this.messageHandlers = [];
