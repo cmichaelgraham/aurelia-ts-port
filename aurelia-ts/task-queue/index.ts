@@ -1,10 +1,10 @@
-var BrowserMutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+var BrowserMutationObserver = (<any>window).MutationObserver || (<any>window).WebKitMutationObserver;
 var hasSetImmediate = typeof setImmediate === 'function';
 
 function makeRequestFlushFromMutationObserver(flush) {
   var toggle = 1;
   var observer = new BrowserMutationObserver(flush);
-  var node = document.createTextNode('');
+  var node:any = document.createTextNode('');
   observer.observe(node, {characterData: true});
   return function requestFlush() {
     toggle = -toggle;
@@ -34,6 +34,11 @@ function makeRequestFlushFromTimer(flush) {
 }
 
 export class TaskQueue {
+  public microTaskQueue;
+  public microTaskQueueCapacity
+  public taskQueue;
+  public requestFlushMicroTaskQueue;
+  public requestFlushTaskQueue;
   constructor(){
     this.microTaskQueue = [];
     this.microTaskQueueCapacity = 1024;
