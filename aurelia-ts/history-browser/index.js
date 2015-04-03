@@ -28,6 +28,7 @@ define(["require", "exports", '../history/index'], function (require, exports, _
     var BrowserHistory = (function (_super) {
         __extends(BrowserHistory, _super);
         function BrowserHistory() {
+            _super.call(this);
             this.interval = 50;
             this.active = false;
             this.previousFragment = '';
@@ -102,7 +103,6 @@ define(["require", "exports", '../history/index'], function (require, exports, _
                 }
                 else if (this._hasPushState && atRoot && loc.hash) {
                     this.fragment = this.getHash().replace(routeStripper, '');
-                    this.this.replaceState({}, document.title, this.root + this.fragment + loc.search);
                 }
             }
             if (!this.options.silent) {

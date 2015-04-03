@@ -25,7 +25,22 @@ function updateHash(location, fragment, replace) {
 }
 
 class BrowserHistory extends History {
+  public interval;
+  public active;
+  public previousFragment;
+  public location;
+  public history;
+  public root;
+  public options;
+  public fragment;
+  public iframe;
+  private _checkUrlCallback;
+  private _hasPushState;
+  private _wantsHashChange;
+  private _wantsPushState;
+  private _checkUrlInterval;
   constructor(){
+    super();
     this.interval = 50;
     this.active = false;
     this.previousFragment = '';
@@ -37,12 +52,12 @@ class BrowserHistory extends History {
     }
   }
 
-  getHash(window){
+  getHash(window?){
     var match = (window || this).location.href.match(/#(.*)$/);
     return match ? match[1] : '';
   }
 
-  getFragment(fragment, forcePushState) {
+  getFragment(fragment?, forcePushState?) {
     var root;
 
     if (!fragment) {
@@ -60,7 +75,7 @@ class BrowserHistory extends History {
     return fragment.replace(routeStripper, '');
   }
 
-  activate(options) {
+  activate(options?) {
     if (this.active) {
       throw new Error("History has already been activated.");
     }
@@ -111,7 +126,7 @@ class BrowserHistory extends History {
         // in a browser where it could be `pushState`-based instead...
       } else if (this._hasPushState && atRoot && loc.hash) {
         this.fragment = this.getHash().replace(routeStripper, '');
-        this.this.replaceState({}, document.title, this.root + this.fragment + loc.search);
+        // todo: fix this  this.replaceState({}, document.title, this.root + this.fragment + loc.search);
       }
     }
 
@@ -145,7 +160,7 @@ class BrowserHistory extends History {
     this.loadUrl();
   }
 
-  loadUrl(fragmentOverride) {
+  loadUrl(fragmentOverride?) {
     var fragment = this.fragment = this.getFragment(fragmentOverride);
 
     return this.options.routeHandler ?
@@ -153,7 +168,7 @@ class BrowserHistory extends History {
       false;
   }
 
-  navigate(fragment, options) {
+  navigate(fragment?, options?) {
     if (fragment && fragment.indexOf('://') != -1) {
       window.location.href = fragment;
       return true;

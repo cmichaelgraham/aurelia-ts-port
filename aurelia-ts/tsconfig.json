@@ -66,6 +66,7 @@
         "./http-client/request-builder.ts",
         "./http-client/request-message-processor.ts",
         "./http-client/transformers.ts",
+        "./lib.es6.d.ts",
         "./loader-default/index.ts",
         "./loader/index.ts",
         "./loader/loader.ts",
