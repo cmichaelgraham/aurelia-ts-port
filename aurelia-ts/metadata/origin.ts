@@ -17,7 +17,9 @@ function ensureType(value){
 * @param {string} moduleMember The name of the export in the origin module.
 */
 export class Origin {
-  constructor(moduleId, moduleMember){
+  public moduleId;
+  public moduleMember;
+  constructor(moduleId, moduleMember?){
     this.moduleId = moduleId;
     this.moduleMember = moduleMember;
   }

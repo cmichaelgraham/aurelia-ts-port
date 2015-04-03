@@ -8,7 +8,7 @@ define(["require", "exports"], function (require, exports) {
     var MetadataStore = (function () {
         function MetadataStore(owner) {
             this._owner = owner;
-            this._one = null;
+            this._first = null;
             this._second = null;
             this._third = null;
             this._rest = null;

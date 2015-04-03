@@ -1,6 +1,10 @@
 import {Metadata} from './metadata';
 
 export class DecoratorApplicator {
+  private _first;
+  private _second;
+  private _third;
+  private _rest;
   constructor(){
     this._first = null;
     this._second = null;
