@@ -14,6 +14,8 @@ import {createRouteFilterStep} from './route-filters';
 
 export class PipelineProvider {
   static inject(){ return [Container]; }
+  public container;
+  public steps;
   constructor(container){
     this.container = container;
     this.steps = [

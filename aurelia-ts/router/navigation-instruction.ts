@@ -1,4 +1,11 @@
 export class NavigationInstruction {
+  public fragment;
+  public queryString;
+  public params;
+  public queryParams;
+  public config;
+  public lifecycleArgs;
+  public viewPortInstructions;
   constructor(fragment, queryString, params, queryParams, config, parentInstruction) {
     this.fragment = fragment;
     this.queryString = queryString;

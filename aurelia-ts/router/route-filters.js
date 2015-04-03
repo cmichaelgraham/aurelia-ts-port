@@ -49,7 +49,7 @@ define(["require", "exports", '../dependency-injection/index'], function (requir
             return new RouteFilterStep(name, routeFilterContainer);
         }
         ;
-        create.inject = function () {
+        create["inject"] = function () {
             return [
                 RouteFilterContainer
             ];

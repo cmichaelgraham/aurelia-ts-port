@@ -1,6 +1,11 @@
 import {REPLACE} from './navigation-plan';
 
 export class NavigationContext {
+  public router;
+  public nextInstruction;
+  public currentInstruction;
+  public prevInstruction;
+  public plan;
   constructor(router, nextInstruction) {
     this.router = router;
     this.nextInstruction = nextInstruction;

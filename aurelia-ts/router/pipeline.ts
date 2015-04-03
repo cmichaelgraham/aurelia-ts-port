@@ -13,6 +13,7 @@ export var REJECTED = 'rejected';
 export var RUNNING = 'running';
 
 export class Pipeline {
+  public steps;
   constructor() {
     this.steps = [];
   }

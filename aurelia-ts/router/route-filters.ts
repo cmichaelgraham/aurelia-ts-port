@@ -2,6 +2,9 @@ import {Container} from '../dependency-injection/index';
 
 export class RouteFilterContainer {
   static inject(){ return [Container]; }
+  public container;
+  public filters;
+  public filterCache;
   constructor(container) {
     this.container = container;
     this.filters = { };
@@ -49,13 +52,16 @@ export function createRouteFilterStep(name) {
   function create(routeFilterContainer) {
     return new RouteFilterStep(name, routeFilterContainer);
   };
-  create.inject = function() {
+  create["inject"] = function() {
     return [RouteFilterContainer];
   };
   return create;
 }
 
 class RouteFilterStep {
+  public name;
+  public routeFilterContainer;
+  public isMultiStep;
   constructor(name, routeFilterContainer) {
     this.name = name;
     this.routeFilterContainer = routeFilterContainer;

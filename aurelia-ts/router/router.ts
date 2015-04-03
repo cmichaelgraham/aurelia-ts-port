@@ -6,6 +6,19 @@ import {RouterConfiguration} from './router-configuration';
 import {processPotential} from './util';
 
 export class Router {
+  public container;
+  public history;
+  public viewPorts;
+  public baseUrl;
+  public isConfigured;
+  public parent;
+  public navigation;
+  public recognizer;
+  public childRecognizer;
+  public catchAllHandler;
+  public routes;
+  public fallbackOrder;
+  public isNavigating;
   constructor(container, history) {
     this.container = container;
     this.history = history;
@@ -119,7 +132,7 @@ export class Router {
 
     if (results && results.length) {
       var first = results[0],
-          fragment = url,
+          fragment:any = url,
           queryIndex = fragment.indexOf('?'),
           queryString;
 
@@ -169,7 +182,7 @@ export class Router {
     return this.recognizer.generate(name, params);
   }
 
-  addRoute(config, navModel={}) {
+  addRoute(config, navModel:any={}) {
     if (!('viewPorts' in config)) {
       config.viewPorts = {
         'default': {

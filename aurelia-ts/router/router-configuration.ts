@@ -1,6 +1,11 @@
 import {RouteFilterContainer} from './route-filters';
 
 export class RouterConfiguration{
+  public instructions;
+  public options;
+  public pipelineSteps;
+  public title;
+  public unknownRouteConfig;
   constructor() {
     this.instructions = [];
     this.options = {};
@@ -11,7 +16,7 @@ export class RouterConfiguration{
     this.pipelineSteps.push({name, step});
   }
 
-  map(route, config) {
+  map(route, config?) {
     if (Array.isArray(route)) {
       for (var i = 0; i < route.length; i++) {
         this.map(route[i]);
@@ -91,7 +96,7 @@ export class RouterConfiguration{
     }
   }
 
-  configureRoute(router, config, navModel) {
+  configureRoute(router, config, navModel?) {
     this.ensureDefaultsForRouteConfig(config);
     router.addRoute(config, navModel);
   }

@@ -4,7 +4,7 @@ export var NO_CHANGE = 'no-change';
 export var INVOKE_LIFECYCLE = 'invoke-lifecycle';
 export var REPLACE = 'replace';
 
-export function buildNavigationPlan(navigationContext, forceLifecycleMinimum) {
+export function buildNavigationPlan(navigationContext, forceLifecycleMinimum?) {
   var prev = navigationContext.prevInstruction;
   var next = navigationContext.nextInstruction;
   var plan = {}, viewPortName;
@@ -16,7 +16,7 @@ export function buildNavigationPlan(navigationContext, forceLifecycleMinimum) {
     for (viewPortName in prev.viewPortInstructions) {
       var prevViewPortInstruction = prev.viewPortInstructions[viewPortName];
       var nextViewPortConfig = next.config.viewPorts[viewPortName];
-      var viewPortPlan = plan[viewPortName] = {
+      var viewPortPlan:any = plan[viewPortName] = {
         name: viewPortName,
         config: nextViewPortConfig,
         prevComponent: prevViewPortInstruction.component,

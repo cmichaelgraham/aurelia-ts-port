@@ -111,7 +111,7 @@ export class AppRouter extends Router {
     }
   }
 
-  activate(options) {
+  activate(options?) {
     if (this.isActive) {
       return;
     }
