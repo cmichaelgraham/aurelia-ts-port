@@ -1,6 +1,8 @@
 import {relativeToFile} from '../path/index';
 
 export class TemplateDependency {
+  public src;
+  public name;
   constructor(src, name){
     this.src = src;
     this.name = name;
@@ -8,6 +10,11 @@ export class TemplateDependency {
 }
 
 export class TemplateRegistryEntry {
+  public id;
+  public template;
+  public dependencies;
+  public resources;
+  public factory;
   constructor(id){
     this.id = id;
     this.template = null;

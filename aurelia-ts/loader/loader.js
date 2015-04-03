@@ -2,8 +2,8 @@ define(["require", "exports", './template-registry-entry'], function (require, e
     var hasTemplateElement = ('content' in document.createElement('template'));
     function importElements(frag, link, callback) {
         document.head.appendChild(frag);
-        if (window.Polymer && Polymer.whenReady) {
-            Polymer.whenReady(callback);
+        if (window.Polymer && window.Polymer.whenReady) {
+            window.Polymer.whenReady(callback);
         }
         else {
             link.addEventListener('load', callback);

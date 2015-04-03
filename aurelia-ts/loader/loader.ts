@@ -1,18 +1,21 @@
 import {TemplateRegistryEntry} from './template-registry-entry';
 
+declare var HTMLTemplateElement:any;
+
 var hasTemplateElement = ('content' in document.createElement('template'));
 
 function importElements(frag, link, callback) {
   document.head.appendChild(frag);
 
-  if(window.Polymer && Polymer.whenReady){
-    Polymer.whenReady(callback);
+  if((<any>window).Polymer && (<any>window).Polymer.whenReady){
+    (<any>window).Polymer.whenReady(callback);
   }else{
     link.addEventListener('load', callback);
   }
 }
 
 export class Loader {
+  public templateRegistry;
   constructor(){
     this.templateRegistry = {};
   }
@@ -48,7 +51,7 @@ export class Loader {
       link.href = url;
       frag.appendChild(link);
 
-      importElements(frag, link, () => resolve(link.import));
+      importElements(frag, link, () => resolve((<any>link).import));
     });
   }
 
