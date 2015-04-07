@@ -1,5 +1,6 @@
-import * as AllCollections from '../validation/validation-rules-collection'
-import {PathObserver} from '../validation/path-observer'
+import * as AllCollections from '../validation/validation-rules-collection';
+import {PathObserver} from '../validation/path-observer';
+import {Debouncer} from '../validation/debouncer';
 
 export class ValidationProperty {
   constructor(observerLocator, propertyName, validationGroup, propertyResult) {
@@ -11,8 +12,10 @@ export class ValidationProperty {
     this.observer = new PathObserver(observerLocator, validationGroup.subject, propertyName)
       .getObserver();
 
-    this.observer.subscribe((newValue, oldValue) => {
-      this.validate(newValue, true);
+    let debouncer = new Debouncer();
+
+    this.observer.subscribe(() => {
+      debouncer.debounce( () => { this.validateCurrentValue(true); });
     });
   }
 
@@ -25,11 +28,19 @@ export class ValidationProperty {
   }
 
   validateCurrentValue(forceDirty) {
-    this.validate(this.observer.getValue(), forceDirty);
+    return this.validate(this.observer.getValue(), forceDirty);
   }
 
   validate(newValue, shouldBeDirty) {
-    var validationResponse = this.validationRules.validate(newValue);
-    this.propertyResult.setValidity(validationResponse, shouldBeDirty);
+    return this.validationRules.validate(newValue).then(
+      (validationResponse) => {
+        this.propertyResult.setValidity(validationResponse, shouldBeDirty);
+        return Promise.resolve(true);
+      },
+      (validationResponse) => {
+        this.propertyResult.setValidity(validationResponse, shouldBeDirty);
+        return Promise.reject(false);
+      }
+    );
   }
 }

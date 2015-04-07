@@ -1,5 +1,5 @@
 import {Decorators, Metadata} from 'aurelia-metadata';
-import {ValueConverter} from './value-converter';
+import {ValueConverterResource} from './value-converter';
 
 export {EventManager} from './event-manager';
 export {ObserverLocator, ObjectObservationAdapter} from './observer-locator';
@@ -24,3 +24,13 @@ export function valueConverter(name){
 }
 
 Decorators.configure.parameterizedDecorator('valueConverter', valueConverter);
+
+export function computedFrom(...rest){
+  return function(target, key, descriptor){
+    if (descriptor.set){
+      throw new Error(`The computed property "${key}" cannot have a setter function.`);
+    }
+    descriptor.get.dependencies = rest;
+    return descriptor;
+  }
+}

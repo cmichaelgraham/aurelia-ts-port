@@ -1,29 +1,29 @@
-define(["require", "exports", './decorator-applicator'], function (require, exports, _decorator_applicator) {
+define(["require", "exports", './decorator-applicator'], function (require, exports, decorator_applicator_1) {
     exports.Decorators = {
         metadata: function () {
             var rest = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 rest[_i - 0] = arguments[_i];
             }
-            var applicator = new _decorator_applicator.DecoratorApplicator();
+            var applicator = new decorator_applicator_1.DecoratorApplicator();
             return applicator.metadata.apply(applicator, rest);
         },
         configure: {
             parameterizedDecorator: function (name, decorator) {
                 exports.Decorators[name] = function () {
-                    var applicator = new _decorator_applicator.DecoratorApplicator();
+                    var applicator = new decorator_applicator_1.DecoratorApplicator();
                     return applicator[name].apply(applicator, arguments);
                 };
-                _decorator_applicator.DecoratorApplicator.prototype[name] = function () {
+                decorator_applicator_1.DecoratorApplicator.prototype[name] = function () {
                     var result = decorator.apply(null, arguments);
                     return this.decorator(result);
                 };
             },
             simpleDecorator: function (name, decorator) {
                 exports.Decorators[name] = function () {
-                    return new _decorator_applicator.DecoratorApplicator().decorator(decorator);
+                    return new decorator_applicator_1.DecoratorApplicator().decorator(decorator);
                 };
-                _decorator_applicator.DecoratorApplicator.prototype[name] = function () {
+                decorator_applicator_1.DecoratorApplicator.prototype[name] = function () {
                     return this.decorator(decorator);
                 };
             }

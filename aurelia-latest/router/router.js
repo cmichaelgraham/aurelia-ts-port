@@ -161,12 +161,19 @@ export class Router {
     return new NavigationContext(this, instruction);
   }
 
-  generate(name, params) {
-    if(!this.isConfigured && this.parent){
-      return this.parent.generate(name, params);
+  generate(name, params, options) {
+    options = options || {};
+    if((!this.isConfigured || !this.recognizer.hasRoute(name)) && this.parent){
+      return this.parent.generate(name, params, options);
     }
 
-    return this.recognizer.generate(name, params);
+    let root = '';
+    let path = this.recognizer.generate(name, params);
+    if (options.absolute) {
+      root = (this.history.root || '') + this.baseUrl;
+    }
+
+    return root + path;
   }
 
   addRoute(config, navModel={}) {
@@ -221,6 +228,14 @@ export class Router {
       this.navigation.push(navModel);
       this.navigation = this.navigation.sort((a, b) => a.order - b.order);
     }
+  }
+
+  hasRoute(name) {
+    return !!(this.recognizer.hasRoute(name) || this.parent && this.parent.hasRoute(name));
+  }
+
+  hasOwnRoute(name) {
+    return this.recognizer.hasRoute(name);
   }
 
   handleUnknownRoutes(config) {
