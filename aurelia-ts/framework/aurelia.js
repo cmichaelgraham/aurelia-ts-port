@@ -1,4 +1,4 @@
-define(["require", "exports", '../logging/index', '../dependency-injection/index', '../loader/index', '../path/index', './plugins', '../templating/index'], function (require, exports, LogManager, _index, _index_1, _index_2, _plugins, _index_3) {
+define(["require", "exports", '../logging/index', '../dependency-injection/index', '../loader/index', '../path/index', './plugins', '../templating/index'], function (require, exports, LogManager, index_1, index_2, index_3, plugins_1, index_4) {
     var logger = LogManager.getLogger('aurelia'), slice = Array.prototype.slice;
     if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
         var CustomEvent = function (event, params) {
@@ -24,7 +24,7 @@ define(["require", "exports", '../logging/index', '../dependency-injection/index
         });
     }
     function loadResources(container, resourcesToLoad, appResources) {
-        var viewEngine = container.get(_index_3.ViewEngine), importIds = Object.keys(resourcesToLoad), names = new Array(importIds.length), i, ii;
+        var viewEngine = container.get(index_4.ViewEngine), importIds = Object.keys(resourcesToLoad), names = new Array(importIds.length), i, ii;
         for (i = 0, ii = importIds.length; i < ii; ++i) {
             names[i] = resourcesToLoad[importIds[i]];
         }
@@ -42,13 +42,13 @@ define(["require", "exports", '../logging/index', '../dependency-injection/index
     var Aurelia = (function () {
         function Aurelia(loader, container, resources) {
             this.loader = loader || new window.AureliaLoader();
-            this.container = container || new _index.Container();
-            this.resources = resources || new _index_3.ResourceRegistry();
-            this.use = new _plugins.Plugins(this);
+            this.container = container || new index_1.Container();
+            this.resources = resources || new index_4.ResourceRegistry();
+            this.use = new plugins_1.Plugins(this);
             this.resourcesToLoad = {};
             this.withInstance(Aurelia, this);
-            this.withInstance(_index_1.Loader, this.loader);
-            this.withInstance(_index_3.ResourceRegistry, this.resources);
+            this.withInstance(index_2.Loader, this.loader);
+            this.withInstance(index_4.ResourceRegistry, this.resources);
         }
         /**
          * Adds an existing object to the framework's dependency injection container.
@@ -84,7 +84,9 @@ define(["require", "exports", '../logging/index', '../dependency-injection/index
         Aurelia.prototype.globalizeResources = function (resources) {
             var toAdd = Array.isArray(resources) ? resources : arguments, i, ii, pluginPath = this.currentPluginId || '', path, internalPlugin = pluginPath.startsWith('./');
             for (i = 0, ii = toAdd.length; i < ii; ++i) {
-                path = internalPlugin ? _index_2.relativeToFile(toAdd[i], pluginPath) : _index_2.join(pluginPath, toAdd[i]);
+                path = internalPlugin
+                    ? index_3.relativeToFile(toAdd[i], pluginPath)
+                    : index_3.join(pluginPath, toAdd[i]);
                 this.resourcesToLoad[path] = this.resourcesToLoad[path];
             }
             return this;
@@ -116,20 +118,17 @@ define(["require", "exports", '../logging/index', '../dependency-injection/index
             logger.info('Aurelia Starting');
             preventActionlessFormSubmit();
             return this.use._process().then(function () {
-                if (!_this.container.hasHandler(_index_3.BindingLanguage)) {
+                if (!_this.container.hasHandler(index_4.BindingLanguage)) {
                     var message = 'You must configure Aurelia with a BindingLanguage implementation.';
                     logger.error(message);
                     throw new Error(message);
                 }
-                if (!_this.container.hasHandler(_index_3.Animator)) {
-                    _index_3.Animator.configureDefault(_this.container);
+                if (!_this.container.hasHandler(index_4.Animator)) {
+                    index_4.Animator.configureDefault(_this.container);
                 }
                 return loadResources(_this.container, _this.resourcesToLoad, _this.resources).then(function () {
                     logger.info('Aurelia Started');
-                    var evt = new window.CustomEvent('aurelia-started', {
-                        bubbles: true,
-                        cancelable: true
-                    });
+                    var evt = new window.CustomEvent('aurelia-started', { bubbles: true, cancelable: true });
                     document.dispatchEvent(evt);
                     return _this;
                 });
@@ -156,21 +155,16 @@ define(["require", "exports", '../logging/index', '../dependency-injection/index
             }
             this.host.aurelia = this;
             this.container.registerInstance(Element, this.host);
-            compositionEngine = this.container.get(_index_3.CompositionEngine);
+            compositionEngine = this.container.get(index_4.CompositionEngine);
             instruction.viewModel = root;
             instruction.container = instruction.childContainer = this.container;
-            instruction.viewSlot = new _index_3.ViewSlot(this.host, true);
+            instruction.viewSlot = new index_4.ViewSlot(this.host, true);
             instruction.viewSlot.transformChildNodesIntoView();
             return compositionEngine.compose(instruction).then(function (root) {
                 _this.root = root;
                 instruction.viewSlot.attached();
-                var evt = new window.CustomEvent('aurelia-composed', {
-                    bubbles: true,
-                    cancelable: true
-                });
-                setTimeout(function () {
-                    return document.dispatchEvent(evt);
-                }, 1);
+                var evt = new window.CustomEvent('aurelia-composed', { bubbles: true, cancelable: true });
+                setTimeout(function () { return document.dispatchEvent(evt); }, 1);
                 return _this;
             });
         };

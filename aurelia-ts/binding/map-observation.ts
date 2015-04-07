@@ -1,3 +1,4 @@
+import core from '../core-js/index'
 import {getEntries, getChangeRecords} from './map-change-records';
 import {ModifyCollectionObserver} from './collection-observation';
 

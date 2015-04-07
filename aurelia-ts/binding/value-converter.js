@@ -4,18 +4,14 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../metadata/index'], function (require, exports, _index) {
-    if (typeof String.prototype.endsWith !== 'function') {
-        String.prototype.endsWith = function (suffix) {
-            return this.indexOf(suffix, this.length - suffix.length) !== -1;
-        };
-    }
+define(["require", "exports", '../metadata/index'], function (require, exports, index_1) {
     function camelCase(name) {
         return name.charAt(0).toLowerCase() + name.slice(1);
     }
     var ValueConverterResource = (function (_super) {
         __extends(ValueConverterResource, _super);
         function ValueConverterResource(name) {
+            _super.call(this);
             this.name = name;
         }
         ValueConverterResource.convention = function (name) {
@@ -33,6 +29,6 @@ define(["require", "exports", '../metadata/index'], function (require, exports, 
             return Promise.resolve(this);
         };
         return ValueConverterResource;
-    })(_index.ResourceType);
+    })(index_1.ResourceType);
     exports.ValueConverterResource = ValueConverterResource;
 });

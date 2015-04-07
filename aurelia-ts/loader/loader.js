@@ -1,4 +1,4 @@
-define(["require", "exports", './template-registry-entry'], function (require, exports, _template_registry_entry) {
+define(["require", "exports", './template-registry-entry'], function (require, exports, template_registry_entry_1) {
     var hasTemplateElement = ('content' in document.createElement('template'));
     function importElements(frag, link, callback) {
         document.head.appendChild(frag);
@@ -25,7 +25,7 @@ define(["require", "exports", './template-registry-entry'], function (require, e
         Loader.prototype.getOrCreateTemplateRegistryEntry = function (id) {
             var entry = this.templateRegistry[id];
             if (entry === undefined) {
-                this.templateRegistry[id] = entry = new _template_registry_entry.TemplateRegistryEntry(id);
+                this.templateRegistry[id] = entry = new template_registry_entry_1.TemplateRegistryEntry(id);
             }
             return entry;
         };
@@ -36,9 +36,7 @@ define(["require", "exports", './template-registry-entry'], function (require, e
                 link.rel = 'import';
                 link.href = url;
                 frag.appendChild(link);
-                importElements(frag, link, function () {
-                    return resolve(link.import);
-                });
+                importElements(frag, link, function () { return resolve(link.import); });
             });
         };
         Loader.prototype.importTemplate = function (url) {

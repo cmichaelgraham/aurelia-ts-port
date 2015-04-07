@@ -6,7 +6,7 @@ var __extends = this.__extends || function (d, b) {
 };
 define(["require", "exports"], function (require, exports) {
     /**
-    * An abstract annotation used to allow functions/classes to indicate how they should be registered with the container.
+    * Used to allow functions/classes to indicate how they should be registered with the container.
     *
     * @class Registration
     * @constructor
@@ -29,7 +29,7 @@ define(["require", "exports"], function (require, exports) {
     })();
     exports.Registration = Registration;
     /**
-    * An annotation used to allow functions/classes to indicate that they should be registered as transients with the container.
+    * Used to allow functions/classes to indicate that they should be registered as transients with the container.
     *
     * @class TransientRegistration
     * @constructor
@@ -57,7 +57,7 @@ define(["require", "exports"], function (require, exports) {
     })(Registration);
     exports.TransientRegistration = TransientRegistration;
     /**
-    * An annotation used to allow functions/classes to indicate that they should be registered as singletons with the container.
+    * Used to allow functions/classes to indicate that they should be registered as singletons with the container.
     *
     * @class SingletonRegistration
     * @constructor
@@ -93,7 +93,7 @@ define(["require", "exports"], function (require, exports) {
     })(Registration);
     exports.SingletonRegistration = SingletonRegistration;
     /**
-    * An abstract annotation used to allow functions/classes to specify custom dependency resolution logic.
+    * An abstract resolver used to allow functions/classes to specify custom dependency resolution logic.
     *
     * @class Resolver
     * @constructor
@@ -115,7 +115,7 @@ define(["require", "exports"], function (require, exports) {
     })();
     exports.Resolver = Resolver;
     /**
-    * An annotation used to allow functions/classes to specify lazy resolution logic.
+    * Used to allow functions/classes to specify lazy resolution logic.
     *
     * @class Lazy
     * @constructor
@@ -156,7 +156,7 @@ define(["require", "exports"], function (require, exports) {
     })(Resolver);
     exports.Lazy = Lazy;
     /**
-    * An annotation used to allow functions/classes to specify resolution of all matches to a key.
+    * Used to allow functions/classes to specify resolution of all matches to a key.
     *
     * @class All
     * @constructor
@@ -194,7 +194,7 @@ define(["require", "exports"], function (require, exports) {
     })(Resolver);
     exports.All = All;
     /**
-    * An annotation used to allow functions/classes to specify an optional dependency, which will be resolved only if already registred with the container.
+    * Used to allow functions/classes to specify an optional dependency, which will be resolved only if already registred with the container.
     *
     * @class Optional
     * @constructor
@@ -240,7 +240,7 @@ define(["require", "exports"], function (require, exports) {
     })(Resolver);
     exports.Optional = Optional;
     /**
-    * An annotation used to inject the dependency from the parent container instead of the current one.
+    * Used to inject the dependency from the parent container instead of the current one.
     *
     * @class Parent
     * @constructor
@@ -261,7 +261,9 @@ define(["require", "exports"], function (require, exports) {
         * @return {Function} Returns the matching instance from the parent container
         */
         Parent.prototype.get = function (container) {
-            return container.parent ? container.parent.get(this.key) : null;
+            return container.parent
+                ? container.parent.get(this.key)
+                : null;
         };
         /**
         * Creates a Parent Resolver for the supplied key.
@@ -278,15 +280,52 @@ define(["require", "exports"], function (require, exports) {
     })(Resolver);
     exports.Parent = Parent;
     /**
-    * An annotation used to indicate that a particular function is a factory rather than a constructor.
+    * Used to construct instances.
     *
-    * @class Factory
+    * @class InstanceActivator
     * @constructor
     */
-    var Factory = (function () {
-        function Factory() {
+    var InstanceActivator = (function () {
+        function InstanceActivator() {
         }
-        return Factory;
+        InstanceActivator.prototype.invoke = function (fn, args) {
+            throw new Error('A custom Activator must implement invoke(fn, args).');
+        };
+        return InstanceActivator;
     })();
-    exports.Factory = Factory;
+    exports.InstanceActivator = InstanceActivator;
+    /**
+    * Used to instantiate a class.
+    *
+    * @class ClassActivator
+    * @constructor
+    */
+    var ClassActivator = (function (_super) {
+        __extends(ClassActivator, _super);
+        function ClassActivator() {
+            _super.apply(this, arguments);
+        }
+        ClassActivator.prototype.invoke = function (fn, args) {
+            return Reflect.construct(fn, args);
+        };
+        return ClassActivator;
+    })(InstanceActivator);
+    exports.ClassActivator = ClassActivator;
+    /**
+    * Used to invoke a factory method.
+    *
+    * @class FactoryActivator
+    * @constructor
+    */
+    var FactoryActivator = (function (_super) {
+        __extends(FactoryActivator, _super);
+        function FactoryActivator() {
+            _super.apply(this, arguments);
+        }
+        FactoryActivator.prototype.invoke = function (fn, args) {
+            return fn.apply(undefined, args);
+        };
+        return FactoryActivator;
+    })(InstanceActivator);
+    exports.FactoryActivator = FactoryActivator;
 });

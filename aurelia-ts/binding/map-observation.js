@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", './collection-observation'], function (require, exports, _collection_observation) {
+define(["require", "exports", './collection-observation'], function (require, exports, collection_observation_1) {
     var mapProto = Map.prototype;
     function getMapObserver(taskQueue, map) {
         return ModifyMapObserver.create(taskQueue, map);
@@ -51,5 +51,5 @@ define(["require", "exports", './collection-observation'], function (require, ex
             return observer;
         };
         return ModifyMapObserver;
-    })(_collection_observation.ModifyCollectionObserver);
+    })(collection_observation_1.ModifyCollectionObserver);
 });

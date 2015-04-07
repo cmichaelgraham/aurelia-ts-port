@@ -1,4 +1,14 @@
+import core from 'core-js'
+
 export class SetterObserver {
+  public taskQueue;
+  public obj;
+  public propertyName;
+  public callbacks;
+  public queued;
+  public observing;
+  public currentValue;
+  public oldValue;
   constructor(taskQueue, obj, propertyName){
     this.taskQueue = taskQueue;
     this.obj = obj;
@@ -78,6 +88,10 @@ export class SetterObserver {
 }
 
 export class OoObjectObserver {
+  public obj;
+  public observers;
+  public observerLocator;
+  public observing;
   constructor(obj, observerLocator){
     this.obj = obj;
     this.observers = {};
@@ -91,7 +105,7 @@ export class OoObjectObserver {
     if(!this.observing){
       this.observing = true;
       try{
-        Object.observe(this.obj, changes => this.handleChanges(changes), ['update', 'add']);
+        (<any>Object).observe(this.obj, changes => this.handleChanges(changes), ['update', 'add']);
       }catch(_){}
     }
 
@@ -133,6 +147,10 @@ export class OoObjectObserver {
 }
 
 export class OoPropertyObserver {
+  public owner;
+  public obj;
+  public propertyName;
+  public callbacks;
   constructor(owner, obj, propertyName){
     this.owner = owner;
     this.obj = obj;
@@ -163,6 +181,13 @@ export class OoPropertyObserver {
 }
 
 export class UndefinedPropertyObserver {
+  public owner;
+  public obj;
+  public propertyName;
+  public callbackMap;
+  public callbacks;
+  public actual;
+  public subscription;
   constructor(owner, obj, propertyName){
     this.owner = owner;
     this.obj = obj;

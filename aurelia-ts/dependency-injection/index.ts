@@ -4,7 +4,7 @@
  * @module dependency-injection
  */
 import {Decorators, Metadata} from '../metadata/index';
-import {TransientRegistration, SingletonRegistration} from './metadata';
+import {TransientRegistration, SingletonRegistration, FactoryActivator} from './metadata';
 export {
   Registration,
   TransientRegistration,
@@ -14,7 +14,8 @@ export {
   All,
   Optional,
   Parent,
-  Factory
+  InstanceActivator,
+  FactoryActivator
 } from './metadata';
 
 export {Container} from './container';
@@ -40,6 +41,12 @@ export function singleton(keyOrRegisterInChild, registerInChild=false){
   }
 }
 
+export function factory(target) {
+  Metadata.on(target).add(new FactoryActivator());
+  return target;
+}
+
 Decorators.configure.parameterizedDecorator('inject', inject);
 Decorators.configure.parameterizedDecorator('transient', transient);
 Decorators.configure.parameterizedDecorator('singleton', singleton);
+Decorators.configure.parameterizedDecorator('factory', factory);

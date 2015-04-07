@@ -1,8 +1,8 @@
-define(["require", "exports", './http-response-message', '../path/index'], function (require, exports, _http_response_message, _index) {
+define(["require", "exports", './http-response-message', '../path/index'], function (require, exports, http_response_message_1, index_1) {
     function buildFullUri(message) {
-        var uri = _index.join(message.baseUri, message.uri), qs;
+        var uri = index_1.join(message.baseUri, message.uri), qs;
         if (message.params) {
-            qs = _index.buildQueryString(message.params);
+            qs = index_1.buildQueryString(message.params);
             uri = qs ? uri + "?" + qs : uri;
         }
         message.fullUri = uri;
@@ -28,7 +28,7 @@ define(["require", "exports", './http-response-message', '../path/index'], funct
                     transformers[i](client, _this, message, xhr);
                 }
                 xhr.onload = function (e) {
-                    var response = new _http_response_message.HttpResponseMessage(message, xhr, message.responseType, message.reviver);
+                    var response = new http_response_message_1.HttpResponseMessage(message, xhr, message.responseType, message.reviver);
                     if (response.isSuccess) {
                         resolve(response);
                     }
@@ -37,21 +37,21 @@ define(["require", "exports", './http-response-message', '../path/index'], funct
                     }
                 };
                 xhr.ontimeout = function (e) {
-                    reject(new _http_response_message.HttpResponseMessage(message, {
+                    reject(new http_response_message_1.HttpResponseMessage(message, {
                         response: e,
                         status: xhr.status,
                         statusText: xhr.statusText
                     }, 'timeout'));
                 };
                 xhr.onerror = function (e) {
-                    reject(new _http_response_message.HttpResponseMessage(message, {
+                    reject(new http_response_message_1.HttpResponseMessage(message, {
                         response: e,
                         status: xhr.status,
                         statusText: xhr.statusText
                     }, 'error'));
                 };
                 xhr.onabort = function (e) {
-                    reject(new _http_response_message.HttpResponseMessage(message, {
+                    reject(new http_response_message_1.HttpResponseMessage(message, {
                         response: e,
                         status: xhr.status,
                         statusText: xhr.statusText

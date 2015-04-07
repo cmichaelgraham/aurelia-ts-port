@@ -1,4 +1,4 @@
-define(["require", "exports", './http-request-message', './jsonp-request-message'], function (require, exports, _http_request_message, _jsonp_request_message) {
+define(["require", "exports", './http-request-message', './jsonp-request-message'], function (require, exports, http_request_message_1, jsonp_request_message_1) {
     /**
     * A builder class allowing fluent composition of HTTP requests.
     *
@@ -32,7 +32,7 @@ define(["require", "exports", './http-request-message', './jsonp-request-message
         * @return {Promise} A cancellable promise object.
         */
         RequestBuilder.prototype.send = function () {
-            var message = this.useJsonp ? new _jsonp_request_message.JSONPRequestMessage() : new _http_request_message.HttpRequestMessage();
+            var message = this.useJsonp ? new jsonp_request_message_1.JSONPRequestMessage() : new http_request_message_1.HttpRequestMessage();
             return this.client.send(message, this.transformers);
         };
         return RequestBuilder;

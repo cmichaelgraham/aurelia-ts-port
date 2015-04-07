@@ -67,9 +67,7 @@ define(["require", "exports"], function (require, exports) {
             this.isRequesting = true;
             return new Promise(function (resolve) {
                 setTimeout(function () {
-                    var found = contacts.filter(function (x) {
-                        return x.id == id;
-                    })[0];
+                    var found = contacts.filter(function (x) { return x.id == id; })[0];
                     resolve(JSON.parse(JSON.stringify(found)));
                     _this.isRequesting = false;
                 }, latency);
@@ -81,9 +79,7 @@ define(["require", "exports"], function (require, exports) {
             return new Promise(function (resolve) {
                 setTimeout(function () {
                     var instance = JSON.parse(JSON.stringify(contact));
-                    var found = contacts.filter(function (x) {
-                        return x.id == contact.id;
-                    })[0];
+                    var found = contacts.filter(function (x) { return x.id == contact.id; })[0];
                     if (found) {
                         var index = contacts.indexOf(found);
                         contacts[index] = instance;

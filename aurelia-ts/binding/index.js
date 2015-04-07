@@ -1,26 +1,42 @@
-define(["require", "exports", '../metadata/index', './event-manager', './observer-locator', './value-converter', './array-change-records', './binding-modes', './parser', './binding-expression', './listener-expression', './name-expression', './call-expression', './dirty-checking', './map-change-records', './computed-observation'], function (require, exports, _index, _event_manager, _observer_locator, _value_converter_1, _array_change_records, _binding_modes, _parser, _binding_expression, _listener_expression, _name_expression, _call_expression, _dirty_checking, _map_change_records, _computed_observation) {
-    exports.EventManager = _event_manager.EventManager;
-    exports.ObserverLocator = _observer_locator.ObserverLocator;
-    exports.ObjectObservationAdapter = _observer_locator.ObjectObservationAdapter;
-    exports.ValueConverterResource = _value_converter_1.ValueConverterResource;
-    exports.calcSplices = _array_change_records.calcSplices;
-    for (var _a in _binding_modes) if (!exports.hasOwnProperty(_a)) exports[_a] = _binding_modes[_a];
-    exports.Parser = _parser.Parser;
-    exports.BindingExpression = _binding_expression.BindingExpression;
-    exports.ListenerExpression = _listener_expression.ListenerExpression;
-    exports.NameExpression = _name_expression.NameExpression;
-    exports.CallExpression = _call_expression.CallExpression;
-    exports.DirtyChecker = _dirty_checking.DirtyChecker;
-    exports.getChangeRecords = _map_change_records.getChangeRecords;
-    exports.ComputedObservationAdapter = _computed_observation.ComputedObservationAdapter;
-    exports.declarePropertyDependencies = _computed_observation.declarePropertyDependencies;
+define(["require", "exports", '../metadata/index', './value-converter', './event-manager', './observer-locator', './value-converter', './array-change-records', './binding-modes', './parser', './binding-expression', './listener-expression', './name-expression', './call-expression', './dirty-checking', './map-change-records', './computed-observation'], function (require, exports, index_1, value_converter_1, event_manager_1, observer_locator_1, value_converter_2, array_change_records_1, binding_modes_1, parser_1, binding_expression_1, listener_expression_1, name_expression_1, call_expression_1, dirty_checking_1, map_change_records_1, computed_observation_1) {
+    function __export(m) {
+        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+    }
+    exports.EventManager = event_manager_1.EventManager;
+    exports.ObserverLocator = observer_locator_1.ObserverLocator;
+    exports.ObjectObservationAdapter = observer_locator_1.ObjectObservationAdapter;
+    exports.ValueConverterResource = value_converter_2.ValueConverterResource;
+    exports.calcSplices = array_change_records_1.calcSplices;
+    __export(binding_modes_1);
+    exports.Parser = parser_1.Parser;
+    exports.BindingExpression = binding_expression_1.BindingExpression;
+    exports.ListenerExpression = listener_expression_1.ListenerExpression;
+    exports.NameExpression = name_expression_1.NameExpression;
+    exports.CallExpression = call_expression_1.CallExpression;
+    exports.DirtyChecker = dirty_checking_1.DirtyChecker;
+    exports.getChangeRecords = map_change_records_1.getChangeRecords;
+    exports.declarePropertyDependencies = computed_observation_1.declarePropertyDependencies;
     //ES7 Decorators
     function valueConverter(name) {
         return function (target) {
-            _index.Metadata.on(target).add(new ValueConverterResource(name));
+            index_1.Metadata.on(target).add(new value_converter_1.ValueConverterResource(name));
             return target;
         };
     }
     exports.valueConverter = valueConverter;
-    _index.Decorators.configure.parameterizedDecorator('valueConverter', valueConverter);
+    index_1.Decorators.configure.parameterizedDecorator('valueConverter', valueConverter);
+    function computedFrom() {
+        var rest = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            rest[_i - 0] = arguments[_i];
+        }
+        return function (target, key, descriptor) {
+            if (descriptor.set) {
+                throw new Error("The computed property \"" + key + "\" cannot have a setter function.");
+            }
+            descriptor.get.dependencies = rest;
+            return descriptor;
+        };
+    }
+    exports.computedFrom = computedFrom;
 });

@@ -1,5 +1,5 @@
 import {Lexer,Token} from './lexer';
-import {Expression,ArrayOfExpression,Chain,ValueConverter,Assign,
+import {Expression, ArrayOfExpression, Chain, ValueConverter, Assign,
         Conditional, AccessScope, AccessMember, AccessKeyed,
         CallScope, CallFunction, CallMember, PrefixNot,
         Binary, LiteralPrimitive, LiteralArray, LiteralObject, LiteralString} from './ast';

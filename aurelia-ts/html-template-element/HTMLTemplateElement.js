@@ -1,11 +1,13 @@
 (function (global) {
     var forEach = Array.prototype.forEach.call.bind(Array.prototype.forEach);
-    var hasTemplateElement = typeof HTMLTemplateElement !== 'undefined';
+    var hasTemplateElement = typeof window.HTMLTemplateElement !== 'undefined';
     function isSVGTemplate(el) {
-        return el.tagName == 'template' && el.namespaceURI == 'http://www.w3.org/2000/svg';
+        return el.tagName == 'template' &&
+            el.namespaceURI == 'http://www.w3.org/2000/svg';
     }
     function isHTMLTemplate(el) {
-        return el.tagName == 'TEMPLATE' && el.namespaceURI == 'http://www.w3.org/1999/xhtml';
+        return el.tagName == 'TEMPLATE' &&
+            el.namespaceURI == 'http://www.w3.org/1999/xhtml';
     }
     function isTemplate(el) {
         if (el.isTemplate_ === undefined)
@@ -20,7 +22,7 @@
     }
     function bootstrapTemplatesRecursivelyFrom(node) {
         function bootstrap(template) {
-            if (!HTMLTemplateElement.decorate(template))
+            if (!window.HTMLTemplateElement.decorate(template))
                 bootstrapTemplatesRecursivelyFrom(template.content);
         }
         forAllTemplatesFrom(node, bootstrap);
@@ -70,22 +72,23 @@
     }
     function fixTemplateElementPrototype(el) {
         if (hasProto)
-            el.__proto__ = HTMLTemplateElement.prototype;
+            el.__proto__ = window.HTMLTemplateElement.prototype;
         else
-            mixin(el, HTMLTemplateElement.prototype);
+            mixin(el, window.HTMLTemplateElement.prototype);
     }
-    HTMLTemplateElement.decorate = function (el, opt_instanceRef) {
+    window.HTMLTemplateElement.decorate = function (el, opt_instanceRef) {
         if (el.templateIsDecorated_)
             return false;
         var templateElement = el;
         templateElement.templateIsDecorated_ = true;
-        var isNativeHTMLTemplate = isHTMLTemplate(templateElement) && hasTemplateElement;
+        var isNativeHTMLTemplate = isHTMLTemplate(templateElement) &&
+            hasTemplateElement;
         var bootstrapContents = isNativeHTMLTemplate;
         var liftContents = !isNativeHTMLTemplate;
         var liftRoot = false;
         if (!isNativeHTMLTemplate) {
             if (isSVGTemplate(templateElement)) {
-                templateElement = extractTemplateFromSVGTemplate(el);
+                templateElement = window.extractTemplateFromSVGTemplate(el);
                 templateElement.templateIsDecorated_ = true;
                 isNativeHTMLTemplate = hasTemplateElement;
             }
@@ -119,8 +122,8 @@
     if (!hasTemplateElement) {
         // Gecko is more picky with the prototype than WebKit. Make sure to use the
         // same prototype as created in the constructor.
-        HTMLTemplateElement.prototype = Object.create(htmlElement.prototype);
-        Object.defineProperty(HTMLTemplateElement.prototype, 'content', contentDescriptor);
+        window.HTMLTemplateElement.prototype = Object.create(htmlElement.prototype);
+        Object.defineProperty(window.HTMLTemplateElement.prototype, 'content', contentDescriptor);
     }
-    HTMLTemplateElement.bootstrap = bootstrapTemplatesRecursivelyFrom;
+    window.HTMLTemplateElement.bootstrap = bootstrapTemplatesRecursivelyFrom;
 }(window));

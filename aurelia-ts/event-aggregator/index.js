@@ -17,7 +17,7 @@ define(["require", "exports"], function (require, exports) {
             this.messageHandlers = [];
         }
         EventAggregator.prototype.publish = function (event, data) {
-            var subscribers, i, handler;
+            var subscribers, i;
             if (typeof event === 'string') {
                 subscribers = this.eventLookup[event];
                 if (subscribers) {
@@ -53,6 +53,13 @@ define(["require", "exports"], function (require, exports) {
                     subscribers.splice(subscribers.indexOf(handler), 1);
                 };
             }
+        };
+        EventAggregator.prototype.subscribeOnce = function (event, callback) {
+            var sub = this.subscribe(event, function (data, event) {
+                sub();
+                return callback(data, event);
+            });
+            return sub;
         };
         return EventAggregator;
     })();

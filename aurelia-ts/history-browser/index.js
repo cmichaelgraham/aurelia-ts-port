@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../history/index'], function (require, exports, _index) {
+define(["require", "exports", '../history/index'], function (require, exports, index_1) {
     // Cached regex for stripping a leading hash/slash and trailing space.
     var routeStripper = /^[#\/]|\s+$/g;
     // Cached regex for stripping leading and trailing slashes.
@@ -65,9 +65,7 @@ define(["require", "exports", '../history/index'], function (require, exports, _
             this.active = true;
             // Figure out the initial configuration. Do we need an iframe?
             // Is pushState desired ... is it available?
-            this.options = Object.assign({}, {
-                root: '/'
-            }, this.options, options);
+            this.options = Object.assign({}, { root: '/' }, this.options, options);
             this.root = this.options.root;
             this._wantsHashChange = this.options.hashChange !== false;
             this._wantsPushState = !!this.options.pushState;
@@ -131,7 +129,9 @@ define(["require", "exports", '../history/index'], function (require, exports, _
         };
         BrowserHistory.prototype.loadUrl = function (fragmentOverride) {
             var fragment = this.fragment = this.getFragment(fragmentOverride);
-            return this.options.routeHandler ? this.options.routeHandler(fragment) : false;
+            return this.options.routeHandler ?
+                this.options.routeHandler(fragment) :
+                false;
         };
         BrowserHistory.prototype.navigate = function (fragment, options) {
             if (fragment && fragment.indexOf('://') != -1) {
@@ -191,12 +191,10 @@ define(["require", "exports", '../history/index'], function (require, exports, _
             this.history.back();
         };
         return BrowserHistory;
-    })(_index.History);
+    })(index_1.History);
     exports.BrowserHistory = BrowserHistory;
     function install(aurelia) {
-        aurelia.withSingleton(_index.History, BrowserHistory);
+        aurelia.withSingleton(index_1.History, BrowserHistory);
     }
-    exports.install = install;
-    exports.BrowserHistory = BrowserHistory;
     exports.install = install;
 });

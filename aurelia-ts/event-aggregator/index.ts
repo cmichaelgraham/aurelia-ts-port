@@ -22,7 +22,7 @@ export class EventAggregator {
   }
 
   publish(event, data){
-    var subscribers, i, handler;
+    var subscribers, i;
 
     if(typeof event === 'string'){
       subscribers = this.eventLookup[event];
@@ -65,6 +65,14 @@ export class EventAggregator {
         subscribers.splice(subscribers.indexOf(handler), 1);
       };
     }
+  }
+
+  subscribeOnce(event, callback){
+    var sub = this.subscribe(event,function(data,event){
+      sub();
+      return callback(data,event);
+    });
+    return sub;
   }
 }
 

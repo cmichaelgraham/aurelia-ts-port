@@ -1,4 +1,4 @@
-define(["require", "exports", '../logging/index', '../metadata/index'], function (require, exports, LogManager, _index) {
+define(["require", "exports", '../logging/index', '../metadata/index'], function (require, exports, LogManager, index_1) {
     var logger = LogManager.getLogger('aurelia');
     function loadPlugin(aurelia, loader, info) {
         logger.debug("Loading plugin " + info.moduleId + ".");
@@ -44,10 +44,7 @@ define(["require", "exports", '../logging/index', '../metadata/index'], function
          * @return {Plugins} Returns the current Plugins instance.
        */
         Plugins.prototype.plugin = function (moduleId, config) {
-            var plugin = {
-                moduleId: moduleId,
-                config: config || {}
-            };
+            var plugin = { moduleId: moduleId, config: config || {} };
             if (this.processed) {
                 loadPlugin(this.aurelia, this.aurelia.loader, plugin);
             }
@@ -66,10 +63,7 @@ define(["require", "exports", '../logging/index', '../metadata/index'], function
             Function.prototype.computed = function (computedProperties) {
                 for (var key in computedProperties) {
                     if (computedProperties.hasOwnProperty(key)) {
-                        Object.defineProperty(this.prototype, key, {
-                            get: computedProperties[key],
-                            enumerable: true
-                        });
+                        Object.defineProperty(this.prototype, key, { get: computedProperties[key], enumerable: true });
                     }
                 }
             };
@@ -83,7 +77,7 @@ define(["require", "exports", '../logging/index', '../metadata/index'], function
        */
         Plugins.prototype.atscript = function () {
             this.aurelia.container.supportAtScript();
-            _index.Metadata.configure.locator(function (fn, meta) {
+            index_1.Metadata.configure.locator(function (fn, meta) {
                 var annotations = fn['annotate'] || fn['annotations'], i, ii;
                 if (annotations && annotations.length) {
                     for (i = 0, ii = annotations.length; i < ii; ++i) {

@@ -1,8 +1,11 @@
+import {inject} from '../framework/index'
 import {Router} from '../router/index';
 import {WebAPI} from './web-api';
 
+@inject(Router, WebAPI)
 export class App {
-  static inject() { return [Router,WebAPI]; }
+  public router;
+  public api;
   constructor(router, api) {
     this.router = router;
     this.api = api;

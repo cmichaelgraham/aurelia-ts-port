@@ -1,7 +1,7 @@
-define(["require", "exports", '../templating/index', './animator', './animator'], function (require, exports, _index, _animator, _animator_1) {
-    exports.CssAnimator = _animator_1.CssAnimator;
+define(["require", "exports", '../templating/index', './animator', './animator'], function (require, exports, index_1, animator_1, animator_2) {
+    exports.CssAnimator = animator_2.CssAnimator;
     function install(aurelia) {
-        _index.Animator.configureDefault(aurelia.container, new _animator.CssAnimator());
+        index_1.Animator.configureDefault(aurelia.container, new animator_1.CssAnimator());
     }
     exports.install = install;
 });

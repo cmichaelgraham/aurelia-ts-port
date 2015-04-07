@@ -1,6 +1,6 @@
 (function(global){
   var forEach = Array.prototype.forEach.call.bind(Array.prototype.forEach);
-  var hasTemplateElement = typeof HTMLTemplateElement !== 'undefined';
+  var hasTemplateElement = typeof (<any>window).HTMLTemplateElement !== 'undefined';
 
   function isSVGTemplate(el) {
     return el.tagName == 'template' &&
@@ -30,7 +30,7 @@
 
   function bootstrapTemplatesRecursivelyFrom(node) {
     function bootstrap(template) {
-      if (!HTMLTemplateElement.decorate(template))
+      if (!(<any>window).HTMLTemplateElement.decorate(template))
         bootstrapTemplatesRecursivelyFrom(template.content);
     }
 
@@ -88,12 +88,12 @@
 
   function fixTemplateElementPrototype(el) {
     if (hasProto)
-      el.__proto__ = HTMLTemplateElement.prototype;
+      el.__proto__ = (<any>window).HTMLTemplateElement.prototype;
     else
-      mixin(el, HTMLTemplateElement.prototype);
+      mixin(el, (<any>window).HTMLTemplateElement.prototype);
   }
 
-  HTMLTemplateElement.decorate = function(el, opt_instanceRef) {
+  (<any>window).HTMLTemplateElement.decorate = function(el, opt_instanceRef) {
     if (el.templateIsDecorated_)
       return false;
 
@@ -108,7 +108,7 @@
 
     if (!isNativeHTMLTemplate) {
       if (isSVGTemplate(templateElement)) {
-        templateElement = extractTemplateFromSVGTemplate(el);
+        templateElement = (<any>window).extractTemplateFromSVGTemplate(el);
         templateElement.templateIsDecorated_ = true;
         isNativeHTMLTemplate = hasTemplateElement;
       }
@@ -148,10 +148,10 @@
   if (!hasTemplateElement) {
     // Gecko is more picky with the prototype than WebKit. Make sure to use the
     // same prototype as created in the constructor.
-    HTMLTemplateElement.prototype = Object.create(htmlElement.prototype);
+    (<any>window).HTMLTemplateElement.prototype = Object.create(htmlElement.prototype);
 
-    Object.defineProperty(HTMLTemplateElement.prototype, 'content', contentDescriptor);
+    Object.defineProperty((<any>window).HTMLTemplateElement.prototype, 'content', contentDescriptor);
   }
 
-  HTMLTemplateElement.bootstrap = bootstrapTemplatesRecursivelyFrom;
+  (<any>window).HTMLTemplateElement.bootstrap = bootstrapTemplatesRecursivelyFrom;
 }(window));

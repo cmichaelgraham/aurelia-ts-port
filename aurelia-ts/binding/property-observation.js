@@ -58,8 +58,7 @@ define(["require", "exports"], function (require, exports) {
                     set: this.setValue.bind(this)
                 });
             }
-            catch (_) {
-            }
+            catch (_) { }
         };
         return SetterObserver;
     })();
@@ -77,15 +76,9 @@ define(["require", "exports"], function (require, exports) {
             if (!this.observing) {
                 this.observing = true;
                 try {
-                    Object.observe(this.obj, function (changes) {
-                        return _this.handleChanges(changes);
-                    }, [
-                        'update',
-                        'add'
-                    ]);
+                    Object.observe(this.obj, function (changes) { return _this.handleChanges(changes); }, ['update', 'add']);
                 }
-                catch (_) {
-                }
+                catch (_) { }
             }
             return function () {
                 callbacks.splice(callbacks.indexOf(callback), 1);

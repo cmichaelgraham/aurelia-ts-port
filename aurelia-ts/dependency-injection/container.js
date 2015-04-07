@@ -1,17 +1,14 @@
-define(["require", "exports", '..//metadata/index', '../logging/index', './metadata'], function (require, exports, _index, _index_1, _metadata) {
-    var emptyParameters = Object.freeze([]);
+define(["require", "exports", '../metadata/index', '../logging/index', './metadata'], function (require, exports, index_1, index_2, metadata_1) {
+    var emptyParameters = Object.freeze([]), defaultActivator = new metadata_1.ClassActivator();
     // Fix Function#name on browsers that do not support it (IE):
-    function test() {
-    }
+    function test() { }
     if (!test.name) {
         Object.defineProperty(Function.prototype, 'name', {
             get: function () {
                 var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];
                 // For better performance only parse once, and then cache the
                 // result through a new accessor for repeated access.
-                Object.defineProperty(this, 'name', {
-                    value: name
-                });
+                Object.defineProperty(this, 'name', { value: name });
                 return name;
             }
         });
@@ -57,9 +54,7 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
                 return;
             }
             var original = this.locateParameterInfoElsewhere;
-            this.locateParameterInfoElsewhere = function (fn) {
-                return original(fn) || locator(fn);
-            };
+            this.locateParameterInfoElsewhere = function (fn) { return original(fn) || locator(fn); };
         };
         /**
         * Registers an existing object instance with the container.
@@ -69,9 +64,7 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
         * @param {Object} instance The instance that will be resolved when the key is matched.
         */
         Container.prototype.registerInstance = function (key, instance) {
-            this.registerHandler(key, function (x) {
-                return instance;
-            });
+            this.registerHandler(key, function (x) { return instance; });
         };
         /**
         * Registers a type (constructor function) such that the container returns a new instance for each request.
@@ -82,9 +75,7 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
         */
         Container.prototype.registerTransient = function (key, fn) {
             fn = fn || key;
-            this.registerHandler(key, function (x) {
-                return x.invoke(fn);
-            });
+            this.registerHandler(key, function (x) { return x.invoke(fn); });
         };
         /**
         * Registers a type (constructor function) such that the container always returns the same instance for each request.
@@ -96,9 +87,7 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
         Container.prototype.registerSingleton = function (key, fn) {
             var singleton = null;
             fn = fn || key;
-            this.registerHandler(key, function (x) {
-                return singleton || (singleton = x.invoke(fn));
-            });
+            this.registerHandler(key, function (x) { return singleton || (singleton = x.invoke(fn)); });
         };
         /**
         * Registers a type (constructor function) by inspecting its registration annotations. If none are found, then the default singleton registration is used.
@@ -112,7 +101,7 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
             if (fn === null || fn === undefined) {
                 throw new Error('fn cannot be null or undefined.');
             }
-            registration = _index.Metadata.on(fn).first(_metadata.Registration, true);
+            registration = index_1.Metadata.on(fn).first(metadata_1.Registration, true);
             if (registration) {
                 registration.register(this, key || fn, fn);
             }
@@ -163,7 +152,7 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
             if (key === null || key === undefined) {
                 throw new Error('key cannot be null or undefined.');
             }
-            if (key instanceof _metadata.Resolver) {
+            if (key instanceof metadata_1.Resolver) {
                 return key.get(this);
             }
             if (key === Container) {
@@ -195,9 +184,7 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
             }
             entry = this.entries.get(key);
             if (entry !== undefined) {
-                return entry.map(function (x) {
-                    return x(_this);
-                });
+                return entry.map(function (x) { return x(_this); });
             }
             if (this.parent) {
                 return this.parent.getAll(key);
@@ -217,7 +204,8 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
             if (key === null || key === undefined) {
                 throw new Error('key cannot be null or undefined.');
             }
-            return this.entries.has(key) || (checkParent && this.parent && this.parent.hasHandler(key, checkParent));
+            return this.entries.has(key)
+                || (checkParent && this.parent && this.parent.hasHandler(key, checkParent));
         };
         /**
         * Creates a new dependency injection container whose parent is the current container.
@@ -241,25 +229,14 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
         */
         Container.prototype.invoke = function (fn) {
             try {
-                var info = this.getOrCreateConstructionInfo(fn), keys = info.keys, args = new Array(keys.length), context, i, ii;
+                var info = this.getOrCreateConstructionInfo(fn), keys = info.keys, args = new Array(keys.length), i, ii;
                 for (i = 0, ii = keys.length; i < ii; ++i) {
                     args[i] = this.get(keys[i]);
                 }
-                if (info.isFactory) {
-                    return fn.apply(undefined, args);
-                }
-                else {
-                    //TODO: this entire else block should be switched to Reflect.construct
-                    //TODO: do not change it until after issue with behavior props is addressed and 'initialize' hook is not needed
-                    context = Object.create(fn.prototype);
-                    if ('initialize' in fn) {
-                        fn.initialize(context);
-                    }
-                    return fn.apply(context, args) || context;
-                }
+                return info.activator.invoke(fn, args);
             }
             catch (e) {
-                throw _index_1.AggregateError("Error instantiating " + fn.name + ".", e, true);
+                throw index_2.AggregateError("Error instantiating " + fn.name + ".", e, true);
             }
         };
         Container.prototype.getOrCreateEntry = function (key) {
@@ -283,9 +260,7 @@ define(["require", "exports", '..//metadata/index', '../logging/index', './metad
             return info;
         };
         Container.prototype.createConstructionInfo = function (fn) {
-            var info = {
-                isFactory: _index.Metadata.on(fn).has(_metadata.Factory)
-            };
+            var info = { activator: index_1.Metadata.on(fn).first(metadata_1.InstanceActivator) || defaultActivator };
             if (fn.inject !== undefined) {
                 if (typeof fn.inject === 'function') {
                     info.keys = fn.inject();

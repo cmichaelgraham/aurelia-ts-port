@@ -1,4 +1,4 @@
-define(["require", "exports", '../path/index'], function (require, exports, _index) {
+define(["require", "exports", '../path/index'], function (require, exports, index_1) {
     var TemplateDependency = (function () {
         function TemplateDependency(src, name) {
             this.src = src;
@@ -43,7 +43,7 @@ define(["require", "exports", '../path/index'], function (require, exports, _ind
                 if (!src) {
                     throw new Error("<require> element in " + this.id + " has no \"from\" attribute.");
                 }
-                this.dependencies[i] = new TemplateDependency(_index.relativeToFile(src, id), current.getAttribute('as'));
+                this.dependencies[i] = new TemplateDependency(index_1.relativeToFile(src, id), current.getAttribute('as'));
                 if (current.parentNode) {
                     current.parentNode.removeChild(current);
                 }

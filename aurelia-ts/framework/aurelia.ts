@@ -1,3 +1,4 @@
+import core from 'core-js'
 import * as LogManager from '../logging/index';
 import {Container} from '../dependency-injection/index';
 import {Loader} from '../loader/index';
@@ -15,7 +16,7 @@ import {
 var logger = LogManager.getLogger('aurelia'),
     slice = Array.prototype.slice;
 
-if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
+if (!(<any>window).CustomEvent || typeof (<any>window).CustomEvent !== 'function') {
   var CustomEvent = function(event, params) {
     var params = params || {
       bubbles: false,
@@ -28,13 +29,13 @@ if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
     return evt;
   };
 
-  CustomEvent.prototype = window.Event.prototype;
-  window.CustomEvent = CustomEvent;
+  CustomEvent.prototype = (<any>window).Event.prototype;
+  (<any>window).CustomEvent = CustomEvent;
 }
 
 function preventActionlessFormSubmit() {
   document.body.addEventListener('submit', evt => {
-    const target = evt.target;
+    const target:any = evt.target;
     const action = target.action;
 
     if (target.tagName.toLowerCase() === 'form' && !action){
@@ -66,8 +67,17 @@ function loadResources(container, resourcesToLoad, appResources){
  * @param {ResourceRegistry} resources The resource registry for this Aurelia instance to use. If a resource registry is not specified, Aurelia will create an empty registry.
  */
 export class Aurelia {
+  public loader;
+  public container;
+  public resources;
+  public use;
+  public resourcesToLoad;
+  public currentPluginId;
+  public started;
+  public host;
+  public root;
   constructor(loader, container, resources){
-    this.loader = loader || new window.AureliaLoader();
+    this.loader = loader || new (<any>window).AureliaLoader();
     this.container = container || new Container();
     this.resources = resources || new ResourceRegistry();
     this.use = new Plugins(this);
@@ -169,7 +179,7 @@ export class Aurelia {
 
       return loadResources(this.container, this.resourcesToLoad, this.resources).then(() => {
         logger.info('Aurelia Started');
-        var evt = new window.CustomEvent('aurelia-started', { bubbles: true, cancelable: true });
+        var evt = new (<any>window).CustomEvent('aurelia-started', { bubbles: true, cancelable: true });
         document.dispatchEvent(evt);
         return this;
       });
@@ -185,7 +195,7 @@ export class Aurelia {
    * @return {Aurelia} Returns the current Aurelia instance.
    */
   setRoot(root='app', applicationHost=null){
-    var compositionEngine, instruction = {};
+    var compositionEngine, instruction:any = {};
 
     if (!applicationHost || typeof applicationHost == 'string') {
       this.host = document.getElementById(applicationHost || 'applicationHost') || document.body;
@@ -205,7 +215,7 @@ export class Aurelia {
     return compositionEngine.compose(instruction).then(root => {
       this.root = root;
       instruction.viewSlot.attached();
-      var evt = new window.CustomEvent('aurelia-composed', { bubbles: true, cancelable: true });
+      var evt = new (<any>window).CustomEvent('aurelia-composed', { bubbles: true, cancelable: true });
       setTimeout(() => document.dispatchEvent(evt), 1);
       return this;
     });

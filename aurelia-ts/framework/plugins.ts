@@ -1,3 +1,4 @@
+import core from 'core-js'
 import * as LogManager from '../logging/index';
 import {Metadata} from '../metadata/index';
 
@@ -36,6 +37,9 @@ function loadPlugin(aurelia, loader, info){
  * @param {Aurelia} aurelia An instance of Aurelia.
  */
 export class Plugins {
+  public aurelia;
+  public info;
+  public processed;
   constructor(aurelia){
     this.aurelia = aurelia;
     this.info = [];
@@ -69,7 +73,7 @@ export class Plugins {
    * @return {Plugins} Returns the current Plugins instance.
  */
   es5(){
-    Function.prototype.computed = function(computedProperties){
+    (<any>Function.prototype).computed = function(computedProperties){
       for(var key in computedProperties){
         if(computedProperties.hasOwnProperty(key)){
           Object.defineProperty(this.prototype, key, { get: computedProperties[key], enumerable: true });

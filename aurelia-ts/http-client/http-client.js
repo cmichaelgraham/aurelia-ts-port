@@ -1,4 +1,4 @@
-define(["require", "exports", './request-builder', './http-request-message', './jsonp-request-message'], function (require, exports, _request_builder, _http_request_message, _jsonp_request_message) {
+define(["require", "exports", './request-builder', './http-request-message', './jsonp-request-message'], function (require, exports, request_builder_1, http_request_message_1, jsonp_request_message_1) {
     function trackRequestStart(client, processor) {
         client.pendingRequests.push(processor);
         client.isRequesting = true;
@@ -8,13 +8,8 @@ define(["require", "exports", './request-builder', './http-request-message', './
         client.pendingRequests.splice(index, 1);
         client.isRequesting = client.pendingRequests.length > 0;
         if (!client.isRequesting) {
-            var evt = new window.CustomEvent('aurelia-http-client-requests-drained', {
-                bubbles: true,
-                cancelable: true
-            });
-            setTimeout(function () {
-                return document.dispatchEvent(evt);
-            }, 1);
+            var evt = new window.CustomEvent('aurelia-http-client-requests-drained', { bubbles: true, cancelable: true });
+            setTimeout(function () { return document.dispatchEvent(evt); }, 1);
         }
     }
     /**
@@ -27,8 +22,8 @@ define(["require", "exports", './request-builder', './http-request-message', './
         function HttpClient() {
             this.requestTransformers = [];
             this.requestProcessorFactories = new Map();
-            this.requestProcessorFactories.set(_http_request_message.HttpRequestMessage, _http_request_message.createHttpRequestMessageProcessor);
-            this.requestProcessorFactories.set(_jsonp_request_message.JSONPRequestMessage, _jsonp_request_message.createJSONPRequestMessageProcessor);
+            this.requestProcessorFactories.set(http_request_message_1.HttpRequestMessage, http_request_message_1.createHttpRequestMessageProcessor);
+            this.requestProcessorFactories.set(jsonp_request_message_1.JSONPRequestMessage, jsonp_request_message_1.createJSONPRequestMessageProcessor);
             this.pendingRequests = [];
             this.isRequesting = false;
         }
@@ -40,7 +35,7 @@ define(["require", "exports", './request-builder', './http-request-message', './
          * @chainable
          */
         HttpClient.prototype.configure = function (fn) {
-            var builder = new _request_builder.RequestBuilder(this);
+            var builder = new request_builder_1.RequestBuilder(this);
             fn(builder);
             this.requestTransformers = builder.transformers;
             return this;
@@ -53,7 +48,7 @@ define(["require", "exports", './request-builder', './http-request-message', './
          * @type RequestBuilder
          */
         HttpClient.prototype.createRequest = function (uri) {
-            var builder = new _request_builder.RequestBuilder(this);
+            var builder = new request_builder_1.RequestBuilder(this);
             if (uri) {
                 builder.withUri(uri);
             }

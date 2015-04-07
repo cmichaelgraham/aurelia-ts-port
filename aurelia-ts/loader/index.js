@@ -1,5 +1,5 @@
-define(["require", "exports", './template-registry-entry', './loader'], function (require, exports, _template_registry_entry, _loader) {
-    exports.TemplateRegistryEntry = _template_registry_entry.TemplateRegistryEntry;
-    exports.TemplateDependency = _template_registry_entry.TemplateDependency;
-    exports.Loader = _loader.Loader;
+define(["require", "exports", './template-registry-entry', './loader'], function (require, exports, template_registry_entry_1, loader_1) {
+    exports.TemplateRegistryEntry = template_registry_entry_1.TemplateRegistryEntry;
+    exports.TemplateDependency = template_registry_entry_1.TemplateDependency;
+    exports.Loader = loader_1.Loader;
 });

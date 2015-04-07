@@ -1,10 +1,14 @@
+import {inject} from '../framework/index'
 import {EventAggregator} from '../event-aggregator/index';
 import {WebAPI} from './web-api';
 import {ContactUpdated, ContactViewed} from './messages';
 
+@inject(WebAPI, EventAggregator)
 export class ContactList {
-  static inject() { return [WebAPI,EventAggregator]; }
-  constructor(api,ea){
+  public api;
+  public contacts;
+  public selectedId;
+  constructor(api, ea){
     this.api = api;
     this.contacts = [];
 

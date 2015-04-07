@@ -1,13 +1,14 @@
-define(["require", "exports", './lexer', './ast'], function (require, exports, _lexer, _ast) {
-    var EOF = new _lexer.Token(-1, null);
+define(["require", "exports", './lexer', './ast'], function (require, exports, lexer_1, ast_1) {
+    var EOF = new lexer_1.Token(-1, null);
     var Parser = (function () {
         function Parser() {
             this.cache = {};
-            this.lexer = new _lexer.Lexer();
+            this.lexer = new lexer_1.Lexer();
         }
         Parser.prototype.parse = function (input) {
             input = input || '';
-            return this.cache[input] || (this.cache[input] = new ParserImplementation(this.lexer, input).parseChain());
+            return this.cache[input]
+                || (this.cache[input] = new ParserImplementation(this.lexer, input).parseChain());
         };
         return Parser;
     })();
@@ -39,11 +40,11 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
                 while (this.optional(';')) {
                     isChain = true;
                 }
-                if (isChain && expr instanceof _ast.ValueConverter) {
+                if (isChain && expr instanceof ast_1.ValueConverter) {
                     this.error('cannot have a value converter in a chain');
                 }
             }
-            return (expressions.length === 1) ? expressions[0] : new _ast.Chain(expressions);
+            return (expressions.length === 1) ? expressions[0] : new ast_1.Chain(expressions);
         };
         ParserImplementation.prototype.parseValueConverter = function () {
             var result = this.parseExpression();
@@ -54,9 +55,7 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
                     // TODO(kasperl): Is this really supposed to be expressions?
                     args.push(this.parseExpression());
                 }
-                result = new _ast.ValueConverter(result, name, args, [
-                    result
-                ].concat(args));
+                result = new ast_1.ValueConverter(result, name, args, [result].concat(args));
             }
             return result;
         };
@@ -69,7 +68,7 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
                     this.error("Expression " + expression + " is not assignable");
                 }
                 this.expect('=');
-                result = new _ast.Assign(result, this.parseConditional());
+                result = new ast_1.Assign(result, this.parseConditional());
             }
             return result;
         };
@@ -83,21 +82,21 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
                     this.error("Conditional expression " + expression + " requires all 3 expressions");
                 }
                 var no = this.parseExpression();
-                result = new _ast.Conditional(result, yes, no);
+                result = new ast_1.Conditional(result, yes, no);
             }
             return result;
         };
         ParserImplementation.prototype.parseLogicalOr = function () {
             var result = this.parseLogicalAnd();
             while (this.optional('||')) {
-                result = new _ast.Binary('||', result, this.parseLogicalAnd());
+                result = new ast_1.Binary('||', result, this.parseLogicalAnd());
             }
             return result;
         };
         ParserImplementation.prototype.parseLogicalAnd = function () {
             var result = this.parseEquality();
             while (this.optional('&&')) {
-                result = new _ast.Binary('&&', result, this.parseEquality());
+                result = new ast_1.Binary('&&', result, this.parseEquality());
             }
             return result;
         };
@@ -105,16 +104,16 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
             var result = this.parseRelational();
             while (true) {
                 if (this.optional('==')) {
-                    result = new _ast.Binary('==', result, this.parseRelational());
+                    result = new ast_1.Binary('==', result, this.parseRelational());
                 }
                 else if (this.optional('!=')) {
-                    result = new _ast.Binary('!=', result, this.parseRelational());
+                    result = new ast_1.Binary('!=', result, this.parseRelational());
                 }
                 else if (this.optional('===')) {
-                    result = new _ast.Binary('===', result, this.parseRelational());
+                    result = new ast_1.Binary('===', result, this.parseRelational());
                 }
                 else if (this.optional('!==')) {
-                    result = new _ast.Binary('!==', result, this.parseRelational());
+                    result = new ast_1.Binary('!==', result, this.parseRelational());
                 }
                 else {
                     return result;
@@ -125,16 +124,16 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
             var result = this.parseAdditive();
             while (true) {
                 if (this.optional('<')) {
-                    result = new _ast.Binary('<', result, this.parseAdditive());
+                    result = new ast_1.Binary('<', result, this.parseAdditive());
                 }
                 else if (this.optional('>')) {
-                    result = new _ast.Binary('>', result, this.parseAdditive());
+                    result = new ast_1.Binary('>', result, this.parseAdditive());
                 }
                 else if (this.optional('<=')) {
-                    result = new _ast.Binary('<=', result, this.parseAdditive());
+                    result = new ast_1.Binary('<=', result, this.parseAdditive());
                 }
                 else if (this.optional('>=')) {
-                    result = new _ast.Binary('>=', result, this.parseAdditive());
+                    result = new ast_1.Binary('>=', result, this.parseAdditive());
                 }
                 else {
                     return result;
@@ -145,10 +144,10 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
             var result = this.parseMultiplicative();
             while (true) {
                 if (this.optional('+')) {
-                    result = new _ast.Binary('+', result, this.parseMultiplicative());
+                    result = new ast_1.Binary('+', result, this.parseMultiplicative());
                 }
                 else if (this.optional('-')) {
-                    result = new _ast.Binary('-', result, this.parseMultiplicative());
+                    result = new ast_1.Binary('-', result, this.parseMultiplicative());
                 }
                 else {
                     return result;
@@ -159,13 +158,13 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
             var result = this.parsePrefix();
             while (true) {
                 if (this.optional('*')) {
-                    result = new _ast.Binary('*', result, this.parsePrefix());
+                    result = new ast_1.Binary('*', result, this.parsePrefix());
                 }
                 else if (this.optional('%')) {
-                    result = new _ast.Binary('%', result, this.parsePrefix());
+                    result = new ast_1.Binary('%', result, this.parsePrefix());
                 }
                 else if (this.optional('/')) {
-                    result = new _ast.Binary('/', result, this.parsePrefix());
+                    result = new ast_1.Binary('/', result, this.parsePrefix());
                 }
                 else {
                     return result;
@@ -177,10 +176,10 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
                 return this.parsePrefix(); // TODO(kasperl): This is different than the original parser.
             }
             else if (this.optional('-')) {
-                return new _ast.Binary('-', new _ast.LiteralPrimitive(0), this.parsePrefix());
+                return new ast_1.Binary('-', new ast_1.LiteralPrimitive(0), this.parsePrefix());
             }
             else if (this.optional('!')) {
-                return new _ast.PrefixNot('!', this.parsePrefix());
+                return new ast_1.PrefixNot('!', this.parsePrefix());
             }
             else {
                 return this.parseAccessOrCallMember();
@@ -195,21 +194,21 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
                     if (this.optional('(')) {
                         var args = this.parseExpressionList(')');
                         this.expect(')');
-                        result = new _ast.CallMember(result, name, args);
+                        result = new ast_1.CallMember(result, name, args);
                     }
                     else {
-                        result = new _ast.AccessMember(result, name);
+                        result = new ast_1.AccessMember(result, name);
                     }
                 }
                 else if (this.optional('[')) {
                     var key = this.parseExpression();
                     this.expect(']');
-                    result = new _ast.AccessKeyed(result, key);
+                    result = new ast_1.AccessKeyed(result, key);
                 }
                 else if (this.optional('(')) {
                     var args = this.parseExpressionList(')');
                     this.expect(')');
-                    result = new _ast.CallFunction(result, args);
+                    result = new ast_1.CallFunction(result, args);
                 }
                 else {
                     return result;
@@ -223,18 +222,18 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
                 return result;
             }
             else if (this.optional('null') || this.optional('undefined')) {
-                return new _ast.LiteralPrimitive(null);
+                return new ast_1.LiteralPrimitive(null);
             }
             else if (this.optional('true')) {
-                return new _ast.LiteralPrimitive(true);
+                return new ast_1.LiteralPrimitive(true);
             }
             else if (this.optional('false')) {
-                return new _ast.LiteralPrimitive(false);
+                return new ast_1.LiteralPrimitive(false);
             }
             else if (this.optional('[')) {
                 var elements = this.parseExpressionList(']');
                 this.expect(']');
-                return new _ast.LiteralArray(elements);
+                return new ast_1.LiteralArray(elements);
             }
             else if (this.peek.text == '{') {
                 return this.parseObject();
@@ -245,7 +244,7 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
             else if (this.peek.value != null) {
                 var value = this.peek.value;
                 this.advance();
-                return isNaN(value) ? new _ast.LiteralString(value) : new _ast.LiteralPrimitive(value);
+                return isNaN(value) ? new ast_1.LiteralString(value) : new ast_1.LiteralPrimitive(value);
             }
             else if (this.index >= this.tokens.length) {
                 throw new Error("Unexpected end of expression: " + this.input);
@@ -258,11 +257,11 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
             var name = this.peek.key;
             this.advance();
             if (!this.optional('(')) {
-                return new _ast.AccessScope(name);
+                return new ast_1.AccessScope(name);
             }
             var args = this.parseExpressionList(')');
             this.expect(')');
-            return new _ast.CallScope(name, args);
+            return new ast_1.CallScope(name, args);
         };
         ParserImplementation.prototype.parseObject = function () {
             var keys = [], values = [];
@@ -279,7 +278,7 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
                 } while (this.optional(','));
             }
             this.expect('}');
-            return new _ast.LiteralObject(keys, values);
+            return new ast_1.LiteralObject(keys, values);
         };
         ParserImplementation.prototype.parseExpressionList = function (terminator) {
             var result = [];
@@ -309,7 +308,9 @@ define(["require", "exports", './lexer', './ast'], function (require, exports, _
             this.index++;
         };
         ParserImplementation.prototype.error = function (message) {
-            var location = (this.index < this.tokens.length) ? "at column " + (this.tokens[this.index].index + 1) + " in" : "at the end of the expression";
+            var location = (this.index < this.tokens.length)
+                ? "at column " + (this.tokens[this.index].index + 1) + " in"
+                : "at the end of the expression";
             throw new Error("Parser Error: " + message + " " + location + " [" + this.input + "]");
         };
         return ParserImplementation;

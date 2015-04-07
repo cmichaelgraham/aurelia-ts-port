@@ -1,17 +1,18 @@
+import {inject} from '../framework/index';
 import {EventAggregator} from '../event-aggregator/index';
 import {WebAPI} from './web-api';
 import {App} from './app';
 import {ContactUpdated,ContactViewed} from './messages';
 import {areEqual} from './utility';
 
+@inject(App, WebAPI, EventAggregator)
 export class ContactDetail {
   public app;
   public api;
   public ea;
   public contact;
   public originalContact;
-  static inject() { return [App,WebAPI,EventAggregator]; }
-  constructor(app,api,ea){
+  constructor(app, api, ea){
     this.app = app;
     this.api = api;
     this.ea = ea;

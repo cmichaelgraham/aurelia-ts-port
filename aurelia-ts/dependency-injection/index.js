@@ -1,14 +1,15 @@
-define(["require", "exports", '../metadata/index', './metadata', './metadata', './container'], function (require, exports, _index, _metadata, _metadata_1, _container) {
-    exports.Registration = _metadata_1.Registration;
-    exports.TransientRegistration = _metadata_1.TransientRegistration;
-    exports.SingletonRegistration = _metadata_1.SingletonRegistration;
-    exports.Resolver = _metadata_1.Resolver;
-    exports.Lazy = _metadata_1.Lazy;
-    exports.All = _metadata_1.All;
-    exports.Optional = _metadata_1.Optional;
-    exports.Parent = _metadata_1.Parent;
-    exports.Factory = _metadata_1.Factory;
-    exports.Container = _container.Container;
+define(["require", "exports", '../metadata/index', './metadata', './metadata', './container'], function (require, exports, index_1, metadata_1, metadata_2, container_1) {
+    exports.Registration = metadata_2.Registration;
+    exports.TransientRegistration = metadata_2.TransientRegistration;
+    exports.SingletonRegistration = metadata_2.SingletonRegistration;
+    exports.Resolver = metadata_2.Resolver;
+    exports.Lazy = metadata_2.Lazy;
+    exports.All = metadata_2.All;
+    exports.Optional = metadata_2.Optional;
+    exports.Parent = metadata_2.Parent;
+    exports.InstanceActivator = metadata_2.InstanceActivator;
+    exports.FactoryActivator = metadata_2.FactoryActivator;
+    exports.Container = container_1.Container;
     function inject() {
         var rest = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -22,7 +23,7 @@ define(["require", "exports", '../metadata/index', './metadata', './metadata', '
     exports.inject = inject;
     function transient(key) {
         return function (target) {
-            _index.Metadata.on(target).add(new _metadata.TransientRegistration(key));
+            index_1.Metadata.on(target).add(new metadata_1.TransientRegistration(key));
             return target;
         };
     }
@@ -30,12 +31,18 @@ define(["require", "exports", '../metadata/index', './metadata', './metadata', '
     function singleton(keyOrRegisterInChild, registerInChild) {
         if (registerInChild === void 0) { registerInChild = false; }
         return function (target) {
-            _index.Metadata.on(target).add(new _metadata.SingletonRegistration(keyOrRegisterInChild, registerInChild));
+            index_1.Metadata.on(target).add(new metadata_1.SingletonRegistration(keyOrRegisterInChild, registerInChild));
             return target;
         };
     }
     exports.singleton = singleton;
-    _index.Decorators.configure.parameterizedDecorator('inject', inject);
-    _index.Decorators.configure.parameterizedDecorator('transient', transient);
-    _index.Decorators.configure.parameterizedDecorator('singleton', singleton);
+    function factory(target) {
+        index_1.Metadata.on(target).add(new metadata_1.FactoryActivator());
+        return target;
+    }
+    exports.factory = factory;
+    index_1.Decorators.configure.parameterizedDecorator('inject', inject);
+    index_1.Decorators.configure.parameterizedDecorator('transient', transient);
+    index_1.Decorators.configure.parameterizedDecorator('singleton', singleton);
+    index_1.Decorators.configure.parameterizedDecorator('factory', factory);
 });

@@ -1,10 +1,10 @@
-define(["require", "exports", './headers', './request-message-processor', './transformers'], function (require, exports, _headers, _request_message_processor, _transformers) {
+define(["require", "exports", './headers', './request-message-processor', './transformers'], function (require, exports, headers_1, request_message_processor_1, transformers_1) {
     var JSONPRequestMessage = (function () {
         function JSONPRequestMessage(uri, callbackParameterName) {
             this.method = 'JSONP';
             this.uri = uri;
             this.content = undefined;
-            this.headers = new _headers.Headers();
+            this.headers = new headers_1.Headers();
             this.responseType = 'jsonp';
             this.callbackParameterName = callbackParameterName;
         }
@@ -50,14 +50,13 @@ define(["require", "exports", './headers', './request-message-processor', './tra
                 this.onabort(new Error('abort'));
             }
         };
-        JSONPXHR.prototype.setRequestHeader = function () {
-        };
+        JSONPXHR.prototype.setRequestHeader = function () { };
         return JSONPXHR;
     })();
     function createJSONPRequestMessageProcessor() {
-        return new _request_message_processor.RequestMessageProcessor(JSONPXHR, [
-            _transformers.timeoutTransformer,
-            _transformers.callbackParameterNameTransformer
+        return new request_message_processor_1.RequestMessageProcessor(JSONPXHR, [
+            transformers_1.timeoutTransformer,
+            transformers_1.callbackParameterNameTransformer
         ]);
     }
     exports.createJSONPRequestMessageProcessor = createJSONPRequestMessageProcessor;

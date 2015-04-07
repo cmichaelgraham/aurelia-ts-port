@@ -4,16 +4,14 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../metadata/index', '../loader/index'], function (require, exports, _index, _index_1) {
+define(["require", "exports", '../metadata/index', '../loader/index'], function (require, exports, index_1, index_2) {
     if (!window.System || !window.System.import) {
         var sys = window.System = window.System || {};
         sys.polyfilled = true;
         sys.map = {};
         sys['import'] = function (moduleId) {
             return new Promise(function (resolve, reject) {
-                require([
-                    moduleId
-                ], resolve, reject);
+                require([moduleId], resolve, reject);
             });
         };
         sys.normalize = function (url) {
@@ -25,11 +23,11 @@ define(["require", "exports", '../metadata/index', '../loader/index'], function 
         if (target.__useDefault) {
             target = target['default'];
         }
-        _index.Origin.set(target, new _index.Origin(name, 'default'));
+        index_1.Origin.set(target, new index_1.Origin(name, 'default'));
         for (key in target) {
             exportedValue = target[key];
             if (typeof exportedValue === "function") {
-                _index.Origin.set(exportedValue, new _index.Origin(name, key));
+                index_1.Origin.set(exportedValue, new index_1.Origin(name, key));
             }
         }
         return executed;
@@ -105,7 +103,7 @@ define(["require", "exports", '../metadata/index', '../loader/index'], function 
             }
         };
         return DefaultLoader;
-    })(_index_1.Loader);
+    })(index_2.Loader);
     exports.DefaultLoader = DefaultLoader;
     window.AureliaLoader = DefaultLoader;
 });
