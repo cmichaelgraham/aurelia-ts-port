@@ -32,6 +32,9 @@ git clone git://github.com/aurelia/skeleton-navigation
 git clone git://github.com/aurelia/animator-css
 git clone git://github.com/aurelia/skeleton-plugin
 
+git clone git://github.com/rstacruz/nprogress
+npm install core-js
+
 cd ..
 
 echo ------------- clone complete ------------------
@@ -152,5 +155,13 @@ cp -fR aurelia-latest-repos/animator-css/src/* aurelia-latest/animator-css
 echo "copying *** skeleton-plugin ***"
 mkdir -p aurelia-latest/skeleton-plugin
 cp -fR aurelia-latest-repos/skeleton-plugin/src/* aurelia-latest/skeleton-plugin
+
+echo "copying *** nprogress ***"
+mkdir -p aurelia-latest/nprogress
+cp -fR aurelia-latest-repos/nprogress/nprogress.* aurelia-latest/nprogress
+
+echo "copying *** core-js ***"
+mkdir -p aurelia-latest/core-js
+cp -fR aurelia-latest-repos/node_modules/core-js/* aurelia-latest/core-js
 
 rm -fR aurelia-latest-repos

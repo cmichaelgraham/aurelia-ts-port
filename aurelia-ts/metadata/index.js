@@ -3,9 +3,9 @@
  *
  * @module metadata
  */
-define(["require", "exports", './origin', './resource-type', './metadata', './decorators'], function (require, exports, _origin, _resource_type, _metadata, _decorators) {
-    exports.Origin = _origin.Origin;
-    exports.ResourceType = _resource_type.ResourceType;
-    exports.Metadata = _metadata.Metadata;
-    exports.Decorators = _decorators.Decorators;
+define(["require", "exports", './origin', './resource-type', './metadata', './decorators'], function (require, exports, origin_1, resource_type_1, metadata_1, decorators_1) {
+    exports.Origin = origin_1.Origin;
+    exports.ResourceType = resource_type_1.ResourceType;
+    exports.Metadata = metadata_1.Metadata;
+    exports.Decorators = decorators_1.Decorators;
 });

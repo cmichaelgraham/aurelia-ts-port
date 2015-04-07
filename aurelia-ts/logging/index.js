@@ -154,32 +154,28 @@ define(["require", "exports"], function (require, exports) {
          * @method debug
          * @param {string} message The message to log
          */
-        Logger.prototype.debug = function () {
-        };
+        Logger.prototype.debug = function () { };
         /**
          * Logs info.
          *
          * @method info
          * @param {string} message The message to log
          */
-        Logger.prototype.info = function () {
-        };
+        Logger.prototype.info = function () { };
         /**
          * Logs a warning.
          *
          * @method warn
          * @param {string} message The message to log
          */
-        Logger.prototype.warn = function () {
-        };
+        Logger.prototype.warn = function () { };
         /**
          * Logs an error.
          *
          * @method error
          * @param {string} message The message to log
          */
-        Logger.prototype.error = function () {
-        };
+        Logger.prototype.error = function () { };
         return Logger;
     })();
     exports.Logger = Logger;

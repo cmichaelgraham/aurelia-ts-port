@@ -1,7 +1,7 @@
-define(["require", "exports", './content-selector', './animator'], function (require, exports, _content_selector, _animator) {
+define(["require", "exports", './content-selector', './animator'], function (require, exports, content_selector_1, animator_1) {
     var ViewSlot = (function () {
         function ViewSlot(anchor, anchorIsContainer, executionContext, animator) {
-            if (animator === void 0) { animator = _animator.Animator.instance; }
+            if (animator === void 0) { animator = animator_1.Animator.instance; }
             this.anchor = anchor;
             this.viewAddMethod = anchorIsContainer ? 'appendNodesTo' : 'insertNodesBefore';
             this.executionContext = executionContext;
@@ -23,16 +23,11 @@ define(["require", "exports", './content-selector', './animator'], function (req
                         parent.removeChild(last);
                     }
                 },
-                created: function () {
-                },
-                bind: function () {
-                },
-                unbind: function () {
-                },
-                attached: function () {
-                },
-                detached: function () {
-                }
+                created: function () { },
+                bind: function () { },
+                unbind: function () { },
+                attached: function () { },
+                detached: function () { }
             });
         };
         ViewSlot.prototype.bind = function (executionContext) {
@@ -64,7 +59,11 @@ define(["require", "exports", './content-selector', './animator'], function (req
                 view.attached();
                 // Animate page itself
                 var element = view.firstChild ? view.firstChild.nextElementSibling : null;
-                if (view.firstChild && view.firstChild.nodeType === 8 && element && element.nodeType === 1 && element.classList.contains('au-animate')) {
+                if (view.firstChild &&
+                    view.firstChild.nodeType === 8 &&
+                    element &&
+                    element.nodeType === 1 &&
+                    element.classList.contains('au-animate')) {
                     this.animator.enter(element);
                 }
             }
@@ -100,7 +99,11 @@ define(["require", "exports", './content-selector', './animator'], function (req
                 return view;
             };
             var element = view.firstChild && view.firstChild.nextElementSibling ? view.firstChild.nextElementSibling : null;
-            if (view.firstChild && view.firstChild.nodeType === 8 && element && element.nodeType === 1 && element.classList.contains('au-animate')) {
+            if (view.firstChild &&
+                view.firstChild.nodeType === 8 &&
+                element &&
+                element.nodeType === 1 &&
+                element.classList.contains('au-animate')) {
                 return this.animator.leave(element).then(function () {
                     return removeAction();
                 });
@@ -115,7 +118,11 @@ define(["require", "exports", './content-selector', './animator'], function (req
             var rmPromises = [];
             children.forEach(function (child) {
                 var element = child.firstChild ? child.firstChild.nextElementSibling : null;
-                if (child.firstChild && child.firstChild.nodeType === 8 && element && element.nodeType === 1 && element.classList.contains('au-animate')) {
+                if (child.firstChild &&
+                    child.firstChild.nodeType === 8 &&
+                    element &&
+                    element.nodeType === 1 &&
+                    element.classList.contains('au-animate')) {
                     rmPromises.push(_this.animator.leave(element).then(function () {
                         child.removeNodes();
                     }));
@@ -164,7 +171,11 @@ define(["require", "exports", './content-selector', './animator'], function (req
                 child = children[i];
                 child.attached();
                 var element = child.firstChild ? child.firstChild.nextElementSibling : null;
-                if (child.firstChild && child.firstChild.nodeType === 8 && element && element.nodeType === 1 && element.classList.contains('au-animate')) {
+                if (child.firstChild &&
+                    child.firstChild.nodeType === 8 &&
+                    element &&
+                    element.nodeType === 1 &&
+                    element.classList.contains('au-animate')) {
                     this.animator.enter(element);
                 }
             }
@@ -188,9 +199,7 @@ define(["require", "exports", './content-selector', './animator'], function (req
             this.removeAll = this.contentSelectorRemoveAll;
         };
         ViewSlot.prototype.contentSelectorAdd = function (view) {
-            _content_selector.ContentSelector.applySelectors(view, this.contentSelectors, function (contentSelector, group) {
-                return contentSelector.add(group);
-            });
+            content_selector_1.ContentSelector.applySelectors(view, this.contentSelectors, function (contentSelector, group) { return contentSelector.add(group); });
             this.children.push(view);
             if (this.isAttached) {
                 view.attached();
@@ -201,9 +210,7 @@ define(["require", "exports", './content-selector', './animator'], function (req
                 this.add(view);
             }
             else {
-                _content_selector.ContentSelector.applySelectors(view, this.contentSelectors, function (contentSelector, group) {
-                    return contentSelector.insert(index, group);
-                });
+                content_selector_1.ContentSelector.applySelectors(view, this.contentSelectors, function (contentSelector, group) { return contentSelector.insert(index, group); });
                 this.children.splice(index, 0, view);
                 if (this.isAttached) {
                     view.attached();

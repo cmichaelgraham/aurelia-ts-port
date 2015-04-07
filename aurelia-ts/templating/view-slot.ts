@@ -2,7 +2,7 @@ import {ContentSelector} from './content-selector';
 import {Animator} from './animator';
 
 export class ViewSlot {
-  constructor(anchor, anchorIsContainer, executionContext, animator=Animator.instance){
+  constructor(anchor, anchorIsContainer, executionContext?, animator=Animator.instance){
     this.anchor = anchor;
     this.viewAddMethod = anchorIsContainer ? 'appendNodesTo' : 'insertNodesBefore';
     this.executionContext = executionContext;
