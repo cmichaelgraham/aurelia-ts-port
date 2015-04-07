@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../dependency-injection/index', '../history/index', './router', './pipeline-provider', './navigation-commands', '../event-aggregator/index'], function (require, exports, _index, _index_1, _router, _pipeline_provider, _navigation_commands, _index_2) {
+define(["require", "exports", '../dependency-injection/index', '../history/index', './router', './pipeline-provider', './navigation-commands', '../event-aggregator/index'], function (require, exports, index_1, index_2, router_1, pipeline_provider_1, navigation_commands_1, index_3) {
     var AppRouter = (function (_super) {
         __extends(AppRouter, _super);
         function AppRouter(container, history, pipelineProvider, events) {
@@ -13,14 +13,7 @@ define(["require", "exports", '../dependency-injection/index', '../history/index
             document.addEventListener('click', handleLinkClick.bind(this), true);
             this.events = events;
         }
-        AppRouter.inject = function () {
-            return [
-                _index.Container,
-                _index_1.History,
-                _pipeline_provider.PipelineProvider,
-                _index_2.EventAggregator
-            ];
-        };
+        AppRouter.inject = function () { return [index_1.Container, index_2.History, pipeline_provider_1.PipelineProvider, index_3.EventAggregator]; };
         Object.defineProperty(AppRouter.prototype, "isRoot", {
             get: function () {
                 return true;
@@ -30,9 +23,9 @@ define(["require", "exports", '../dependency-injection/index', '../history/index
         });
         AppRouter.prototype.loadUrl = function (url) {
             var _this = this;
-            return this.createNavigationInstruction(url).then(function (instruction) {
-                return _this.queueInstruction(instruction);
-            }).catch(function (error) {
+            return this.createNavigationInstruction(url).
+                then(function (instruction) { return _this.queueInstruction(instruction); }).
+                catch(function (error) {
                 console.error(error);
                 if (_this.history.previousFragment) {
                     _this.navigate(_this.history.previousFragment, false);
@@ -71,12 +64,9 @@ define(["require", "exports", '../dependency-injection/index', '../history/index
                 }
                 if (result.output instanceof Error) {
                     console.error(result.output);
-                    _this.events.publish('router:navigation:error', {
-                        instruction: instruction,
-                        result: result
-                    });
+                    _this.events.publish('router:navigation:error', { instruction: instruction, result: result });
                 }
-                if (_navigation_commands.isNavigationCommand(result.output)) {
+                if (navigation_commands_1.isNavigationCommand(result.output)) {
                     result.output.navigate(_this);
                 }
                 else if (!result.completed) {
@@ -85,9 +75,9 @@ define(["require", "exports", '../dependency-injection/index', '../history/index
                 }
                 instruction.resolve(result);
                 _this.dequeueInstruction();
-            }).then(function (result) {
-                return _this.events.publish('router:navigation:complete', instruction);
-            }).catch(function (error) {
+            })
+                .then(function (result) { return _this.events.publish('router:navigation:complete', instruction); })
+                .catch(function (error) {
                 console.error(error);
             });
         };
@@ -97,9 +87,7 @@ define(["require", "exports", '../dependency-injection/index', '../history/index
             if (!this.isActive) {
                 if ('configureRouter' in this.container.viewModel) {
                     var result = this.container.viewModel.configureRouter() || Promise.resolve();
-                    return result.then(function () {
-                        return _this.activate();
-                    });
+                    return result.then(function () { return _this.activate(); });
                 }
                 else {
                     this.activate();
@@ -114,9 +102,7 @@ define(["require", "exports", '../dependency-injection/index', '../history/index
                 return;
             }
             this.isActive = true;
-            this.options = Object.assign({
-                routeHandler: this.loadUrl.bind(this)
-            }, this.options, options);
+            this.options = Object.assign({ routeHandler: this.loadUrl.bind(this) }, this.options, options);
             this.history.activate(this.options);
             this.dequeueInstruction();
         };
@@ -130,7 +116,7 @@ define(["require", "exports", '../dependency-injection/index', '../history/index
             this.options = null;
         };
         return AppRouter;
-    })(_router.Router);
+    })(router_1.Router);
     exports.AppRouter = AppRouter;
     function findAnchor(el) {
         while (el) {
@@ -161,6 +147,9 @@ define(["require", "exports", '../dependency-injection/index', '../history/index
     }
     function targetIsThisWindow(target) {
         var targetWindow = target.getAttribute('target');
-        return !targetWindow || targetWindow === window.name || targetWindow === '_self' || (targetWindow === 'top' && window === window.top);
+        return !targetWindow ||
+            targetWindow === window.name ||
+            targetWindow === '_self' ||
+            (targetWindow === 'top' && window === window.top);
     }
 });

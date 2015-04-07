@@ -1,11 +1,11 @@
 define(["require", "exports"], function (require, exports) {
-    function Target(path, matcher, delegate) {
-        this.path = path;
-        this.matcher = matcher;
-        this.delegate = delegate;
-    }
-    Target.prototype = {
-        to: function (target, callback) {
+    var Target = (function () {
+        function Target(path, matcher, delegate) {
+            this.path = path;
+            this.matcher = matcher;
+            this.delegate = delegate;
+        }
+        Target.prototype.to = function (target, callback) {
             var delegate = this.delegate;
             if (delegate && delegate.willAddRoute) {
                 target = delegate.willAddRoute(this.matcher.target, target);
@@ -18,18 +18,20 @@ define(["require", "exports"], function (require, exports) {
                 this.matcher.addChild(this.path, target, callback, this.delegate);
             }
             return this;
+        };
+        return Target;
+    })();
+    ;
+    var Matcher = (function () {
+        function Matcher(target) {
+            this.routes = {};
+            this.children = {};
+            this.target = target;
         }
-    };
-    function Matcher(target) {
-        this.routes = {};
-        this.children = {};
-        this.target = target;
-    }
-    Matcher.prototype = {
-        add: function (path, handler) {
+        Matcher.prototype.add = function (path, handler) {
             this.routes[path] = handler;
-        },
-        addChild: function (path, target, callback, delegate) {
+        };
+        Matcher.prototype.addChild = function (path, target, callback, delegate) {
             var matcher = new Matcher(target);
             this.children[path] = matcher;
             var match = generateMatch(path, matcher, delegate);
@@ -37,8 +39,9 @@ define(["require", "exports"], function (require, exports) {
                 delegate.contextEntered(target, match);
             }
             callback(match);
-        }
-    };
+        };
+        return Matcher;
+    })();
     function generateMatch(startingPath, matcher, delegate) {
         return function (path, nestedCallback) {
             var fullPath = startingPath + path;
@@ -56,10 +59,7 @@ define(["require", "exports"], function (require, exports) {
             len += routeArray[i].path.length;
         }
         path = path.substr(len);
-        var route = {
-            path: path,
-            handler: handler
-        };
+        var route = { path: path, handler: handler };
         routeArray.push(route);
     }
     function eachRoute(baseRoute, matcher, callback, binding) {
@@ -79,7 +79,7 @@ define(["require", "exports"], function (require, exports) {
     }
     function map(callback, addRouteCallback) {
         var matcher = new Matcher();
-        callback(generateMatch("", matcher, this.delegate));
+        callback(generateMatch('', matcher, this.delegate));
         eachRoute([], matcher, function (route) {
             if (addRouteCallback) {
                 addRouteCallback(this, route);

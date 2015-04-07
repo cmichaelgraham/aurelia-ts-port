@@ -1,9 +1,5 @@
-define(["require", "exports", './navigation-plan', './navigation-commands', './util'], function (require, exports, _navigation_plan, _navigation_commands, _util) {
-    exports.affirmations = [
-        'yes',
-        'ok',
-        'true'
-    ];
+define(["require", "exports", './navigation-plan', './navigation-commands', './util'], function (require, exports, navigation_plan_1, navigation_commands_1, util_1) {
+    exports.affirmations = ['yes', 'ok', 'true'];
     var CanDeactivatePreviousStep = (function () {
         function CanDeactivatePreviousStep() {
         }
@@ -55,7 +51,7 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
                 try {
                     var controller = infos[i];
                     var result = controller[callbackName]();
-                    return _util.processPotential(result, inspect, next.cancel);
+                    return util_1.processPotential(result, inspect, next.cancel);
                 }
                 catch (error) {
                     return next.cancel(error);
@@ -72,7 +68,9 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
         for (var viewPortName in plan) {
             var viewPortPlan = plan[viewPortName];
             var prevComponent = viewPortPlan.prevComponent;
-            if ((viewPortPlan.strategy == _navigation_plan.INVOKE_LIFECYCLE || viewPortPlan.strategy == _navigation_plan.REPLACE) && prevComponent) {
+            if ((viewPortPlan.strategy == navigation_plan_1.INVOKE_LIFECYCLE ||
+                viewPortPlan.strategy == navigation_plan_1.REPLACE) &&
+                prevComponent) {
                 var controller = prevComponent.executionContext;
                 if (callbackName in controller) {
                     list.push(controller);
@@ -118,9 +116,7 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
                 try {
                     var current = infos[i];
                     var result = (_a = current.controller)[callbackName].apply(_a, current.lifecycleArgs);
-                    return _util.processPotential(result, function (val) {
-                        return inspect(val, current.router);
-                    }, next.cancel);
+                    return util_1.processPotential(result, function (val) { return inspect(val, current.router); }, next.cancel);
                 }
                 catch (error) {
                     return next.cancel(error);
@@ -141,7 +137,7 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
             var viewPortPlan = plan[viewPortName];
             var viewPortInstruction = next.viewPortInstructions[viewPortName];
             var controller = viewPortInstruction.component.executionContext;
-            if ((viewPortPlan.strategy === _navigation_plan.INVOKE_LIFECYCLE || viewPortPlan.strategy === _navigation_plan.REPLACE) && callbackName in controller) {
+            if ((viewPortPlan.strategy === navigation_plan_1.INVOKE_LIFECYCLE || viewPortPlan.strategy === navigation_plan_1.REPLACE) && callbackName in controller) {
                 list.push({
                     controller: controller,
                     lifecycleArgs: viewPortInstruction.lifecycleArgs,
@@ -159,7 +155,7 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
         if (output instanceof Error) {
             return false;
         }
-        if (_navigation_commands.isNavigationCommand(output)) {
+        if (navigation_commands_1.isNavigationCommand(output)) {
             if (typeof output.setRouter === 'function') {
                 output.setRouter(router);
             }

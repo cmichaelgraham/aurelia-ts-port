@@ -1,4 +1,4 @@
-define(["require", "exports", './navigation-plan'], function (require, exports, _navigation_plan) {
+define(["require", "exports", './navigation-plan'], function (require, exports, navigation_plan_1) {
     var NavigationContext = (function () {
         function NavigationContext(router, nextInstruction) {
             this.router = router;
@@ -18,33 +18,21 @@ define(["require", "exports", './navigation-plan'], function (require, exports, 
         };
         Object.defineProperty(NavigationContext.prototype, "nextInstructions", {
             get: function () {
-                return this.getAllContexts().map(function (c) {
-                    return c.nextInstruction;
-                }).filter(function (c) {
-                    return c;
-                });
+                return this.getAllContexts().map(function (c) { return c.nextInstruction; }).filter(function (c) { return c; });
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(NavigationContext.prototype, "currentInstructions", {
             get: function () {
-                return this.getAllContexts().map(function (c) {
-                    return c.currentInstruction;
-                }).filter(function (c) {
-                    return c;
-                });
+                return this.getAllContexts().map(function (c) { return c.currentInstruction; }).filter(function (c) { return c; });
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(NavigationContext.prototype, "prevInstructions", {
             get: function () {
-                return this.getAllContexts().map(function (c) {
-                    return c.prevInstruction;
-                }).filter(function (c) {
-                    return c;
-                });
+                return this.getAllContexts().map(function (c) { return c.prevInstruction; }).filter(function (c) { return c; });
             },
             enumerable: true,
             configurable: true
@@ -64,12 +52,9 @@ define(["require", "exports", './navigation-plan'], function (require, exports, 
                 if (!viewPort) {
                     throw new Error("There was no router-view found in the view for " + viewPortInstruction.moduleId + ".");
                 }
-                if (viewPortInstruction.strategy === _navigation_plan.REPLACE) {
+                if (viewPortInstruction.strategy === navigation_plan_1.REPLACE) {
                     if (waitToSwap) {
-                        delaySwaps.push({
-                            viewPort: viewPort,
-                            viewPortInstruction: viewPortInstruction
-                        });
+                        delaySwaps.push({ viewPort: viewPort, viewPortInstruction: viewPortInstruction });
                     }
                     loads.push(viewPort.process(viewPortInstruction, waitToSwap).then(function (x) {
                         if ('childNavigationContext' in viewPortInstruction) {
@@ -84,9 +69,7 @@ define(["require", "exports", './navigation-plan'], function (require, exports, 
                 }
             }
             return Promise.all(loads).then(function () {
-                delaySwaps.forEach(function (x) {
-                    return x.viewPort.swap(x.viewPortInstruction);
-                });
+                delaySwaps.forEach(function (x) { return x.viewPort.swap(x.viewPortInstruction); });
             });
         };
         NavigationContext.prototype.buildTitle = function (separator) {

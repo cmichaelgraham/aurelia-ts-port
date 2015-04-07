@@ -19,10 +19,7 @@ define(["require", "exports"], function (require, exports) {
     var Redirect = (function () {
         function Redirect(url, options) {
             this.url = url;
-            this.options = Object.assign({
-                trigger: true,
-                replace: true
-            }, options || {});
+            this.options = Object.assign({ trigger: true, replace: true }, options || {});
             this.shouldContinueProcessing = false;
         }
         /**

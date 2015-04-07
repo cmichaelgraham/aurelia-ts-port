@@ -6,12 +6,7 @@ define(["require", "exports"], function (require, exports) {
             this.params = params || {};
             this.queryParams = queryParams;
             this.config = config;
-            this.lifecycleArgs = [
-                params,
-                queryParams,
-                config,
-                this
-            ];
+            this.lifecycleArgs = [params, queryParams, config, this];
             this.viewPortInstructions = {};
             if (parentInstruction) {
                 this.params.$parent = parentInstruction.params;

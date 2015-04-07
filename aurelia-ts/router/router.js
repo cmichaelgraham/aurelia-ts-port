@@ -1,4 +1,4 @@
-define(["require", "exports", '../route-recognizer/index', '../path/index', './navigation-context', './navigation-instruction', './router-configuration', './util'], function (require, exports, _index, _index_1, _navigation_context, _navigation_instruction, _router_configuration, _util) {
+define(["require", "exports", '../route-recognizer/index', '../path/index', './navigation-context', './navigation-instruction', './router-configuration', './util'], function (require, exports, index_1, index_2, navigation_context_1, navigation_instruction_1, router_configuration_1, util_1) {
     var Router = (function () {
         function Router(container, history) {
             this.container = container;
@@ -49,7 +49,7 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
         Router.prototype.configure = function (callbackOrConfig) {
             this.isConfigured = true;
             if (typeof callbackOrConfig == 'function') {
-                var config = new _router_configuration.RouterConfiguration();
+                var config = new router_configuration_1.RouterConfiguration();
                 callbackOrConfig(config);
                 config.exportToRouter(this);
             }
@@ -62,7 +62,7 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
             if (!this.isConfigured && this.parent) {
                 return this.parent.navigate(fragment, options);
             }
-            fragment = _index_1.join(this.baseUrl, fragment);
+            fragment = index_2.join(this.baseUrl, fragment);
             if (fragment === '')
                 fragment = '/';
             return this.history.navigate(fragment, options);
@@ -90,8 +90,7 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
                 queryString = url.substr(queryIndex + 1);
             }
             if ((!results || !results.length) && this.catchAllHandler) {
-                results = [
-                    {
+                results = [{
                         config: {
                             navModel: {}
                         },
@@ -99,8 +98,7 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
                         params: {
                             path: fragment
                         }
-                    }
-                ];
+                    }];
             }
             if (results && results.length) {
                 var first = results[0], fragment = url, queryIndex = fragment.indexOf('?'), queryString;
@@ -108,7 +106,7 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
                     fragment = url.substr(0, queryIndex);
                     queryString = url.substr(queryIndex + 1);
                 }
-                var instruction = new _navigation_instruction.NavigationInstruction(fragment, queryString, first.params, first.queryParams || results.queryParams, first.config || first.handler, parentInstruction);
+                var instruction = new navigation_instruction_1.NavigationInstruction(fragment, queryString, first.params, first.queryParams || results.queryParams, first.config || first.handler, parentInstruction);
                 if (typeof first.handler == "function") {
                     return first.handler(instruction).then(function (instruction) {
                         if (!("viewPorts" in instruction.config)) {
@@ -128,13 +126,19 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
             }
         };
         Router.prototype.createNavigationContext = function (instruction) {
-            return new _navigation_context.NavigationContext(this, instruction);
+            return new navigation_context_1.NavigationContext(this, instruction);
         };
-        Router.prototype.generate = function (name, params) {
-            if (!this.isConfigured && this.parent) {
-                return this.parent.generate(name, params);
+        Router.prototype.generate = function (name, params, options) {
+            options = options || {};
+            if ((!this.isConfigured || !this.recognizer.hasRoute(name)) && this.parent) {
+                return this.parent.generate(name, params, options);
             }
-            return this.recognizer.generate(name, params);
+            var root = '';
+            var path = this.recognizer.generate(name, params);
+            if (options.absolute) {
+                root = (this.history.root || '') + this.baseUrl;
+            }
+            return root + path;
         };
         Router.prototype.addRoute = function (config, navModel) {
             if (navModel === void 0) { navModel = {}; }
@@ -149,12 +153,7 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
             navModel.title = navModel.title || config.title;
             navModel.settings = config.settings || (config.settings = {});
             this.routes.push(config);
-            this.recognizer.add([
-                {
-                    path: config.route,
-                    handler: config
-                }
-            ]);
+            this.recognizer.add([{ path: config.route, handler: config }]);
             if (config.route) {
                 var withChild, settings = config.settings;
                 delete config.settings;
@@ -162,12 +161,10 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
                 config.settings = settings;
                 withChild.route += "/*childRoute";
                 withChild.hasChildRouter = true;
-                this.childRecognizer.add([
-                    {
+                this.childRecognizer.add([{
                         path: withChild.route,
                         handler: withChild
-                    }
-                ]);
+                    }]);
                 withChild.navModel = navModel;
                 withChild.settings = config.settings;
             }
@@ -185,42 +182,44 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
                     navModel.order = ++this.fallbackOrder;
                 }
                 this.navigation.push(navModel);
-                this.navigation = this.navigation.sort(function (a, b) {
-                    return a.order - b.order;
-                });
+                this.navigation = this.navigation.sort(function (a, b) { return a.order - b.order; });
             }
         };
+        Router.prototype.hasRoute = function (name) {
+            return !!(this.recognizer.hasRoute(name) || this.parent && this.parent.hasRoute(name));
+        };
+        Router.prototype.hasOwnRoute = function (name) {
+            return this.recognizer.hasRoute(name);
+        };
         Router.prototype.handleUnknownRoutes = function (config) {
-            var callback = function (instruction) {
-                return new Promise(function (resolve, reject) {
-                    function done(inst) {
-                        inst = inst || instruction;
-                        inst.config.route = inst.params.path;
-                        resolve(inst);
-                    }
-                    if (!config) {
-                        instruction.config.moduleId = instruction.fragment;
-                        done(instruction);
-                    }
-                    else if (typeof config == 'string') {
-                        instruction.config.moduleId = config;
-                        done(instruction);
-                    }
-                    else if (typeof config == 'function') {
-                        _util.processPotential(config(instruction), done, reject);
-                    }
-                    else {
-                        instruction.config = config;
-                        done(instruction);
-                    }
-                });
-            };
+            var callback = function (instruction) { return new Promise(function (resolve, reject) {
+                function done(inst) {
+                    inst = inst || instruction;
+                    inst.config.route = inst.params.path;
+                    resolve(inst);
+                }
+                if (!config) {
+                    instruction.config.moduleId = instruction.fragment;
+                    done(instruction);
+                }
+                else if (typeof config == 'string') {
+                    instruction.config.moduleId = config;
+                    done(instruction);
+                }
+                else if (typeof config == 'function') {
+                    util_1.processPotential(config(instruction), done, reject);
+                }
+                else {
+                    instruction.config = config;
+                    done(instruction);
+                }
+            }); };
             this.catchAllHandler = callback;
         };
         Router.prototype.reset = function () {
             this.fallbackOrder = 100;
-            this.recognizer = new _index.RouteRecognizer();
-            this.childRecognizer = new _index.RouteRecognizer();
+            this.recognizer = new index_1.RouteRecognizer();
+            this.childRecognizer = new index_1.RouteRecognizer();
             this.routes = [];
             this.isNavigating = false;
             this.navigation = [];

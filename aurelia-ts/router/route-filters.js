@@ -1,15 +1,11 @@
-define(["require", "exports", '../dependency-injection/index'], function (require, exports, _index) {
+define(["require", "exports", '../dependency-injection/index'], function (require, exports, index_1) {
     var RouteFilterContainer = (function () {
         function RouteFilterContainer(container) {
             this.container = container;
             this.filters = {};
             this.filterCache = {};
         }
-        RouteFilterContainer.inject = function () {
-            return [
-                _index.Container
-            ];
-        };
+        RouteFilterContainer.inject = function () { return [index_1.Container]; };
         RouteFilterContainer.prototype.addStep = function (name, step, index) {
             if (index === void 0) { index = -1; }
             var filter = this.filters[name];
@@ -50,9 +46,7 @@ define(["require", "exports", '../dependency-injection/index'], function (requir
         }
         ;
         create["inject"] = function () {
-            return [
-                RouteFilterContainer
-            ];
+            return [RouteFilterContainer];
         };
         return create;
     }

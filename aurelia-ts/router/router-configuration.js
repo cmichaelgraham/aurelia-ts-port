@@ -1,4 +1,4 @@
-define(["require", "exports", './route-filters'], function (require, exports, _route_filters) {
+define(["require", "exports", './route-filters'], function (require, exports, route_filters_1) {
     var RouterConfiguration = (function () {
         function RouterConfiguration() {
             this.instructions = [];
@@ -6,10 +6,7 @@ define(["require", "exports", './route-filters'], function (require, exports, _r
             this.pipelineSteps = [];
         }
         RouterConfiguration.prototype.addPipelineStep = function (name, step) {
-            this.pipelineSteps.push({
-                name: name,
-                step: step
-            });
+            this.pipelineSteps.push({ name: name, step: step });
         };
         RouterConfiguration.prototype.map = function (route, config) {
             if (Array.isArray(route)) {
@@ -23,9 +20,7 @@ define(["require", "exports", './route-filters'], function (require, exports, _r
                     config = {};
                 }
                 else if (typeof config == 'string') {
-                    config = {
-                        moduleId: config
-                    };
+                    config = { moduleId: config };
                 }
                 config.route = route;
             }
@@ -72,7 +67,7 @@ define(["require", "exports", './route-filters'], function (require, exports, _r
                 if (!router.isRoot) {
                     throw new Error('Pipeline steps can only be added to the root router');
                 }
-                filterContainer = router.container.get(_route_filters.RouteFilterContainer);
+                filterContainer = router.container.get(route_filters_1.RouteFilterContainer);
                 for (i = 0, ii = pipelineSteps.length; i < ii; ++i) {
                     var _a = pipelineSteps[i], name = _a.name, step = _a.step;
                     filterContainer.addStep(name, step);

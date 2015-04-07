@@ -1,4 +1,4 @@
-define(["require", "exports", './navigation-plan'], function (require, exports, _navigation_plan) {
+define(["require", "exports", './navigation-plan'], function (require, exports, navigation_plan_1) {
     var RouteLoader = (function () {
         function RouteLoader() {
         }
@@ -12,22 +12,18 @@ define(["require", "exports", './navigation-plan'], function (require, exports, 
         function LoadRouteStep(routeLoader) {
             this.routeLoader = routeLoader;
         }
-        LoadRouteStep.inject = function () {
-            return [
-                RouteLoader
-            ];
-        };
+        LoadRouteStep.inject = function () { return [RouteLoader]; };
         LoadRouteStep.prototype.run = function (navigationContext, next) {
-            return loadNewRoute([], this.routeLoader, navigationContext).then(next).catch(next.cancel);
+            return loadNewRoute([], this.routeLoader, navigationContext)
+                .then(next)
+                .catch(next.cancel);
         };
         return LoadRouteStep;
     })();
     exports.LoadRouteStep = LoadRouteStep;
     function loadNewRoute(routers, routeLoader, navigationContext) {
         var toLoad = determineWhatToLoad(navigationContext);
-        var loadPromises = toLoad.map(function (current) {
-            return loadRoute(routers, routeLoader, current.navigationContext, current.viewPortPlan);
-        });
+        var loadPromises = toLoad.map(function (current) { return loadRoute(routers, routeLoader, current.navigationContext, current.viewPortPlan); });
         return Promise.all(loadPromises);
     }
     exports.loadNewRoute = loadNewRoute;
@@ -37,7 +33,7 @@ define(["require", "exports", './navigation-plan'], function (require, exports, 
         toLoad = toLoad || [];
         for (var viewPortName in plan) {
             var viewPortPlan = plan[viewPortName];
-            if (viewPortPlan.strategy == _navigation_plan.REPLACE) {
+            if (viewPortPlan.strategy == navigation_plan_1.REPLACE) {
                 toLoad.push({
                     viewPortPlan: viewPortPlan,
                     navigationContext: navigationContext
@@ -65,9 +61,12 @@ define(["require", "exports", './navigation-plan'], function (require, exports, 
             var controller = component.executionContext;
             if (controller.router && controller.router.isConfigured && routers.indexOf(controller.router) === -1) {
                 var path = next.getWildcardPath();
-                return controller.router.createNavigationInstruction(path, next).then(function (childInstruction) {
-                    viewPortPlan.childNavigationContext = controller.router.createNavigationContext(childInstruction);
-                    return _navigation_plan.buildNavigationPlan(viewPortPlan.childNavigationContext).then(function (childPlan) {
+                return controller.router.createNavigationInstruction(path, next)
+                    .then(function (childInstruction) {
+                    viewPortPlan.childNavigationContext = controller.router
+                        .createNavigationContext(childInstruction);
+                    return navigation_plan_1.buildNavigationPlan(viewPortPlan.childNavigationContext)
+                        .then(function (childPlan) {
                         viewPortPlan.childNavigationContext.plan = childPlan;
                         viewPortInstruction.childNavigationContext = viewPortPlan.childNavigationContext;
                         return loadNewRoute(routers, routeLoader, viewPortPlan.childNavigationContext);
@@ -81,9 +80,7 @@ define(["require", "exports", './navigation-plan'], function (require, exports, 
         return routeLoader.loadRoute(router, config).then(function (component) {
             if ('configureRouter' in component.executionContext) {
                 var result = (_a = component.executionContext).configureRouter.apply(_a, lifecycleArgs) || Promise.resolve();
-                return result.then(function () {
-                    return component;
-                });
+                return result.then(function () { return component; });
             }
             component.router = router;
             component.config = config;

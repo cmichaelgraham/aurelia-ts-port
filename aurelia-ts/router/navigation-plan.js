@@ -1,4 +1,4 @@
-define(["require", "exports", './navigation-commands'], function (require, exports, _navigation_commands) {
+define(["require", "exports", './navigation-commands'], function (require, exports, navigation_commands_1) {
     exports.NO_CHANGE = 'no-change';
     exports.INVOKE_LIFECYCLE = 'invoke-lifecycle';
     exports.REPLACE = 'replace';
@@ -33,18 +33,19 @@ define(["require", "exports", './navigation-commands'], function (require, expor
                 }
                 if (viewPortPlan.strategy !== exports.REPLACE && prevViewPortInstruction.childRouter) {
                     var path = next.getWildcardPath();
-                    var task = prevViewPortInstruction.childRouter.createNavigationInstruction(path, next).then(function (childInstruction) {
-                        viewPortPlan.childNavigationContext = prevViewPortInstruction.childRouter.createNavigationContext(childInstruction);
-                        return buildNavigationPlan(viewPortPlan.childNavigationContext, viewPortPlan.strategy == exports.INVOKE_LIFECYCLE).then(function (childPlan) {
+                    var task = prevViewPortInstruction.childRouter
+                        .createNavigationInstruction(path, next).then(function (childInstruction) {
+                        viewPortPlan.childNavigationContext = prevViewPortInstruction.childRouter
+                            .createNavigationContext(childInstruction);
+                        return buildNavigationPlan(viewPortPlan.childNavigationContext, viewPortPlan.strategy == exports.INVOKE_LIFECYCLE)
+                            .then(function (childPlan) {
                             viewPortPlan.childNavigationContext.plan = childPlan;
                         });
                     });
                     pending.push(task);
                 }
             }
-            return Promise.all(pending).then(function () {
-                return plan;
-            });
+            return Promise.all(pending).then(function () { return plan; });
         }
         else {
             for (viewPortName in next.config.viewPorts) {
@@ -64,9 +65,10 @@ define(["require", "exports", './navigation-commands'], function (require, expor
         }
         BuildNavigationPlanStep.prototype.run = function (navigationContext, next) {
             if (navigationContext.nextInstruction.config.redirect) {
-                return next.cancel(new _navigation_commands.Redirect(navigationContext.nextInstruction.config.redirect));
+                return next.cancel(new navigation_commands_1.Redirect(navigationContext.nextInstruction.config.redirect));
             }
-            return buildNavigationPlan(navigationContext).then(function (plan) {
+            return buildNavigationPlan(navigationContext)
+                .then(function (plan) {
                 navigationContext.plan = plan;
                 return next();
             }).catch(next.cancel);
