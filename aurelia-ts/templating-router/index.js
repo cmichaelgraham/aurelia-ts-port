@@ -1,9 +1,10 @@
-define(["require", "exports", '../router/index', './route-loader', './router-view'], function (require, exports, _index, _route_loader, _router_view) {
+define(["require", "exports", '../router/index', './route-loader', './router-view'], function (require, exports, index_1, route_loader_1, router_view_1) {
+    exports.TemplatingRouteLoader = route_loader_1.TemplatingRouteLoader;
+    exports.RouterView = router_view_1.RouterView;
     function install(aurelia) {
-        aurelia.withSingleton(_index.RouteLoader, _route_loader.TemplatingRouteLoader).withSingleton(_index.Router, _index.AppRouter).globalizeResources('./router-view');
+        aurelia.withSingleton(index_1.RouteLoader, route_loader_1.TemplatingRouteLoader)
+            .withSingleton(index_1.Router, index_1.AppRouter)
+            .globalizeResources('./router-view');
     }
-    exports.install = install;
-    exports._route_loader.TemplatingRouteLoader = _route_loader.TemplatingRouteLoader;
-    exports._router_view.RouterView = _router_view.RouterView;
     exports.install = install;
 });

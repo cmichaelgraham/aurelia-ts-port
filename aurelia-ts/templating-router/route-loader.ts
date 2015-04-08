@@ -1,18 +1,21 @@
+import {inject} from '../dependency-injection/index';
 import {CompositionEngine} from '../templating/index';
 import {RouteLoader, Router} from '../router/index';
 import {relativeToFile} from '../path/index';
 import {Origin} from '../metadata/index';
 
+@inject(CompositionEngine)
 export class TemplatingRouteLoader extends RouteLoader {
-  static inject(){ return [CompositionEngine]; }
+  public compositionEngine;
   constructor(compositionEngine){
+    super();
     this.compositionEngine = compositionEngine;
   }
 
   loadRoute(router, config){
     var childContainer = router.container.createChild(),
         instruction = {
-          viewModel: relativeToFile(config.moduleId, Origin.get(router.container.viewModel.constructor).moduleId),
+          viewModel: relativeToFile(config.moduleId, (<any>(Origin.get(router.container.viewModel.constructor))).moduleId),
           childContainer:childContainer,
           view:config.view || config.viewStrategy
         },

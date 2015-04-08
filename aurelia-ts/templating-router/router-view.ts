@@ -1,11 +1,17 @@
-import {Container} from '../dependency-injection/index';
-import {ViewSlot, ViewStrategy} from '../templating/index';
+import {Container, inject} from '../dependency-injection/index';
+import {ViewSlot, ViewStrategy, customElement, noView} from '../templating/index';
 import {Router} from '../router/index';
 import {Metadata, Origin} from '../metadata/index';
 
+@customElement('router-view')
+@noView
+@inject(Element, Container, ViewSlot, Router)
 export class RouterView {
-  static metadata(){ return Metadata.customElement('router-view').noView(); }
-  static inject() { return [Element,Container,ViewSlot,Router]; }
+  public element;
+  public container;
+  public viewSlot;
+  public router;
+  public view;
   constructor(element, container, viewSlot, router) {
     this.element = element;
     this.container = container;

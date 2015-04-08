@@ -156,6 +156,7 @@
         "./validation/resources/sv-SE.ts",
         "./validation/resources/tr-TR.ts",
         "./validation/validation.ts",
+        "./validation/validation/debouncer.ts",
         "./validation/validation/path-observer.ts",
         "./validation/validation/validate-attached-behavior-config.ts",
         "./validation/validation/validate-attached-behavior.ts",
