@@ -1,4 +1,4 @@
-define(["require", "exports", './binding-modes'], function (require, exports, _binding_modes) {
+define(["require", "exports", './binding-modes'], function (require, exports, binding_modes_1) {
     var BindingExpression = (function () {
         function BindingExpression(observerLocator, targetProperty, sourceExpression, mode, valueConverterLookupFunction, attribute) {
             this.observerLocator = observerLocator;
@@ -32,7 +32,7 @@ define(["require", "exports", './binding-modes'], function (require, exports, _b
             if ('bind' in targetProperty) {
                 targetProperty.bind();
             }
-            if (this.mode == _binding_modes.ONE_WAY || this.mode == _binding_modes.TWO_WAY) {
+            if (this.mode == binding_modes_1.ONE_WAY || this.mode == binding_modes_1.TWO_WAY) {
                 if (this._disposeObserver) {
                     if (this.source === source) {
                         return;
@@ -51,7 +51,7 @@ define(["require", "exports", './binding-modes'], function (require, exports, _b
                 if (info.value !== undefined) {
                     targetProperty.setValue(info.value);
                 }
-                if (this.mode == _binding_modes.TWO_WAY) {
+                if (this.mode == binding_modes_1.TWO_WAY) {
                     this._disposeListener = targetProperty.subscribe(function (newValue) {
                         _this.sourceExpression.assign(source, newValue, _this.valueConverterLookupFunction);
                     });

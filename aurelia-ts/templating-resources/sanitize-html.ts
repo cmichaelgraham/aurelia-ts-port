@@ -1,16 +1,14 @@
-import {Behavior} from '../templating/index';
+import {valueConverter} from '../binding/index';
 
 var SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 
+@valueConverter('sanitizeHtml')
 export class SanitizeHtmlValueConverter {
-  static metadata(){
-    return Behavior.valueConverter('sanitizeHtml');
-  }
-
   static defaultSanitizer(untrustedMarkup){
     return untrustedMarkup.replace(SCRIPT_REGEX, '');
   }
 
+  public sanitizer;
   constructor() {
     this.sanitizer = SanitizeHtmlValueConverter.defaultSanitizer;
   }

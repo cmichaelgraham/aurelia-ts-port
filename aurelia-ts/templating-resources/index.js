@@ -1,14 +1,13 @@
-define(["require", "exports", './compose', './if', './with', './repeat', './show', './global-behavior', './sanitize-html'], function (require, exports, _compose, _if, _with, _repeat, _show, _global_behavior, _sanitize_html) {
+define(["require", "exports", './compose', './if', './with', './repeat', './show', './global-behavior', './sanitize-html'], function (require, exports, compose_1, if_1, with_1, repeat_1, show_1, global_behavior_1, sanitize_html_1) {
+    exports.Compose = compose_1.Compose;
+    exports.If = if_1.If;
+    exports.With = with_1.With;
+    exports.Repeat = repeat_1.Repeat;
+    exports.Show = show_1.Show;
+    exports.GlobalBehavior = global_behavior_1.GlobalBehavior;
+    exports.SanitizeHtmlValueConverter = sanitize_html_1.SanitizeHtmlValueConverter;
     function install(aurelia) {
         aurelia.globalizeResources('./compose', './if', './with', './repeat', './show', './global-behavior', './sanitize-html');
     }
-    exports.install = install;
-    exports._compose.Compose = _compose.Compose;
-    exports._if.If = _if.If;
-    exports._with.With = _with.With;
-    exports._repeat.Repeat = _repeat.Repeat;
-    exports._show.Show = _show.Show;
-    exports._sanitize_html.SanitizeHtmlValueConverter = _sanitize_html.SanitizeHtmlValueConverter;
-    exports._global_behavior.GlobalBehavior = _global_behavior.GlobalBehavior;
     exports.install = install;
 });

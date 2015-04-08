@@ -4,11 +4,12 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../templating/index', '../binding/index', './syntax-interpreter', '../logging/index'], function (require, exports, _index, _index_1, _syntax_interpreter, LogManager) {
+define(["require", "exports", '../templating/index', '../binding/index', './syntax-interpreter', '../logging/index'], function (require, exports, index_1, index_2, syntax_interpreter_1, LogManager) {
     var info = {}, logger = LogManager.getLogger('templating-binding');
     var TemplatingBindingLanguage = (function (_super) {
         __extends(TemplatingBindingLanguage, _super);
         function TemplatingBindingLanguage(parser, observerLocator, syntaxInterpreter) {
+            _super.call(this);
             this.parser = parser;
             this.observerLocator = observerLocator;
             this.syntaxInterpreter = syntaxInterpreter;
@@ -30,13 +31,7 @@ define(["require", "exports", '../templating/index', '../binding/index', './synt
                 'formtarget': 'formTarget',
             };
         }
-        TemplatingBindingLanguage.inject = function () {
-            return [
-                _index_1.Parser,
-                _index_1.ObserverLocator,
-                _syntax_interpreter.SyntaxInterpreter
-            ];
-        };
+        TemplatingBindingLanguage.inject = function () { return [index_2.Parser, index_2.ObserverLocator, syntax_interpreter_1.SyntaxInterpreter]; };
         TemplatingBindingLanguage.prototype.inspectAttribute = function (resources, attrName, attrValue) {
             var parts = attrName.split('.');
             info.defaultBindingMode = null;
@@ -50,7 +45,7 @@ define(["require", "exports", '../templating/index', '../binding/index', './synt
                 info.attrName = attrName;
                 info.attrValue = attrValue;
                 info.command = null;
-                info.expression = new _index_1.NameExpression(attrValue, 'element');
+                info.expression = new index_2.NameExpression(attrValue, 'element');
             }
             else {
                 info.attrName = attrName;
@@ -66,10 +61,7 @@ define(["require", "exports", '../templating/index', '../binding/index', './synt
                 if (info.attrName === 'ref') {
                     return info.expression;
                 }
-                instruction = existingInstruction || {
-                    attrName: info.attrName,
-                    attributes: {}
-                };
+                instruction = existingInstruction || { attrName: info.attrName, attributes: {} };
                 instruction.attributes[info.attrName] = info.expression;
             }
             else if (info.command) {
@@ -143,10 +135,10 @@ define(["require", "exports", '../templating/index', '../binding/index', './synt
             }
             // literal.
             parts[partIndex] = attrValue.substr(pos);
-            return new InterpolationBindingExpression(this.observerLocator, this.attributeMap[attrName] || attrName, parts, _index_1.ONE_WAY, resources.valueConverterLookupFunction, attrName);
+            return new InterpolationBindingExpression(this.observerLocator, this.attributeMap[attrName] || attrName, parts, index_2.ONE_WAY, resources.valueConverterLookupFunction, attrName);
         };
         return TemplatingBindingLanguage;
-    })(_index.BindingLanguage);
+    })(index_1.BindingLanguage);
     exports.TemplatingBindingLanguage = TemplatingBindingLanguage;
     var InterpolationBindingExpression = (function () {
         function InterpolationBindingExpression(observerLocator, targetProperty, parts, mode, valueConverterLookupFunction, attribute) {
@@ -184,7 +176,7 @@ define(["require", "exports", '../templating/index', '../binding/index', './synt
         };
         InterpolationBinding.prototype.bind = function (source) {
             this.source = source;
-            if (this.mode == _index_1.ONE_WAY) {
+            if (this.mode == index_2.ONE_WAY) {
                 this.unbind();
                 this.connect();
                 this.setValue();

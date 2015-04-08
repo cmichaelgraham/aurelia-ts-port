@@ -1,4 +1,5 @@
-import {Behavior} from '../templating/index';
+import {inject} from '../dependency-injection/index';
+import {customAttribute} from '../templating/index';
 
 function addStyleString(str) {
   var node = document.createElement('style');
@@ -9,14 +10,10 @@ function addStyleString(str) {
 
 addStyleString('.aurelia-hide { display:none !important; }');
 
+@customAttribute('show')
+@inject(Element)
 export class Show {
-  static metadata(){
-    return Behavior
-      .attachedBehavior('show')
-      .withProperty('value', 'valueChanged', 'show');
-  }
-
-  static inject() { return [Element]; }
+  public element;
   constructor(element) {
     this.element = element;
   }

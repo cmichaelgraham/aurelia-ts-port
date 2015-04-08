@@ -3,12 +3,18 @@ import {Parser, ObserverLocator, BindingExpression, NameExpression, ONE_WAY} fro
 import {SyntaxInterpreter} from './syntax-interpreter';
 import * as LogManager from '../logging/index';
 
-var info = {},
+var info:any = {},
     logger = LogManager.getLogger('templating-binding');
 
 export class TemplatingBindingLanguage extends BindingLanguage {
   static inject() { return [Parser, ObserverLocator, SyntaxInterpreter]; }
+  public parser;
+  public observerLocator;
+  public syntaxInterpreter;
+  public emptyStringExpression;
+  public attributeMap;
 	constructor(parser, observerLocator, syntaxInterpreter){
+    super();
     this.parser = parser;
     this.observerLocator = observerLocator;
     this.syntaxInterpreter = syntaxInterpreter;
@@ -162,6 +168,13 @@ export class TemplatingBindingLanguage extends BindingLanguage {
 }
 
 export class InterpolationBindingExpression {
+  public observerLocator;
+  public targetProperty;
+  public parts;
+  public mode;
+  public valueConverterLookupFunction;
+  public attribute;
+  public discrete;
   constructor(observerLocator, targetProperty, parts,
     mode, valueConverterLookupFunction, attribute){
     this.observerLocator = observerLocator;
@@ -186,6 +199,13 @@ export class InterpolationBindingExpression {
 }
 
 class InterpolationBinding {
+  public observerLocator;
+  public parts;
+  public targetProperty;
+  public mode;
+  public valueConverterLookupFunction;
+  public toDispose;
+  public source;
   constructor(observerLocator, parts, target, targetProperty, mode, valueConverterLookupFunction){
     if (targetProperty === 'style') {
       logger.info('Internet Explorer does not support interpolation in "style" attributes.  Use the style attribute\'s alias, "css" instead.');

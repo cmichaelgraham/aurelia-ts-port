@@ -1,8 +1,15 @@
 import {ONE_WAY, TWO_WAY} from './binding-modes';
 
 export class BindingExpression {
+  public observerLocator;
+  public targetProperty;
+  public sourceExpression;
+  public mode;
+  public valueConverterLookupFunction;
+  public attribute;
+  public discrete;
   constructor(observerLocator, targetProperty, sourceExpression,
-    mode, valueConverterLookupFunction, attribute){
+    mode, valueConverterLookupFunction, attribute?){
     this.observerLocator = observerLocator;
     this.targetProperty = targetProperty;
     this.sourceExpression = sourceExpression;
@@ -25,6 +32,14 @@ export class BindingExpression {
 }
 
 class Binding {
+  public observerLocator;
+  public sourceExpression;
+  public targetProperty;
+  public mode;
+  public valueConverterLookupFunction;
+  public source;
+  private _disposeObserver;
+  private _disposeListener;
   constructor(observerLocator, sourceExpression, target, targetProperty, mode, valueConverterLookupFunction){
     this.observerLocator = observerLocator;
     this.sourceExpression = sourceExpression;

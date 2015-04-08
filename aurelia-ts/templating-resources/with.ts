@@ -1,13 +1,13 @@
-import {Behavior, BoundViewFactory, ViewSlot} from '../templating/index';
+import {inject} from '../dependency-injection/index';
+import {BoundViewFactory, ViewSlot, customAttribute, templateController} from '../templating/index';
 
+@customAttribute('with')
+@templateController
+@inject(BoundViewFactory, ViewSlot)
 export class With {
-  static metadata(){
-    return Behavior
-      .templateController('with')
-      .withProperty('value', 'valueChanged', 'with');
-  }
-
-  static inject() { return [BoundViewFactory, ViewSlot]; }
+  public viewFactory;
+  public viewSlot;
+  public view;
   constructor(viewFactory, viewSlot){
     this.viewFactory = viewFactory;
     this.viewSlot = viewSlot;

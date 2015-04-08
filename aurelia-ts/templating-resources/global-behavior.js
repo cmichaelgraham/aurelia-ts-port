@@ -1,18 +1,21 @@
-define(["require", "exports", '../templating/index', '../logging/index'], function (require, exports, _index, LogManager) {
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", '../dependency-injection/index', '../templating/index', '../logging/index', '../logging/index'], function (require, exports, index_1, index_2, index_3, LogManager) {
     var GlobalBehavior = (function () {
         function GlobalBehavior(element) {
             this.element = element;
         }
-        GlobalBehavior.metadata = function () {
-            return _index.Behavior.attachedBehavior('global-behavior').withOptions().and(function (x) {
-                return x.dynamic();
-            });
-        };
-        GlobalBehavior.inject = function () {
-            return [
-                Element
-            ];
-        };
         GlobalBehavior.prototype.bind = function () {
             var handler = GlobalBehavior.handlers[this.aureliaAttrName];
             if (!handler) {
@@ -22,7 +25,7 @@ define(["require", "exports", '../templating/index', '../logging/index'], functi
                 this.handler = handler.bind(this, this.element, this.aureliaCommand) || handler;
             }
             catch (error) {
-                throw new Error('Conventional binding handler failed.', error);
+                throw index_3.AggregateError('Conventional binding handler failed.', error);
             }
         };
         GlobalBehavior.prototype.attached = function () {
@@ -41,6 +44,7 @@ define(["require", "exports", '../templating/index', '../logging/index'], functi
             }
             this.handler = null;
         };
+        GlobalBehavior = __decorate([index_2.customAttribute('global-behavior'), index_2.dynamicOptions, index_1.inject(Element)], GlobalBehavior);
         return GlobalBehavior;
     })();
     exports.GlobalBehavior = GlobalBehavior;
@@ -62,7 +66,8 @@ define(["require", "exports", '../templating/index', '../logging/index'], functi
                 var pluginName = GlobalBehavior.jQueryPlugins[command] || command;
                 var jqueryElement = window.jQuery(element);
                 if (!jqueryElement[pluginName]) {
-                    LogManager.getLogger('templating-resources').warn("Could not find the jQuery plugin " + pluginName + ", possibly due to case mismatch. Trying to enumerate jQuery methods in lowercase. Add the correctly cased plugin name to the GlobalBehavior to avoid this performance hit.");
+                    LogManager.getLogger('templating-resources')
+                        .warn("Could not find the jQuery plugin " + pluginName + ", possibly due to case mismatch. Trying to enumerate jQuery methods in lowercase. Add the correctly cased plugin name to the GlobalBehavior to avoid this performance hit.");
                     for (var prop in jqueryElement) {
                         if (prop.toLowerCase() === pluginName) {
                             pluginName = prop;

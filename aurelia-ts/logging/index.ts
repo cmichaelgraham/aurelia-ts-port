@@ -11,7 +11,7 @@
  * @class AggregateError
  * @constructor
  */
- export function AggregateError(msg, inner, skipIfAlreadyAggregate) {
+ export function AggregateError(msg, inner, skipIfAlreadyAggregate?) {
   if(inner){
     if(inner.innerError && skipIfAlreadyAggregate){
       return inner;

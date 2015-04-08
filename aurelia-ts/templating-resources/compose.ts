@@ -1,17 +1,25 @@
-import {Container} from '../dependency-injection/index';
-import {Behavior, CompositionEngine, ViewSlot, ViewResources} from '../templating/index';
+import {Container, inject} from '../dependency-injection/index';
+import {
+  CompositionEngine, ViewSlot, ViewResources,
+  customElement, bindableProperty, noView
+} from '../templating/index';
 
+@customElement('compose')
+@bindableProperty('model')
+@bindableProperty('view')
+@bindableProperty('viewModel')
+@noView
+@inject(Container, CompositionEngine, ViewSlot, ViewResources)
 export class Compose {
-  static metadata(){
-    return Behavior
-      .customElement('compose')
-      .withProperty('model')
-      .withProperty('view')
-      .withProperty('viewModel')
-      .noView();
-  }
-
-  static inject(){ return [Container,CompositionEngine,ViewSlot,ViewResources]; }
+  public container;
+  public compositionEngine;
+  public viewSlot;
+  public viewResources;
+  public executionContext;
+  public currentViewModel;
+  public view;
+  public viewModel;
+  public model;
 	constructor(container, compositionEngine, viewSlot, viewResources){
 		this.container = container;
 		this.compositionEngine = compositionEngine;

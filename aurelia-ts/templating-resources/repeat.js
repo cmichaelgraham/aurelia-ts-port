@@ -1,4 +1,17 @@
-define(["require", "exports", '../binding/index', '../templating/index'], function (require, exports, _index, _index_1) {
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", '../framework/index', '../binding/index', '../templating/index'], function (require, exports, index_1, index_2, index_3) {
     var Repeat = (function () {
         function Repeat(viewFactory, viewSlot, observerLocator) {
             this.viewFactory = viewFactory;
@@ -8,19 +21,9 @@ define(["require", "exports", '../binding/index', '../templating/index'], functi
             this.key = 'key';
             this.value = 'value';
         }
-        Repeat.metadata = function () {
-            return _index_1.Behavior.templateController('repeat').withProperty('items', 'itemsChanged', 'repeat').withProperty('local').withProperty('key').withProperty('value');
-        };
-        Repeat.inject = function () {
-            return [
-                _index_1.BoundViewFactory,
-                _index_1.ViewSlot,
-                _index.ObserverLocator
-            ];
-        };
         Repeat.prototype.bind = function (executionContext) {
             var _this = this;
-            var items = this.items;
+            var items = this.items, observer;
             this.executionContext = executionContext;
             if (!items) {
                 if (this.oldItems) {
@@ -30,16 +33,16 @@ define(["require", "exports", '../binding/index', '../templating/index'], functi
             }
             if (this.oldItems === items) {
                 if (items instanceof Map) {
-                    var records = _index.getChangeRecords(items);
-                    var observer = this.observerLocator.getMapObserver(items);
+                    var records = index_2.getChangeRecords(items);
+                    observer = this.observerLocator.getMapObserver(items);
                     this.handleMapChangeRecords(items, records);
                     this.disposeSubscription = observer.subscribe(function (records) {
                         _this.handleMapChangeRecords(items, records);
                     });
                 }
                 else {
-                    var splices = _index.calcSplices(items, 0, items.length, this.lastBoundItems, 0, this.lastBoundItems.length);
-                    var observer = this.observerLocator.getArrayObserver(items);
+                    var splices = index_2.calcSplices(items, 0, items.length, this.lastBoundItems, 0, this.lastBoundItems.length);
+                    observer = this.observerLocator.getArrayObserver(items);
                     this.handleSplices(items, splices);
                     this.lastBoundItems = this.oldItems = null;
                     this.disposeSubscription = observer.subscribe(function (splices) {
@@ -139,47 +142,43 @@ define(["require", "exports", '../binding/index', '../templating/index'], functi
             return context;
         };
         Repeat.prototype.handleSplices = function (array, splices) {
-            var viewLookup = new Map(), removeDelta = 0, arrayLength = array.length, viewSlot = this.viewSlot, viewFactory = this.viewFactory, i, ii, j, jj, splice, removed, addIndex, end, model, view, children, length, row;
-            //TODO: track which views are moved instead of removed better
-            //TODO: only update context after highest changed index
-            for (i = 0, ii = splices.length; i < ii; ++i) {
-                splice = splices[i];
-                removed = splice.removed;
-                for (j = 0, jj = removed.length; j < jj; ++j) {
-                    model = removed[j];
-                    view = viewSlot.removeAt(splice.index + removeDelta);
-                    if (view) {
-                        viewLookup.set(model, view);
-                    }
-                }
-                removeDelta -= splice.addedCount;
-            }
+            var viewSlot = this.viewSlot, spliceIndexLow = splices[0].index, view, i, ii, j, jj, row, splice, addIndex, end, itemsLeftToAdd, removed, model, children, length;
             for (i = 0, ii = splices.length; i < ii; ++i) {
                 splice = splices[i];
                 addIndex = splice.index;
+                itemsLeftToAdd = splice.addedCount;
                 end = splice.index + splice.addedCount;
-                for (; addIndex < end; ++addIndex) {
-                    model = array[addIndex];
-                    view = viewLookup.get(model);
-                    if (view) {
-                        viewLookup.delete(model);
-                        viewSlot.insert(addIndex, view); //TODO: move
+                removed = splice.removed;
+                if (spliceIndexLow > splice.index) {
+                    spliceIndexLow = splice.index;
+                }
+                for (j = 0, jj = removed.length; j < jj; ++j) {
+                    if (itemsLeftToAdd > 0) {
+                        view = viewSlot.children[splice.index + j];
+                        view.executionContext[this.local] = array[addIndex + j];
+                        --itemsLeftToAdd;
                     }
                     else {
-                        row = this.createBaseExecutionContext(model);
-                        view = this.viewFactory.create(row);
-                        viewSlot.insert(addIndex, view);
+                        view = viewSlot.removeAt(addIndex + splice.addedCount);
                     }
                 }
+                addIndex += removed.length;
+                for (; 0 < itemsLeftToAdd; ++addIndex) {
+                    model = array[addIndex];
+                    row = this.createBaseExecutionContext(model);
+                    view = this.viewFactory.create(row);
+                    viewSlot.insert(addIndex, view);
+                    --itemsLeftToAdd;
+                }
             }
-            children = viewSlot.children;
+            children = this.viewSlot.children;
             length = children.length;
-            for (i = 0; i < length; i++) {
-                this.updateExecutionContext(children[i].executionContext, i, length);
+            if (spliceIndexLow > 0) {
+                spliceIndexLow = spliceIndexLow - 1;
             }
-            viewLookup.forEach(function (x) {
-                return x.unbind();
-            });
+            for (; spliceIndexLow < length; ++spliceIndexLow) {
+                this.updateExecutionContext(children[spliceIndexLow].executionContext, spliceIndexLow, length);
+            }
         };
         Repeat.prototype.handleMapChangeRecords = function (map, records) {
             var viewSlot = this.viewSlot, key, i, ii, view, children, length, row, removeIndex, record;
@@ -225,6 +224,7 @@ define(["require", "exports", '../binding/index', '../templating/index'], functi
                 }
             }
         };
+        Repeat = __decorate([index_3.customAttribute('repeat'), index_3.bindableProperty('items'), index_3.bindableProperty('local'), index_3.bindableProperty('key'), index_3.templateController, index_1.inject(index_3.BoundViewFactory, index_3.ViewSlot, index_2.ObserverLocator)], Repeat);
         return Repeat;
     })();
     exports.Repeat = Repeat;

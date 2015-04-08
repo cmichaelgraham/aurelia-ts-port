@@ -1,17 +1,11 @@
-define(["require", "exports", 'aurelia-binding'], function (require, exports, _aurelia_binding) {
+define(["require", "exports", '../binding/index'], function (require, exports, index_1) {
     var SyntaxInterpreter = (function () {
         function SyntaxInterpreter(parser, observerLocator, eventManager) {
             this.parser = parser;
             this.observerLocator = observerLocator;
             this.eventManager = eventManager;
         }
-        SyntaxInterpreter.inject = function () {
-            return [
-                _aurelia_binding.Parser,
-                _aurelia_binding.ObserverLocator,
-                _aurelia_binding.EventManager
-            ];
-        };
+        SyntaxInterpreter.inject = function () { return [index_1.Parser, index_1.ObserverLocator, index_1.EventManager]; };
         SyntaxInterpreter.prototype.interpret = function (resources, element, info, existingInstruction) {
             if (info.command in this) {
                 return this[info.command](resources, element, info, existingInstruction);
@@ -30,43 +24,35 @@ define(["require", "exports", 'aurelia-binding'], function (require, exports, _a
         SyntaxInterpreter.prototype.determineDefaultBindingMode = function (element, attrName) {
             var tagName = element.tagName.toLowerCase();
             if (tagName === 'input') {
-                return attrName === 'value' || attrName === 'checked' ? _aurelia_binding.TWO_WAY : _aurelia_binding.ONE_WAY;
+                return attrName === 'value' || attrName === 'checked' ? index_1.TWO_WAY : index_1.ONE_WAY;
             }
             else if (tagName == 'textarea' || tagName == 'select') {
-                return attrName == 'value' ? _aurelia_binding.TWO_WAY : _aurelia_binding.ONE_WAY;
+                return attrName == 'value' ? index_1.TWO_WAY : index_1.ONE_WAY;
             }
             else if (attrName === 'textcontent' || attrName === 'innerhtml') {
-                return element.contentEditable === 'true' ? _aurelia_binding.TWO_WAY : _aurelia_binding.ONE_WAY;
+                return element.contentEditable === 'true' ? index_1.TWO_WAY : index_1.ONE_WAY;
             }
-            return _aurelia_binding.ONE_WAY;
+            return index_1.ONE_WAY;
         };
         SyntaxInterpreter.prototype.bind = function (resources, element, info, existingInstruction) {
-            var instruction = existingInstruction || {
-                attrName: info.attrName,
-                attributes: {}
-            };
-            instruction.attributes[info.attrName] = new _aurelia_binding.BindingExpression(this.observerLocator, this.attributeMap[info.attrName] || info.attrName, this.parser.parse(info.attrValue), info.defaultBindingMode || this.determineDefaultBindingMode(element, info.attrName), resources.valueConverterLookupFunction);
+            var instruction = existingInstruction || { attrName: info.attrName, attributes: {} };
+            instruction.attributes[info.attrName] = new index_1.BindingExpression(this.observerLocator, this.attributeMap[info.attrName] || info.attrName, this.parser.parse(info.attrValue), info.defaultBindingMode || this.determineDefaultBindingMode(element, info.attrName), resources.valueConverterLookupFunction);
             return instruction;
         };
         SyntaxInterpreter.prototype.trigger = function (resources, element, info) {
-            return new _aurelia_binding.ListenerExpression(this.eventManager, info.attrName, this.parser.parse(info.attrValue), false, true);
+            return new index_1.ListenerExpression(this.eventManager, info.attrName, this.parser.parse(info.attrValue), false, true);
         };
         SyntaxInterpreter.prototype.delegate = function (resources, element, info) {
-            return new _aurelia_binding.ListenerExpression(this.eventManager, info.attrName, this.parser.parse(info.attrValue), true, true);
+            return new index_1.ListenerExpression(this.eventManager, info.attrName, this.parser.parse(info.attrValue), true, true);
         };
         SyntaxInterpreter.prototype.call = function (resources, element, info, existingInstruction) {
-            var instruction = existingInstruction || {
-                attrName: info.attrName,
-                attributes: {}
-            };
-            instruction.attributes[info.attrName] = new _aurelia_binding.CallExpression(this.observerLocator, info.attrName, this.parser.parse(info.attrValue), resources.valueConverterLookupFunction);
+            var instruction = existingInstruction || { attrName: info.attrName, attributes: {} };
+            instruction.attributes[info.attrName] = new index_1.CallExpression(this.observerLocator, info.attrName, this.parser.parse(info.attrValue), resources.valueConverterLookupFunction);
             return instruction;
         };
+        ;
         SyntaxInterpreter.prototype.options = function (resources, element, info, existingInstruction) {
-            var instruction = existingInstruction || {
-                attrName: info.attrName,
-                attributes: {}
-            }, attrValue = info.attrValue, language = this.language, name = null, target = '', current, i, ii;
+            var instruction = existingInstruction || { attrName: info.attrName, attributes: {} }, attrValue = info.attrValue, language = this.language, name = null, target = '', current, i, ii;
             for (i = 0, ii = attrValue.length; i < ii; ++i) {
                 current = attrValue[i];
                 if (current === ';') {
@@ -103,10 +89,7 @@ define(["require", "exports", 'aurelia-binding'], function (require, exports, _a
         if (parts.length !== 2) {
             throw new Error('Incorrect syntax for "for". The form is: "$local of $items".');
         }
-        var instruction = existingInstruction || {
-            attrName: info.attrName,
-            attributes: {}
-        };
+        var instruction = existingInstruction || { attrName: info.attrName, attributes: {} };
         if (parts[0].match(/[[].+[,]\s.+[\]]/)) {
             var firstPart = parts[0];
             parts[0] = firstPart.substr(1, firstPart.indexOf(',') - 1);
@@ -117,34 +100,25 @@ define(["require", "exports", 'aurelia-binding'], function (require, exports, _a
         else {
             instruction.attributes.local = parts[0];
         }
-        instruction.attributes[info.attrName] = new _aurelia_binding.BindingExpression(this.observerLocator, info.attrName, this.parser.parse(parts[parts.length - 1]), _aurelia_binding.ONE_WAY, resources.valueConverterLookupFunction);
+        instruction.attributes.items = new index_1.BindingExpression(this.observerLocator, 'items', this.parser.parse(parts[parts.length - 1]), index_1.ONE_WAY, resources.valueConverterLookupFunction);
         return instruction;
     };
     SyntaxInterpreter.prototype['two-way'] = function (resources, element, info, existingInstruction) {
-        var instruction = existingInstruction || {
-            attrName: info.attrName,
-            attributes: {}
-        };
-        instruction.attributes[info.attrName] = new _aurelia_binding.BindingExpression(this.observerLocator, info.attrName, this.parser.parse(info.attrValue), _aurelia_binding.TWO_WAY, resources.valueConverterLookupFunction);
+        var instruction = existingInstruction || { attrName: info.attrName, attributes: {} };
+        instruction.attributes[info.attrName] = new index_1.BindingExpression(this.observerLocator, info.attrName, this.parser.parse(info.attrValue), index_1.TWO_WAY, resources.valueConverterLookupFunction);
         return instruction;
     };
     SyntaxInterpreter.prototype['one-way'] = function (resources, element, info, existingInstruction) {
-        var instruction = existingInstruction || {
-            attrName: info.attrName,
-            attributes: {}
-        };
-        instruction.attributes[info.attrName] = new _aurelia_binding.BindingExpression(this.observerLocator, this.attributeMap[info.attrName] || info.attrName, this.parser.parse(info.attrValue), _aurelia_binding.ONE_WAY, resources.valueConverterLookupFunction);
+        var instruction = existingInstruction || { attrName: info.attrName, attributes: {} };
+        instruction.attributes[info.attrName] = new index_1.BindingExpression(this.observerLocator, this.attributeMap[info.attrName] || info.attrName, this.parser.parse(info.attrValue), index_1.ONE_WAY, resources.valueConverterLookupFunction);
         return instruction;
     };
     SyntaxInterpreter.prototype['one-time'] = function (resources, element, info, existingInstruction) {
-        var instruction = existingInstruction || {
-            attrName: info.attrName,
-            attributes: {}
-        };
-        instruction.attributes[info.attrName] = new _aurelia_binding.BindingExpression(this.observerLocator, this.attributeMap[info.attrName] || info.attrName, this.parser.parse(info.attrValue), _aurelia_binding.ONE_TIME, resources.valueConverterLookupFunction);
+        var instruction = existingInstruction || { attrName: info.attrName, attributes: {} };
+        instruction.attributes[info.attrName] = new index_1.BindingExpression(this.observerLocator, this.attributeMap[info.attrName] || info.attrName, this.parser.parse(info.attrValue), index_1.ONE_TIME, resources.valueConverterLookupFunction);
         return instruction;
     };
     SyntaxInterpreter.prototype["view-model"] = function (resources, element, info) {
-        return new _aurelia_binding.NameExpression(info.attrValue, 'view-model');
+        return new index_1.NameExpression(info.attrValue, 'view-model');
     };
 });

@@ -1,18 +1,17 @@
-define(["require", "exports", '../templating/index', './binding-language', './syntax-interpreter'], function (require, exports, _index, _binding_language, _syntax_interpreter) {
+define(["require", "exports", '../templating/index', './binding-language', './syntax-interpreter'], function (require, exports, index_1, binding_language_1, syntax_interpreter_1) {
+    exports.TemplatingBindingLanguage = binding_language_1.TemplatingBindingLanguage;
+    exports.SyntaxInterpreter = syntax_interpreter_1.SyntaxInterpreter;
     function install(aurelia) {
         var instance, getInstance = function (c) {
-            return instance || (instance = c.invoke(_binding_language.TemplatingBindingLanguage));
+            return instance || (instance = c.invoke(binding_language_1.TemplatingBindingLanguage));
         };
-        if (aurelia.container.hasHandler(_binding_language.TemplatingBindingLanguage)) {
-            instance = aurelia.container.get(_binding_language.TemplatingBindingLanguage);
+        if (aurelia.container.hasHandler(binding_language_1.TemplatingBindingLanguage)) {
+            instance = aurelia.container.get(binding_language_1.TemplatingBindingLanguage);
         }
         else {
-            aurelia.container.registerHandler(_binding_language.TemplatingBindingLanguage, getInstance);
+            aurelia.container.registerHandler(binding_language_1.TemplatingBindingLanguage, getInstance);
         }
-        aurelia.container.registerHandler(_index.BindingLanguage, getInstance);
+        aurelia.container.registerHandler(index_1.BindingLanguage, getInstance);
     }
-    exports.install = install;
-    exports._binding_language.TemplatingBindingLanguage = _binding_language.TemplatingBindingLanguage;
-    exports._syntax_interpreter.SyntaxInterpreter = _syntax_interpreter.SyntaxInterpreter;
     exports.install = install;
 });

@@ -9,10 +9,15 @@ import {
   ONE_WAY,
   TWO_WAY,
   ONE_TIME
-} from 'aurelia-binding';
+} from '../binding/index';
 
 export class SyntaxInterpreter {
   static inject() { return [Parser,ObserverLocator,EventManager]; }
+  public parser;
+  public observerLocator;
+  public eventManager;
+  public attributeMap;
+  public language;
   constructor(parser, observerLocator, eventManager){
     this.parser = parser;
     this.observerLocator = observerLocator;
@@ -161,9 +166,9 @@ SyntaxInterpreter.prototype['for'] = function(resources, element, info, existing
     instruction.attributes.local = parts[0];
   }
 
-  instruction.attributes[info.attrName] = new BindingExpression(
+  instruction.attributes.items = new BindingExpression(
       this.observerLocator,
-      info.attrName,
+      'items',
       this.parser.parse(parts[parts.length - 1]),
       ONE_WAY,
       resources.valueConverterLookupFunction

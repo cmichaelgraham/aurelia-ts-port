@@ -1,13 +1,13 @@
-import {Behavior, BoundViewFactory, ViewSlot} from '../templating/index';
+import {BoundViewFactory, ViewSlot, customAttribute, templateController} from '../templating/index';
+import {inject} from '../dependency-injection/index';
 
-export class If {
-  static metadata(){
-    return Behavior
-      .templateController('if')
-      .withProperty('value', 'valueChanged', 'if');
-  }
-
-  static inject() { return [BoundViewFactory, ViewSlot]; }
+@customAttribute('if')
+@templateController
+@inject(BoundViewFactory, ViewSlot)export class If {
+  public viewFactory;
+  public viewSlot;
+  public showing;
+  public view;
   constructor(viewFactory, viewSlot){
     this.viewFactory = viewFactory;
     this.viewSlot = viewSlot;

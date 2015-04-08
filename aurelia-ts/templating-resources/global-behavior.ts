@@ -1,14 +1,21 @@
-import {Behavior} from '../templating/index';
+import {inject} from '../dependency-injection/index';
+import {customAttribute, dynamicOptions} from '../templating/index';
+import {AggregateError} from '../logging/index';
 import * as LogManager from '../logging/index';
 
+@customAttribute('global-behavior')
+@dynamicOptions
+@inject(Element)
 export class GlobalBehavior {
-  static metadata(){
-    return Behavior
-      .attachedBehavior('global-behavior')
-      .withOptions().and(x => x.dynamic());
-  }
+  public element;
+  public handler;
+  public aureliaCommand;
+  public aureliaAttrName;
 
-  static inject() { return [Element]; }
+  public static handlers;
+  public static createSettingsFromBehavior;
+  public static jQueryPlugins;
+
   constructor(element) {
     this.element = element;
   }
@@ -23,7 +30,7 @@ export class GlobalBehavior {
     try{
       this.handler = handler.bind(this, this.element, this.aureliaCommand) || handler;
     }catch(error){
-      throw new Error('Conventional binding handler failed.', error);
+      throw AggregateError('Conventional binding handler failed.', error);
     }
   }
 
@@ -69,7 +76,7 @@ GlobalBehavior.handlers = {
     bind(behavior, element, command){
       var settings = GlobalBehavior.createSettingsFromBehavior(behavior);
       var pluginName = GlobalBehavior.jQueryPlugins[command] || command;
-      var jqueryElement = window.jQuery(element);
+      var jqueryElement = (<any>window).jQuery(element);
 
       if(!jqueryElement[pluginName]){
         LogManager.getLogger('templating-resources')
