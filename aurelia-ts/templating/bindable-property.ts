@@ -1,3 +1,4 @@
+import core from 'core-js';
 import {hyphenate} from './util';
 import {ONE_WAY,TWO_WAY,ONE_TIME} from '../binding/index';
 
@@ -5,7 +6,7 @@ function getObserver(behavior, instance, name){
   var lookup = instance.__observers__;
 
   if(lookup === undefined){
-    lookup = behavior.observerLocator.getObserversLookup(this);
+    lookup = behavior.observerLocator.getObserversLookup(instance);
     behavior.ensurePropertiesDefined(instance, lookup);
   }
 
@@ -34,22 +35,21 @@ export class BindableProperty {
   }
 
   registerWith(target, behavior){
-    var handlerName;
-
-    if(this.changeHandler === undefined){
-      handlerName = this.name + 'Changed';
-      if(handlerName in target.prototype){
-        this.changeHandler = handlerName;
-      }
-    }
-
     behavior.properties.push(this);
     behavior.attributes[this.attribute] = this;
     this.owner = behavior;
   }
 
   defineOn(target, behavior){
-    var name = this.name;
+    var name = this.name,
+            handlerName;
+
+    if(this.changeHandler === undefined){
+      handlerName = name + 'Changed';
+      if(handlerName in target.prototype){
+        this.changeHandler = handlerName;
+      }
+    }
 
     Object.defineProperty(target.prototype, name, {
       configurable: true,

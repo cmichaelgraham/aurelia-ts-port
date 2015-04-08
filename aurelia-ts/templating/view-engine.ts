@@ -1,3 +1,4 @@
+import core from 'core-js';
 import * as LogManager from '../logging/index';
 import {Origin} from '../metadata/index';
 import {Loader,TemplateRegistryEntry} from '../loader/index';
@@ -18,6 +19,11 @@ function ensureRegistryEntry(loader, urlOrRegistryEntry){
 
 export class ViewEngine {
   static inject() { return [Loader, Container, ViewCompiler, ModuleAnalyzer, ResourceRegistry]; }
+  public loader;
+  public container;
+  public viewCompiler;
+  public moduleAnalyzer;
+  public appResources;
   constructor(loader, container, viewCompiler, moduleAnalyzer, appResources){
     this.loader = loader;
     this.container = container;
@@ -64,7 +70,7 @@ export class ViewEngine {
 
   importViewModelResource(moduleImport, moduleMember){
     return this.loader.loadModule(moduleImport).then(viewModelModule => {
-      var normalizedId = Origin.get(viewModelModule).moduleId,
+      var normalizedId = (<any>(Origin.get(viewModelModule))).moduleId,
           resourceModule = this.moduleAnalyzer.analyze(normalizedId, viewModelModule, moduleMember);
 
       if(!resourceModule.mainResource){
@@ -89,7 +95,7 @@ export class ViewEngine {
       //and enables order independence
       for(i = 0, ii = imports.length; i < ii; ++i){
         current = imports[i];
-        normalizedId = Origin.get(current).moduleId;
+        normalizedId = (<any>(Origin.get(current))).moduleId;
 
         analysis = moduleAnalyzer.analyze(normalizedId, current);
         analysis.analyze(container);

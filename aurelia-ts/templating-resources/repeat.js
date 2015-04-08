@@ -224,7 +224,7 @@ define(["require", "exports", '../framework/index', '../binding/index', '../temp
                 }
             }
         };
-        Repeat = __decorate([index_3.customAttribute('repeat'), index_3.bindableProperty('items'), index_3.bindableProperty('local'), index_3.bindableProperty('key'), index_3.templateController, index_1.inject(index_3.BoundViewFactory, index_3.ViewSlot, index_2.ObserverLocator)], Repeat);
+        Repeat = __decorate([index_3.customAttribute('repeat'), index_3.bindable('items'), index_3.bindable('local'), index_3.bindable('key'), index_3.templateController, index_1.inject(index_3.BoundViewFactory, index_3.ViewSlot, index_2.ObserverLocator)], Repeat);
         return Repeat;
     })();
     exports.Repeat = Repeat;

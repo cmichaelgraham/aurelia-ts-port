@@ -1,4 +1,4 @@
-define(["require", "exports", './metadata'], function (require, exports, metadata_1) {
+define(["require", "exports"], function (require, exports) {
     var DecoratorApplicator = (function () {
         function DecoratorApplicator() {
             this._first = null;
@@ -6,18 +6,6 @@ define(["require", "exports", './metadata'], function (require, exports, metadat
             this._third = null;
             this._rest = null;
         }
-        DecoratorApplicator.prototype.metadata = function () {
-            var rest = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                rest[_i - 0] = arguments[_i];
-            }
-            return this.decorator(function (target) {
-                var meta = metadata_1.Metadata.on(target);
-                for (var i = 0, ii = rest.length; i < ii; ++i) {
-                    meta.add(rest[i]);
-                }
-            });
-        };
         DecoratorApplicator.prototype.decorator = function (decorator) {
             if (this._first === null) {
                 this._first = decorator;

@@ -106,7 +106,7 @@ define(["require", "exports", '../metadata/index', '../binding/index', '../task-
                 registry.registerElement(name || this.elementName, this);
             }
         };
-        HtmlBehaviorResource.prototype.compile = function (compiler, resources, node, instruction) {
+        HtmlBehaviorResource.prototype.compile = function (compiler, resources, node, instruction, parentNode) {
             if (this.liftsContent) {
                 if (!instruction.viewFactory) {
                     var template = document.createElement('template'), fragment = document.createDocumentFragment();
@@ -115,10 +115,10 @@ define(["require", "exports", '../metadata/index', '../binding/index', '../task-
                         node.parentNode.replaceChild(template, node);
                     }
                     else if (window.ShadowDOMPolyfill) {
-                        window.ShadowDOMPolyfill.unwrap(node.parentNode).replaceChild(window.ShadowDOMPolyfill.unwrap(template), window.ShadowDOMPolyfill.unwrap(node));
+                        window.ShadowDOMPolyfill.unwrap(parentNode).replaceChild(window.ShadowDOMPolyfill.unwrap(template), window.ShadowDOMPolyfill.unwrap(node));
                     }
                     else {
-                        node.parentNode.replaceChild(template, node);
+                        parentNode.replaceChild(template, node);
                     }
                     fragment.appendChild(node);
                     instruction.viewFactory = compiler.compile(fragment, resources);

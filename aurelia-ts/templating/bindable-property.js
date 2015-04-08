@@ -2,7 +2,7 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
     function getObserver(behavior, instance, name) {
         var lookup = instance.__observers__;
         if (lookup === undefined) {
-            lookup = behavior.observerLocator.getObserversLookup(this);
+            lookup = behavior.observerLocator.getObserversLookup(instance);
             behavior.ensurePropertiesDefined(instance, lookup);
         }
         return lookup[name];
@@ -20,19 +20,18 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
             this.owner = null;
         }
         BindableProperty.prototype.registerWith = function (target, behavior) {
-            var handlerName;
-            if (this.changeHandler === undefined) {
-                handlerName = this.name + 'Changed';
-                if (handlerName in target.prototype) {
-                    this.changeHandler = handlerName;
-                }
-            }
             behavior.properties.push(this);
             behavior.attributes[this.attribute] = this;
             this.owner = behavior;
         };
         BindableProperty.prototype.defineOn = function (target, behavior) {
-            var name = this.name;
+            var name = this.name, handlerName;
+            if (this.changeHandler === undefined) {
+                handlerName = name + 'Changed';
+                if (handlerName in target.prototype) {
+                    this.changeHandler = handlerName;
+                }
+            }
             Object.defineProperty(target.prototype, name, {
                 configurable: true,
                 enumerable: true,

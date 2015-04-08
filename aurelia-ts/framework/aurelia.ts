@@ -76,7 +76,7 @@ export class Aurelia {
   public started;
   public host;
   public root;
-  constructor(loader, container, resources){
+  constructor(loader?, container?, resources?){
     this.loader = loader || new (<any>window).AureliaLoader();
     this.container = container || new Container();
     this.resources = resources || new ResourceRegistry();

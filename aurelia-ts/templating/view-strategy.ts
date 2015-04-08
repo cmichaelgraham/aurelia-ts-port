@@ -1,5 +1,6 @@
 import {Metadata, Origin} from '../metadata/index';
 import {relativeToFile} from '../path/index';
+import {AggregateError} from '../logging/index';
 
 export class ViewStrategy {
   makeRelativeTo(baseUrl){}
@@ -10,7 +11,7 @@ export class ViewStrategy {
 
   static normalize(value){
     if(typeof value === 'string'){
-      value = new UseView(value);
+      value = new UseViewStrategy(value);
     }
 
     if(value && !(value instanceof ViewStrategy)){
@@ -32,10 +33,10 @@ export class ViewStrategy {
 
     if(!strategy){
       if(!annotation){
-        throw new Error('Cannot determinte default view strategy for object.', target);
+        throw AggregateError('Cannot determinte default view strategy for object.', target);
       }
 
-      strategy = new ConventionalView(annotation.moduleId);
+      strategy = new ConventionalViewStrategy(annotation.moduleId);
     }else if(annotation){
       strategy.moduleId = annotation.moduleId;
     }
@@ -44,8 +45,12 @@ export class ViewStrategy {
   }
 }
 
-export class UseView extends ViewStrategy {
+export class UseViewStrategy extends ViewStrategy {
+  public path;
+  public absolutePath;
+  public moduleId;
   constructor(path){
+    super();
     this.path = path;
   }
 
@@ -62,10 +67,13 @@ export class UseView extends ViewStrategy {
   }
 }
 
-export class ConventionalView extends ViewStrategy {
+export class ConventionalViewStrategy extends ViewStrategy {
+  public moduleId;
+  public viewUrl;
   constructor(moduleId){
+    super();
     this.moduleId = moduleId;
-    this.viewUrl = ConventionalView.convertModuleIdToViewUrl(moduleId);
+    this.viewUrl = ConventionalViewStrategy.convertModuleIdToViewUrl(moduleId);
   }
 
   loadViewFactory(viewEngine, options){
@@ -77,14 +85,17 @@ export class ConventionalView extends ViewStrategy {
   }
 }
 
-export class NoView extends ViewStrategy {
+export class NoViewStrategy extends ViewStrategy {
   loadViewFactory(){
     return Promise.resolve(null);
   }
 }
 
 export class TemplateRegistryViewStrategy extends ViewStrategy {
+  public moduleId;
+  public registryEntry;
   constructor(moduleId, registryEntry){
+    super();
     this.moduleId = moduleId;
     this.registryEntry = registryEntry;
   }

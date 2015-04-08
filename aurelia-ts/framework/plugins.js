@@ -1,4 +1,4 @@
-define(["require", "exports", '../logging/index', '../metadata/index'], function (require, exports, LogManager, index_1) {
+define(["require", "exports", '../logging/index'], function (require, exports, LogManager) {
     var logger = LogManager.getLogger('aurelia');
     function loadPlugin(aurelia, loader, info) {
         logger.debug("Loading plugin " + info.moduleId + ".");
@@ -67,24 +67,6 @@ define(["require", "exports", '../logging/index', '../metadata/index'], function
                     }
                 }
             };
-            return this;
-        };
-        /**
-         * Installs special support for AtScript authoring.
-         *
-         * @method atscript
-         * @return {Plugins} Returns the current Plugins instance.
-       */
-        Plugins.prototype.atscript = function () {
-            this.aurelia.container.supportAtScript();
-            index_1.Metadata.configure.locator(function (fn, meta) {
-                var annotations = fn['annotate'] || fn['annotations'], i, ii;
-                if (annotations && annotations.length) {
-                    for (i = 0, ii = annotations.length; i < ii; ++i) {
-                        meta.add(annotations[i]);
-                    }
-                }
-            });
             return this;
         };
         Plugins.prototype._process = function () {

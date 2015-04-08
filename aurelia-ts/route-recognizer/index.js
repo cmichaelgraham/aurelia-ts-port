@@ -294,6 +294,7 @@ define(["require", "exports", './dsl'], function (require, exports, dsl_1) {
             currentState.handlers = handlers;
             currentState.regex = new RegExp(regex + '$');
             currentState.types = types;
+            return currentState;
         };
         RouteRecognizer.prototype.handlersFor = function (name) {
             var route = this.names[name], result = [];

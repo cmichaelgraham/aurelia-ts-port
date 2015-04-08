@@ -1,7 +1,7 @@
-define(["require", "exports", '../logging/index', '../metadata/index', '../loader/index', '../dependency-injection/index', './view-compiler', './resource-registry', './module-analyzer'], function (require, exports, LogManager, _index, _index_1, _index_2, _view_compiler, _resource_registry, _module_analyzer) {
+define(["require", "exports", '../logging/index', '../metadata/index', '../loader/index', '../dependency-injection/index', './view-compiler', './resource-registry', './module-analyzer'], function (require, exports, LogManager, index_1, index_2, index_3, view_compiler_1, resource_registry_1, module_analyzer_1) {
     var logger = LogManager.getLogger('templating');
     function ensureRegistryEntry(loader, urlOrRegistryEntry) {
-        if (urlOrRegistryEntry instanceof _index_1.TemplateRegistryEntry) {
+        if (urlOrRegistryEntry instanceof index_2.TemplateRegistryEntry) {
             return Promise.resolve(urlOrRegistryEntry);
         }
         return loader.loadTemplate(urlOrRegistryEntry);
@@ -14,15 +14,7 @@ define(["require", "exports", '../logging/index', '../metadata/index', '../loade
             this.moduleAnalyzer = moduleAnalyzer;
             this.appResources = appResources;
         }
-        ViewEngine.inject = function () {
-            return [
-                _index_1.Loader,
-                _index_2.Container,
-                _view_compiler.ViewCompiler,
-                _module_analyzer.ModuleAnalyzer,
-                _resource_registry.ResourceRegistry
-            ];
-        };
+        ViewEngine.inject = function () { return [index_2.Loader, index_3.Container, view_compiler_1.ViewCompiler, module_analyzer_1.ModuleAnalyzer, resource_registry_1.ResourceRegistry]; };
         ViewEngine.prototype.loadViewFactory = function (urlOrRegistryEntry, compileOptions, associatedModuleId) {
             var _this = this;
             return ensureRegistryEntry(this.loader, urlOrRegistryEntry).then(function (viewRegistryEntry) {
@@ -41,23 +33,19 @@ define(["require", "exports", '../logging/index', '../metadata/index', '../loade
             });
         };
         ViewEngine.prototype.loadTemplateResources = function (viewRegistryEntry, associatedModuleId) {
-            var resources = new _resource_registry.ViewResources(this.appResources, viewRegistryEntry.id), dependencies = viewRegistryEntry.dependencies, importIds, names;
+            var resources = new resource_registry_1.ViewResources(this.appResources, viewRegistryEntry.id), dependencies = viewRegistryEntry.dependencies, importIds, names;
             if (dependencies.length === 0 && !associatedModuleId) {
                 return Promise.resolve(resources);
             }
-            importIds = dependencies.map(function (x) {
-                return x.src;
-            });
-            names = dependencies.map(function (x) {
-                return x.name;
-            });
+            importIds = dependencies.map(function (x) { return x.src; });
+            names = dependencies.map(function (x) { return x.name; });
             logger.debug("importing resources for " + viewRegistryEntry.id, importIds);
             return this.importViewResources(importIds, names, resources, associatedModuleId);
         };
         ViewEngine.prototype.importViewModelResource = function (moduleImport, moduleMember) {
             var _this = this;
             return this.loader.loadModule(moduleImport).then(function (viewModelModule) {
-                var normalizedId = _index.Origin.get(viewModelModule).moduleId, resourceModule = _this.moduleAnalyzer.analyze(normalizedId, viewModelModule, moduleMember);
+                var normalizedId = (index_1.Origin.get(viewModelModule)).moduleId, resourceModule = _this.moduleAnalyzer.analyze(normalizedId, viewModelModule, moduleMember);
                 if (!resourceModule.mainResource) {
                     throw new Error("No view model found in module \"" + moduleImport + "\".");
                 }
@@ -74,7 +62,7 @@ define(["require", "exports", '../logging/index', '../metadata/index', '../loade
                 //and enables order independence
                 for (i = 0, ii = imports.length; i < ii; ++i) {
                     current = imports[i];
-                    normalizedId = _index.Origin.get(current).moduleId;
+                    normalizedId = (index_1.Origin.get(current)).moduleId;
                     analysis = moduleAnalyzer.analyze(normalizedId, current);
                     analysis.analyze(container);
                     analysis.register(resources, names[i]);
@@ -91,9 +79,7 @@ define(["require", "exports", '../logging/index', '../metadata/index', '../loade
                 for (i = 0, ii = allAnalysis.length; i < ii; ++i) {
                     allAnalysis[i] = allAnalysis[i].load(container);
                 }
-                return Promise.all(allAnalysis).then(function () {
-                    return resources;
-                });
+                return Promise.all(allAnalysis).then(function () { return resources; });
             });
         };
         return ViewEngine;

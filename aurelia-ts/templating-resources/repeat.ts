@@ -1,12 +1,12 @@
 
 import {inject} from '../framework/index';
 import {ObserverLocator, calcSplices, getChangeRecords} from '../binding/index';
-import {BoundViewFactory, ViewSlot, customAttribute, bindableProperty, templateController} from '../templating/index';
+import {BoundViewFactory, ViewSlot, customAttribute, bindable, templateController} from '../templating/index';
 
 @customAttribute('repeat')
-@bindableProperty('items')
-@bindableProperty('local')
-@bindableProperty('key')
+@bindable('items')
+@bindable('local')
+@bindable('key')
 @templateController
 @inject(BoundViewFactory, ViewSlot, ObserverLocator)export class Repeat {
   public viewFactory;

@@ -35,7 +35,7 @@ define(["require", "exports", '../dependency-injection/index', '../templating/in
         Compose.prototype.viewModelChanged = function (newValue, oldValue) {
             processInstruction(this, { viewModel: newValue, view: this.view, model: this.model });
         };
-        Compose = __decorate([index_2.customElement('compose'), index_2.bindableProperty('model'), index_2.bindableProperty('view'), index_2.bindableProperty('viewModel'), index_2.noView, index_1.inject(index_1.Container, index_2.CompositionEngine, index_2.ViewSlot, index_2.ViewResources)], Compose);
+        Compose = __decorate([index_2.customElement('compose'), index_2.bindable('model'), index_2.bindable('view'), index_2.bindable('viewModel'), index_2.noView, index_1.inject(index_1.Container, index_2.CompositionEngine, index_2.ViewSlot, index_2.ViewResources)], Compose);
         return Compose;
     })();
     exports.Compose = Compose;

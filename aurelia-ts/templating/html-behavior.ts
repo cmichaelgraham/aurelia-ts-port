@@ -152,7 +152,7 @@ export class HtmlBehaviorResource extends ResourceType {
     }
   }
 
-  compile(compiler, resources, node, instruction){
+  compile(compiler, resources, node, instruction, parentNode){
     if(this.liftsContent){
       if(!instruction.viewFactory){
         var template = document.createElement('template'),
@@ -163,12 +163,12 @@ export class HtmlBehaviorResource extends ResourceType {
         if(node.parentNode){
           node.parentNode.replaceChild(template, node);
         }else if((<any>window).ShadowDOMPolyfill){ //HACK: IE template element and shadow dom polyfills not quite right...
-          (<any>window).ShadowDOMPolyfill.unwrap(node.parentNode).replaceChild(
+          (<any>window).ShadowDOMPolyfill.unwrap(parentNode).replaceChild(
             (<any>window).ShadowDOMPolyfill.unwrap(template),
             (<any>window).ShadowDOMPolyfill.unwrap(node)
             );
         }else{ //HACK: same as above
-          node.parentNode.replaceChild(template, node);
+          parentNode.replaceChild(template, node);
         }
 
         fragment.appendChild(node);

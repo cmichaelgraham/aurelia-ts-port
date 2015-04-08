@@ -360,6 +360,8 @@ export class RouteRecognizer {
     currentState.handlers = handlers;
     currentState.regex = new RegExp(regex + '$');
     currentState.types = types;
+
+    return currentState;
   }
 
   handlersFor(name) {

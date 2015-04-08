@@ -1,13 +1,5 @@
 define(["require", "exports", './decorator-applicator'], function (require, exports, decorator_applicator_1) {
     exports.Decorators = {
-        metadata: function () {
-            var rest = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                rest[_i - 0] = arguments[_i];
-            }
-            var applicator = new decorator_applicator_1.DecoratorApplicator();
-            return applicator.metadata.apply(applicator, rest);
-        },
         configure: {
             parameterizedDecorator: function (name, decorator) {
                 exports.Decorators[name] = function () {

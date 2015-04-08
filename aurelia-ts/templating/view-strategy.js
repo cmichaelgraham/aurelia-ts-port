@@ -4,18 +4,17 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../metadata/index', '../path/index'], function (require, exports, _index, _index_1) {
+define(["require", "exports", '../metadata/index', '../path/index', '../logging/index'], function (require, exports, index_1, index_2, index_3) {
     var ViewStrategy = (function () {
         function ViewStrategy() {
         }
-        ViewStrategy.prototype.makeRelativeTo = function (baseUrl) {
-        };
+        ViewStrategy.prototype.makeRelativeTo = function (baseUrl) { };
         ViewStrategy.prototype.loadViewFactory = function (viewEngine, options) {
             throw new Error('A ViewStrategy must implement loadViewFactory(viewEngine, options).');
         };
         ViewStrategy.normalize = function (value) {
             if (typeof value === 'string') {
-                value = new UseView(value);
+                value = new UseViewStrategy(value);
             }
             if (value && !(value instanceof ViewStrategy)) {
                 throw new Error('The view must be a string or an instance of ViewStrategy.');
@@ -27,13 +26,13 @@ define(["require", "exports", '../metadata/index', '../path/index'], function (r
             if (typeof target !== 'function') {
                 target = target.constructor;
             }
-            annotation = _index.Origin.get(target);
-            strategy = _index.Metadata.on(target).first(ViewStrategy);
+            annotation = index_1.Origin.get(target);
+            strategy = index_1.Metadata.on(target).first(ViewStrategy);
             if (!strategy) {
                 if (!annotation) {
-                    throw new Error('Cannot determinte default view strategy for object.', target);
+                    throw index_3.AggregateError('Cannot determinte default view strategy for object.', target);
                 }
-                strategy = new ConventionalView(annotation.moduleId);
+                strategy = new ConventionalViewStrategy(annotation.moduleId);
             }
             else if (annotation) {
                 strategy.moduleId = annotation.moduleId;
@@ -43,52 +42,55 @@ define(["require", "exports", '../metadata/index', '../path/index'], function (r
         return ViewStrategy;
     })();
     exports.ViewStrategy = ViewStrategy;
-    var UseView = (function (_super) {
-        __extends(UseView, _super);
-        function UseView(path) {
+    var UseViewStrategy = (function (_super) {
+        __extends(UseViewStrategy, _super);
+        function UseViewStrategy(path) {
+            _super.call(this);
             this.path = path;
         }
-        UseView.prototype.loadViewFactory = function (viewEngine, options) {
+        UseViewStrategy.prototype.loadViewFactory = function (viewEngine, options) {
             if (!this.absolutePath && this.moduleId) {
-                this.absolutePath = _index_1.relativeToFile(this.path, this.moduleId);
+                this.absolutePath = index_2.relativeToFile(this.path, this.moduleId);
             }
             return viewEngine.loadViewFactory(this.absolutePath || this.path, options, this.moduleId);
         };
-        UseView.prototype.makeRelativeTo = function (file) {
-            this.absolutePath = _index_1.relativeToFile(this.path, file);
+        UseViewStrategy.prototype.makeRelativeTo = function (file) {
+            this.absolutePath = index_2.relativeToFile(this.path, file);
         };
-        return UseView;
+        return UseViewStrategy;
     })(ViewStrategy);
-    exports.UseView = UseView;
-    var ConventionalView = (function (_super) {
-        __extends(ConventionalView, _super);
-        function ConventionalView(moduleId) {
+    exports.UseViewStrategy = UseViewStrategy;
+    var ConventionalViewStrategy = (function (_super) {
+        __extends(ConventionalViewStrategy, _super);
+        function ConventionalViewStrategy(moduleId) {
+            _super.call(this);
             this.moduleId = moduleId;
-            this.viewUrl = ConventionalView.convertModuleIdToViewUrl(moduleId);
+            this.viewUrl = ConventionalViewStrategy.convertModuleIdToViewUrl(moduleId);
         }
-        ConventionalView.prototype.loadViewFactory = function (viewEngine, options) {
+        ConventionalViewStrategy.prototype.loadViewFactory = function (viewEngine, options) {
             return viewEngine.loadViewFactory(this.viewUrl, options, this.moduleId);
         };
-        ConventionalView.convertModuleIdToViewUrl = function (moduleId) {
+        ConventionalViewStrategy.convertModuleIdToViewUrl = function (moduleId) {
             return moduleId + '.html';
         };
-        return ConventionalView;
+        return ConventionalViewStrategy;
     })(ViewStrategy);
-    exports.ConventionalView = ConventionalView;
-    var NoView = (function (_super) {
-        __extends(NoView, _super);
-        function NoView() {
+    exports.ConventionalViewStrategy = ConventionalViewStrategy;
+    var NoViewStrategy = (function (_super) {
+        __extends(NoViewStrategy, _super);
+        function NoViewStrategy() {
             _super.apply(this, arguments);
         }
-        NoView.prototype.loadViewFactory = function () {
+        NoViewStrategy.prototype.loadViewFactory = function () {
             return Promise.resolve(null);
         };
-        return NoView;
+        return NoViewStrategy;
     })(ViewStrategy);
-    exports.NoView = NoView;
+    exports.NoViewStrategy = NoViewStrategy;
     var TemplateRegistryViewStrategy = (function (_super) {
         __extends(TemplateRegistryViewStrategy, _super);
         function TemplateRegistryViewStrategy(moduleId, registryEntry) {
+            _super.call(this);
             this.moduleId = moduleId;
             this.registryEntry = registryEntry;
         }

@@ -1,3 +1,5 @@
+import core from 'core-js';
+
 if (Element && !(<any>Element.prototype).matches) {
     var proto:any = Element.prototype;
     proto.matches = proto.matchesSelector ||

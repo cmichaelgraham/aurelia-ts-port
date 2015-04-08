@@ -142,6 +142,7 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
         };
         Router.prototype.addRoute = function (config, navModel) {
             if (navModel === void 0) { navModel = {}; }
+            validateRouteConfig(config);
             if (!('viewPorts' in config)) {
                 config.viewPorts = {
                     'default': {
@@ -153,7 +154,7 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
             navModel.title = navModel.title || config.title;
             navModel.settings = config.settings || (config.settings = {});
             this.routes.push(config);
-            this.recognizer.add([{ path: config.route, handler: config }]);
+            var state = this.recognizer.add({ path: config.route, handler: config });
             if (config.route) {
                 var withChild, settings = config.settings;
                 delete config.settings;
@@ -161,10 +162,10 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
                 config.settings = settings;
                 withChild.route += "/*childRoute";
                 withChild.hasChildRouter = true;
-                this.childRecognizer.add([{
-                        path: withChild.route,
-                        handler: withChild
-                    }]);
+                this.childRecognizer.add({
+                    path: withChild.route,
+                    handler: withChild
+                });
                 withChild.navModel = navModel;
                 withChild.settings = config.settings;
             }
@@ -175,6 +176,9 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
                 navModel.isActive = false;
                 navModel.config = config;
                 if (!config.href) {
+                    if (state.types.dynamics || state.types.stars) {
+                        throw new Error('Invalid route config: dynamic routes must specify an href to be included in the navigation model.');
+                    }
                     navModel.relativeHref = config.route;
                     navModel.href = '';
                 }
@@ -228,4 +232,12 @@ define(["require", "exports", '../route-recognizer/index', '../path/index', './n
         return Router;
     })();
     exports.Router = Router;
+    function validateRouteConfig(config) {
+        var isValid = typeof config === 'object'
+            && config.moduleId
+            && config.route !== null && config.route !== undefined;
+        if (!isValid) {
+            throw new Error('Invalid route config.');
+        }
+    }
 });

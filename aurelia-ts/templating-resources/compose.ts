@@ -1,13 +1,13 @@
 import {Container, inject} from '../dependency-injection/index';
 import {
   CompositionEngine, ViewSlot, ViewResources,
-  customElement, bindableProperty, noView
+  customElement, bindable, noView
 } from '../templating/index';
 
 @customElement('compose')
-@bindableProperty('model')
-@bindableProperty('view')
-@bindableProperty('viewModel')
+@bindable('model')
+@bindable('view')
+@bindable('viewModel')
 @noView
 @inject(Container, CompositionEngine, ViewSlot, ViewResources)
 export class Compose {

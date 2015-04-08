@@ -1,3 +1,5 @@
+import core from 'core-js'
+
 var originStorage = new Map();
 
 function ensureType(value){

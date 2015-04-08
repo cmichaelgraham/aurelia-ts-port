@@ -191,7 +191,7 @@ export var Metadata = {
     metadata = new MetadataStore(owner);
     metadataStoreLookup.set(owner, metadata);
 
-    if('decorators' in owner){
+    if(owner.hasOwnProperty('decorators')){
       var applicator;
 
       if(typeof owner.decorators === 'function'){

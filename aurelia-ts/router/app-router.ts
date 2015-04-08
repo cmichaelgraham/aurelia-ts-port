@@ -1,3 +1,4 @@
+import core from 'core-js';
 import {Container} from '../dependency-injection/index';
 import {History} from '../history/index';
 import {Router} from './router';
