@@ -1,3 +1,4 @@
+import core from 'core-js';
 import {RouteRecognizer} from 'aurelia-route-recognizer';
 import {join} from 'aurelia-path';
 import {NavigationContext} from './navigation-context';
@@ -177,6 +178,8 @@ export class Router {
   }
 
   addRoute(config, navModel={}) {
+    validateRouteConfig(config);
+
     if (!('viewPorts' in config)) {
       config.viewPorts = {
         'default': {
@@ -190,7 +193,7 @@ export class Router {
     navModel.settings = config.settings || (config.settings = {});
 
     this.routes.push(config);
-    this.recognizer.add([{path:config.route, handler: config}]);
+    var state = this.recognizer.add({path:config.route, handler: config});
 
     if (config.route) {
       var withChild, settings = config.settings;
@@ -199,10 +202,10 @@ export class Router {
       config.settings = settings;
       withChild.route += "/*childRoute";
       withChild.hasChildRouter = true;
-      this.childRecognizer.add([{
+      this.childRecognizer.add({
         path: withChild.route,
         handler: withChild
-      }]);
+      });
 
       withChild.navModel = navModel;
       withChild.settings = config.settings;
@@ -217,6 +220,10 @@ export class Router {
       navModel.config = config;
 
       if (!config.href) {
+        if (state.types.dynamics || state.types.stars) {
+          throw new Error('Invalid route config: dynamic routes must specify an href to be included in the navigation model.');
+        }
+
         navModel.relativeHref = config.route;
         navModel.href = '';
       }
@@ -271,5 +278,15 @@ export class Router {
     this.isNavigating = false;
     this.navigation = [];
     this.isConfigured = false;
+  }
+}
+
+function validateRouteConfig(config) {
+  let isValid = typeof config === 'object'
+    && config.moduleId
+    && config.route !== null && config.route !== undefined;
+
+  if (!isValid) {
+    throw new Error('Invalid route config.');
   }
 }
