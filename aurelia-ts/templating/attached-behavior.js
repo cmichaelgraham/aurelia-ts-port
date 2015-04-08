@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../metadata/index', './behavior-instance', './behaviors', './util'], function (require, exports, _index, _behavior_instance, _behaviors, _util) {
+define(["require", "exports", '../metadata/index', './behavior-instance', './behaviors', './util'], function (require, exports, index_1, behavior_instance_1, behaviors_1, util_1) {
     var AttachedBehavior = (function (_super) {
         __extends(AttachedBehavior, _super);
         function AttachedBehavior(attribute) {
@@ -15,11 +15,11 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
         }
         AttachedBehavior.convention = function (name) {
             if (name.endsWith('AttachedBehavior')) {
-                return new AttachedBehavior(_util.hyphenate(name.substring(0, name.length - 16)));
+                return new AttachedBehavior(util_1.hyphenate(name.substring(0, name.length - 16)));
             }
         };
         AttachedBehavior.prototype.analyze = function (container, target) {
-            _behaviors.configureBehavior(container, this, target);
+            behaviors_1.configureBehavior(container, this, target);
         };
         AttachedBehavior.prototype.load = function (container, target) {
             return Promise.resolve(this);
@@ -32,7 +32,7 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
             return node;
         };
         AttachedBehavior.prototype.create = function (container, instruction, element, bindings) {
-            var executionContext = instruction.executionContext || container.get(this.target), behaviorInstance = new _behavior_instance.BehaviorInstance(this, executionContext, instruction);
+            var executionContext = instruction.executionContext || container.get(this.target), behaviorInstance = new behavior_instance_1.BehaviorInstance(this, executionContext, instruction);
             if (!(this.apiName in element)) {
                 element[this.apiName] = behaviorInstance.executionContext;
             }
@@ -42,6 +42,6 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
             return behaviorInstance;
         };
         return AttachedBehavior;
-    })(_index.ResourceType);
+    })(index_1.ResourceType);
     exports.AttachedBehavior = AttachedBehavior;
 });

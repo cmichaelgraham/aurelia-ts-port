@@ -5,9 +5,7 @@ define(["require", "exports"], function (require, exports) {
         var toggle = 1;
         var observer = new BrowserMutationObserver(flush);
         var node = document.createTextNode('');
-        observer.observe(node, {
-            characterData: true
-        });
+        observer.observe(node, { characterData: true });
         return function requestFlush() {
             toggle = -toggle;
             node.data = toggle;
@@ -40,18 +38,12 @@ define(["require", "exports"], function (require, exports) {
             this.microTaskQueueCapacity = 1024;
             this.taskQueue = [];
             if (typeof BrowserMutationObserver === 'function') {
-                this.requestFlushMicroTaskQueue = makeRequestFlushFromMutationObserver(function () {
-                    return _this.flushMicroTaskQueue();
-                });
+                this.requestFlushMicroTaskQueue = makeRequestFlushFromMutationObserver(function () { return _this.flushMicroTaskQueue(); });
             }
             else {
-                this.requestFlushMicroTaskQueue = makeRequestFlushFromTimer(function () {
-                    return _this.flushMicroTaskQueue();
-                });
+                this.requestFlushMicroTaskQueue = makeRequestFlushFromTimer(function () { return _this.flushMicroTaskQueue(); });
             }
-            this.requestFlushTaskQueue = makeRequestFlushFromTimer(function () {
-                return _this.flushTaskQueue();
-            });
+            this.requestFlushTaskQueue = makeRequestFlushFromTimer(function () { return _this.flushTaskQueue(); });
         }
         TaskQueue.prototype.queueMicroTask = function (task) {
             if (this.microTaskQueue.length < 1) {
@@ -112,14 +104,10 @@ define(["require", "exports"], function (require, exports) {
                 task.onError(error);
             }
             else if (hasSetImmediate) {
-                setImmediate(function () {
-                    throw error;
-                });
+                setImmediate(function () { throw error; });
             }
             else {
-                setTimeout(function () {
-                    throw error;
-                }, 0);
+                setTimeout(function () { throw error; }, 0);
             }
         };
         return TaskQueue;

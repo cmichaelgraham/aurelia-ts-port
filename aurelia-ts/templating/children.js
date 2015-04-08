@@ -23,10 +23,7 @@ define(["require", "exports"], function (require, exports) {
         }
         ChildObserverBinder.prototype.bind = function (source) {
             var items, results, i, ii, node, behavior = this.behavior;
-            this.observer.observe(this.target, {
-                childList: true,
-                subtree: true
-            });
+            this.observer.observe(this.target, { childList: true, subtree: true });
             items = behavior[this.property];
             if (!items) {
                 items = behavior[this.property] = [];

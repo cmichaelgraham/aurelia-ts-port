@@ -1,8 +1,11 @@
+import {inject} from '../framework/index'
 import {Router} from '../router/index';
 import bootstrap from 'bootstrap';
 
+@inject(Router)
 export class App {
   static inject() { return [Router]; }
+  public router;
   constructor(router) {
     this.router = router;
     this.router.configure(config => {

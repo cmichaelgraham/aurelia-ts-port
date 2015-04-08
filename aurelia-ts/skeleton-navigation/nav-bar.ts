@@ -1,5 +1,4 @@
-import {Behavior} from '../framework/index';
+import {Behavior, bindableProperty} from '../framework/index';
 
-export class NavBar {
-  static metadata(){ return Behavior.withProperty('router'); }
-}
+@bindableProperty('router')
+export class NavBar {}

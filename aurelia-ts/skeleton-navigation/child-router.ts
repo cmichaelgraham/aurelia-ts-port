@@ -1,7 +1,11 @@
+import {inject} from '../framework/index'
 import {Router} from '../router/index';
 
+@inject(Router)
 export class ChildRouter{
   static inject() { return [Router]; }
+  public heading;
+  public router;
   constructor(router){
     this.heading = 'Child Router';
     this.router = router;

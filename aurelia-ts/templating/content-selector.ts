@@ -40,7 +40,7 @@ export class ContentSelector {
               contentMap.set(contentSelector, elements);
             }
 
-            elements.push(currentChild);
+            (<Array<any>>elements).push(currentChild);
             break;
           }
         }

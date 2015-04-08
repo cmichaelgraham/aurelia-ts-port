@@ -1,7 +1,9 @@
 define(["require", "exports"], function (require, exports) {
     if (Element && !Element.prototype.matches) {
         var proto = Element.prototype;
-        proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
+        proto.matches = proto.matchesSelector ||
+            proto.mozMatchesSelector || proto.msMatchesSelector ||
+            proto.oMatchesSelector || proto.webkitMatchesSelector;
     }
     var placeholder = [];
     function findInsertionPoint(groups, index) {
@@ -24,9 +26,7 @@ define(["require", "exports"], function (require, exports) {
             while (currentChild) {
                 nextSibling = currentChild.nextSibling;
                 if (currentChild.viewSlot) {
-                    var viewSlotSelectors = contentSelectors.map(function (x) {
-                        return x.copyForViewSlot();
-                    });
+                    var viewSlotSelectors = contentSelectors.map(function (x) { return x.copyForViewSlot(); });
                     currentChild.viewSlot.installContentSelectors(viewSlotSelectors);
                 }
                 else {
@@ -54,7 +54,8 @@ define(["require", "exports"], function (require, exports) {
             return new ContentSelector(this.anchor, this.selector);
         };
         ContentSelector.prototype.matches = function (node) {
-            return this.all || (node.nodeType === 1 && node.matches(this.selector));
+            return this.all ||
+                (node.nodeType === 1 && node.matches(this.selector));
         };
         ContentSelector.prototype.add = function (group) {
             var anchor = this.anchor, parent = anchor.parentNode, i, ii;

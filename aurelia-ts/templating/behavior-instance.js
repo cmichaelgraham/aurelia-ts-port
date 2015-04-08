@@ -5,6 +5,7 @@ define(["require", "exports"], function (require, exports) {
             this.executionContext = executionContext;
             this.isAttached = false;
             var observerLookup = behavior.observerLocator.getObserversLookup(executionContext), handlesBind = behavior.handlesBind, attributes = instruction.attributes, boundProperties = this.boundProperties = [], properties = behavior.properties, i, ii;
+            behavior.ensurePropertiesDefined(executionContext, observerLookup);
             for (i = 0, ii = properties.length; i < ii; ++i) {
                 properties[i].initialize(executionContext, observerLookup, attributes, handlesBind, boundProperties);
             }

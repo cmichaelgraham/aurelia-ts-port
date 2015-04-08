@@ -4,19 +4,19 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../metadata/index', '../binding/index'], function (require, exports, _index, _index_1) {
-    var ElementConfig = (function (_super) {
-        __extends(ElementConfig, _super);
-        function ElementConfig() {
+define(["require", "exports", '../metadata/index', '../binding/index'], function (require, exports, index_1, index_2) {
+    var ElementConfigResource = (function (_super) {
+        __extends(ElementConfigResource, _super);
+        function ElementConfigResource() {
             _super.apply(this, arguments);
         }
-        ElementConfig.prototype.load = function (container, target) {
-            var config = new target(), eventManager = container.get(_index_1.EventManager);
+        ElementConfigResource.prototype.load = function (container, target) {
+            var config = new target(), eventManager = container.get(index_2.EventManager);
             eventManager.registerElementConfig(config);
+            return Promise.resolve(this);
         };
-        ElementConfig.prototype.register = function () {
-        };
-        return ElementConfig;
-    })(_index.ResourceType);
-    exports.ElementConfig = ElementConfig;
+        ElementConfigResource.prototype.register = function () { };
+        return ElementConfigResource;
+    })(index_1.ResourceType);
+    exports.ElementConfigResource = ElementConfigResource;
 });

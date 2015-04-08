@@ -1,13 +1,9 @@
-define(["require", "exports", '../metadata/index', './view-strategy', './view-engine', './custom-element'], function (require, exports, _index, _view_strategy, _view_engine, _custom_element) {
+define(["require", "exports", '../metadata/index', './view-strategy', './view-engine', './html-behavior'], function (require, exports, index_1, view_strategy_1, view_engine_1, html_behavior_1) {
     var CompositionEngine = (function () {
         function CompositionEngine(viewEngine) {
             this.viewEngine = viewEngine;
         }
-        CompositionEngine.inject = function () {
-            return [
-                _view_engine.ViewEngine
-            ];
-        };
+        CompositionEngine.inject = function () { return [view_engine_1.ViewEngine]; };
         CompositionEngine.prototype.activate = function (instruction) {
             if (instruction.skipActivation || typeof instruction.viewModel.activate !== 'function') {
                 return Promise.resolve();
@@ -30,11 +26,11 @@ define(["require", "exports", '../metadata/index', './view-strategy', './view-en
                 var doneLoading, viewStrategyFromViewModel, origin;
                 if ('getViewStrategy' in viewModel && !instruction.view) {
                     viewStrategyFromViewModel = true;
-                    instruction.view = _view_strategy.ViewStrategy.normalize(viewModel.getViewStrategy());
+                    instruction.view = view_strategy_1.ViewStrategy.normalize(viewModel.getViewStrategy());
                 }
                 if (instruction.view) {
                     if (viewStrategyFromViewModel) {
-                        origin = _index.Origin.get(viewModel.constructor);
+                        origin = index_1.Origin.get(viewModel.constructor);
                         if (origin) {
                             instruction.view.makeRelativeTo(origin.moduleId);
                         }
@@ -48,7 +44,8 @@ define(["require", "exports", '../metadata/index', './view-strategy', './view-en
                     doneLoading = metadata.load(childContainer, viewModelResource.value, instruction.view, true);
                 }
                 else {
-                    metadata = new _custom_element.CustomElement();
+                    metadata = new html_behavior_1.HtmlBehaviorResource();
+                    metadata.elementName = 'dynamic-element';
                     doneLoading = metadata.load(childContainer, viewModel.constructor, instruction.view, true);
                 }
                 return doneLoading.then(function (viewFactory) {
@@ -62,7 +59,9 @@ define(["require", "exports", '../metadata/index', './view-strategy', './view-en
         };
         CompositionEngine.prototype.createViewModel = function (instruction) {
             var childContainer = instruction.childContainer || instruction.container.createChild();
-            instruction.viewModel = instruction.viewResources ? instruction.viewResources.relativeToView(instruction.viewModel) : instruction.viewModel;
+            instruction.viewModel = instruction.viewResources
+                ? instruction.viewResources.relativeToView(instruction.viewModel)
+                : instruction.viewModel;
             return this.viewEngine.importViewModelResource(instruction.viewModel).then(function (viewModelResource) {
                 childContainer.autoRegister(viewModelResource.value);
                 instruction.viewModel = childContainer.viewModel = childContainer.get(viewModelResource.value);
@@ -73,7 +72,7 @@ define(["require", "exports", '../metadata/index', './view-strategy', './view-en
         CompositionEngine.prototype.compose = function (instruction) {
             var _this = this;
             instruction.childContainer = instruction.childContainer || instruction.container.createChild();
-            instruction.view = _view_strategy.ViewStrategy.normalize(instruction.view);
+            instruction.view = view_strategy_1.ViewStrategy.normalize(instruction.view);
             if (instruction.viewModel) {
                 if (typeof instruction.viewModel === 'string') {
                     return this.createViewModel(instruction).then(function (instruction) {
