@@ -99,6 +99,10 @@ function applyInstructions(containers, executionContext, element, instruction,
 }
 
 export class BoundViewFactory {
+  public parentContainer;
+  public viewFactory;
+  public executionContext;
+  public factoryOptions;
   constructor(parentContainer, viewFactory, executionContext){
     this.parentContainer = parentContainer;
     this.viewFactory = viewFactory;
@@ -122,6 +126,9 @@ var defaultFactoryOptions = {
 };
 
 export class ViewFactory{
+  public template;
+  public instructions;
+  public resources;
   constructor(template, instructions, resources){
     this.template = template;
     this.instructions = instructions;

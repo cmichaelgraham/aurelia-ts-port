@@ -48,7 +48,7 @@ export class HtmlBehaviorResource extends ResourceType {
     this.attributes = {};
   }
 
-  static convention(name, existing){
+  static convention(name, existing?){
     var behavior;
 
     if(name.endsWith('CustomAttribute')){

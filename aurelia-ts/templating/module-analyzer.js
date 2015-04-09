@@ -5,7 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-define(["require", "exports", '../metadata/index', '../loader/index', '../binding/index', './custom-element', './attached-behavior', './template-controller', './view-strategy', './util'], function (require, exports, index_1, index_2, index_3, custom_element_1, attached_behavior_1, template_controller_1, view_strategy_1, util_1) {
+define(["require", "exports", '../metadata/index', '../loader/index', '../binding/index', './html-behavior', './view-strategy', './util'], function (require, exports, index_1, index_2, index_3, html_behavior_1, view_strategy_1, util_1) {
     var ResourceModule = (function () {
         function ResourceModule(moduleId) {
             this.id = moduleId;
@@ -84,11 +84,26 @@ define(["require", "exports", '../metadata/index', '../loader/index', '../bindin
                 }
                 resourceTypeMeta = allMetadata.first(index_1.ResourceType);
                 if (!resourceTypeMeta) {
-                    resourceTypeMeta = new custom_element_1.CustomElement(util_1.hyphenate(key));
+                    resourceTypeMeta = new html_behavior_1.HtmlBehaviorResource();
+                    resourceTypeMeta.elementName = util_1.hyphenate(key);
                     allMetadata.add(resourceTypeMeta);
                 }
             }
-            if (!resourceTypeMeta.name) {
+            if (resourceTypeMeta instanceof html_behavior_1.HtmlBehaviorResource) {
+                if (resourceTypeMeta.elementName === undefined) {
+                    //customeElement()
+                    resourceTypeMeta.elementName = util_1.hyphenate(key);
+                }
+                else if (resourceTypeMeta.attributeName === undefined) {
+                    //customAttribute()
+                    resourceTypeMeta.attributeName = util_1.hyphenate(key);
+                }
+                else if (resourceTypeMeta.attributeName === null && resourceTypeMeta.elementName === null) {
+                    //no customeElement or customAttribute but behavior added by other metadata
+                    html_behavior_1.HtmlBehaviorResource.convention(key, resourceTypeMeta);
+                }
+            }
+            else if (!resourceTypeMeta.name) {
                 resourceTypeMeta.name = util_1.hyphenate(key);
             }
             this.metadata = resourceTypeMeta;
@@ -125,7 +140,15 @@ define(["require", "exports", '../metadata/index', '../loader/index', '../bindin
                 allMetadata = index_1.Metadata.on(exportedValue);
                 resourceTypeMeta = allMetadata.first(index_1.ResourceType);
                 if (resourceTypeMeta) {
-                    if (!mainResource && resourceTypeMeta instanceof custom_element_1.CustomElement) {
+                    if (resourceTypeMeta.attributeName === null && resourceTypeMeta.elementName === null) {
+                        //no customeElement or customAttribute but behavior added by other metadata
+                        html_behavior_1.HtmlBehaviorResource.convention(key, resourceTypeMeta);
+                    }
+                    if (resourceTypeMeta.attributeName === null && resourceTypeMeta.elementName === null) {
+                        //no convention and no customeElement or customAttribute but behavior added by other metadata
+                        resourceTypeMeta.elementName = util_1.hyphenate(key);
+                    }
+                    if (!mainResource && resourceTypeMeta instanceof html_behavior_1.HtmlBehaviorResource && resourceTypeMeta.elementName !== null) {
                         mainResource = new ResourceDescription(key, exportedValue, allMetadata, resourceTypeMeta);
                     }
                     else {
@@ -139,8 +162,8 @@ define(["require", "exports", '../metadata/index', '../loader/index', '../bindin
                     viewStrategy = new view_strategy_1.TemplateRegistryViewStrategy(moduleId, exportedValue);
                 }
                 else {
-                    if (conventional = custom_element_1.CustomElement.convention(key)) {
-                        if (!mainResource) {
+                    if (conventional = html_behavior_1.HtmlBehaviorResource.convention(key)) {
+                        if (conventional.elementName !== null && !mainResource) {
                             mainResource = new ResourceDescription(key, exportedValue, allMetadata, conventional);
                         }
                         else {
@@ -148,15 +171,7 @@ define(["require", "exports", '../metadata/index', '../loader/index', '../bindin
                         }
                         allMetadata.add(conventional);
                     }
-                    else if (conventional = attached_behavior_1.AttachedBehavior.convention(key)) {
-                        resources.push(new ResourceDescription(key, exportedValue, allMetadata, conventional));
-                        allMetadata.add(conventional);
-                    }
-                    else if (conventional = template_controller_1.TemplateController.convention(key)) {
-                        resources.push(new ResourceDescription(key, exportedValue, allMetadata, conventional));
-                        allMetadata.add(conventional);
-                    }
-                    else if (conventional = index_3.ValueConverter.convention(key)) {
+                    else if (conventional = index_3.ValueConverterResource.convention(key)) {
                         resources.push(new ResourceDescription(key, exportedValue, allMetadata, conventional));
                         allMetadata.add(conventional);
                     }

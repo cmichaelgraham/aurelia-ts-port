@@ -18,6 +18,11 @@ function register(lookup, name, resource, type){
 }
 
 export class ResourceRegistry {
+  public attributes;
+  public elements;
+  public valueConverters;
+  public attributeMap;
+  public baseResourceUrl;
   constructor(){
     this.attributes = {};
     this.elements = {};
@@ -53,6 +58,9 @@ export class ResourceRegistry {
 }
 
 export class ViewResources extends ResourceRegistry {
+  public parent;
+  public viewUrl;
+  public valueConverterLookupFunction;
   constructor(parent, viewUrl){
     super();
     this.parent = parent;

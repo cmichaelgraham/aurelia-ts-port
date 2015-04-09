@@ -96,6 +96,7 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
             for (var _i = 1; _i < arguments.length; _i++) {
                 rest[_i - 1] = arguments[_i];
             }
+            _super.call(this);
             if (typeof attribute === 'string') {
                 this.attribute = attribute;
             }

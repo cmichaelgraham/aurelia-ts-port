@@ -15,6 +15,7 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
     var TemplateController = (function (_super) {
         __extends(TemplateController, _super);
         function TemplateController(attribute) {
+            _super.call(this);
             this.name = attribute;
             this.properties = [];
             this.attributes = {};
@@ -42,7 +43,7 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
                     node.parentNode.replaceChild(template, node);
                 }
                 else if (window.ShadowDOMPolyfill) {
-                    ShadowDOMPolyfill.unwrap(parentNode).replaceChild(ShadowDOMPolyfill.unwrap(template), ShadowDOMPolyfill.unwrap(node));
+                    window.ShadowDOMPolyfill.unwrap(parentNode).replaceChild(window.ShadowDOMPolyfill.unwrap(template), window.ShadowDOMPolyfill.unwrap(node));
                 }
                 else {
                     parentNode.replaceChild(template, node);

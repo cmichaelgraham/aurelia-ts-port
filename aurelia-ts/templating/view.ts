@@ -2,6 +2,18 @@
 //NOTE: Adding to the fragment, causes the nodes to be removed from the document.
 
 export class View {
+  public fragment;
+  public behaviors;
+  public bindings;
+  public children;
+  public systemControlled;
+  public contentSelectors;
+  public firstChild;
+  public lastChild;
+  public isBound;
+  public isAttached;
+  public executionContext;
+  public owner;
   constructor(fragment, behaviors, bindings, children, systemControlled, contentSelectors){
     this.fragment = fragment;
     this.behaviors = behaviors;

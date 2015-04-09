@@ -47,7 +47,7 @@ define(["require", "exports", './view-factory', './binding-language'], function 
                 options.beforeCompile(templateOrFragment);
             }
             if (templateOrFragment.content) {
-                content = document.adoptNode(templateOrFragment.content, true);
+                content = window.document.adoptNode(templateOrFragment.content, true);
             }
             else {
                 content = templateOrFragment;

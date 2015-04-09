@@ -4,7 +4,16 @@ import {configureBehavior} from './behaviors';
 import {hyphenate} from './util';
 
 export class TemplateController extends ResourceType {
+  public name;
+  public properties;
+  public attributes;
+  public liftsContent;
+  public apiName;
+  public target;
+
   constructor(attribute){
+    super();
+
     this.name = attribute;
     this.properties = [];
     this.attributes = {};
@@ -38,10 +47,10 @@ export class TemplateController extends ResourceType {
 
       if(node.parentNode){
         node.parentNode.replaceChild(template, node);
-      }else if(window.ShadowDOMPolyfill){ //HACK: IE template element and shadow dom polyfills not quite right...
-        ShadowDOMPolyfill.unwrap(parentNode).replaceChild(
-          ShadowDOMPolyfill.unwrap(template),
-          ShadowDOMPolyfill.unwrap(node)
+      }else if((<any>window).ShadowDOMPolyfill){ //HACK: IE template element and shadow dom polyfills not quite right...
+        (<any>window).ShadowDOMPolyfill.unwrap(parentNode).replaceChild(
+          (<any>window).ShadowDOMPolyfill.unwrap(template),
+          (<any>window).ShadowDOMPolyfill.unwrap(node)
           );
       }else{ //HACK: same as above
         parentNode.replaceChild(template, node);

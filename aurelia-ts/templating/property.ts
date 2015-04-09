@@ -2,7 +2,13 @@ import {hyphenate} from './util';
 import {ONE_WAY,TWO_WAY,ONE_TIME} from '../binding/index';
 
 export class BehaviorProperty {
-  constructor(name, changeHandler, attribute, defaultValue?, defaultBindingMode?){
+  public name;
+  public changeHandler;
+  public attribute;
+  public defaultValue;
+  public defaultBindingMode;
+  public taskQueue;
+  constructor(name?, changeHandler?, attribute?, defaultValue?, defaultBindingMode?){
     this.name = name;
     this.changeHandler = changeHandler;
     this.attribute = attribute || hyphenate(name);
@@ -94,7 +100,12 @@ export class BehaviorProperty {
 }
 
 export class OptionsProperty extends BehaviorProperty {
+  public properties;
+  public hasOptions;
+  public isDynamic;
   constructor(attribute, ...rest){
+    super();
+
     if(typeof attribute === 'string'){
       this.attribute = attribute;
     }else if(attribute){
@@ -129,7 +140,7 @@ export class OptionsProperty extends BehaviorProperty {
     }
   }
 
-  createObserver(executionContext){}
+  createObserver(executionContext):any{}
 
   initialize(executionContext, observerLookup, attributes, behaviorHandlesBind, boundProperties){
     var value, key, info;
@@ -185,6 +196,15 @@ export class OptionsProperty extends BehaviorProperty {
 }
 
 class BehaviorPropertyObserver {
+  public taskQueue;
+  public obj;
+  public propertyName;
+  public callbacks;
+  public notqueued;
+  public publishing;
+  public selfSubscriber;
+  public currentValue;
+  public oldValue;
   constructor(taskQueue, obj, propertyName, selfSubscriber){
     this.taskQueue = taskQueue;
     this.obj = obj;

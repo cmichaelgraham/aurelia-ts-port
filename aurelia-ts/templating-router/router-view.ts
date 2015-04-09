@@ -34,7 +34,7 @@ export class RouterView {
 
     if(viewStrategy){
       viewStrategy = ViewStrategy.normalize(viewStrategy);
-      viewStrategy.makeRelativeTo(Origin.get(component.router.container.viewModel.constructor).moduleId);
+      viewStrategy.makeRelativeTo((<any>(Origin.get(component.router.container.viewModel.constructor))).moduleId);
     }
 
     return metadata.load(childContainer, viewModelResource.value, viewStrategy, true).then(viewFactory => {

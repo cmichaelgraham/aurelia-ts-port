@@ -2,6 +2,14 @@ import {ContentSelector} from './content-selector';
 import {Animator} from './animator';
 
 export class ViewSlot {
+  public anchor;
+  public viewAddMethod;
+  public executionContext;
+  public animator;
+  public children;
+  public isBound;
+  public isAttached;
+  public contentSelectors;
   constructor(anchor, anchorIsContainer, executionContext?, animator=Animator.instance){
     this.anchor = anchor;
     this.viewAddMethod = anchorIsContainer ? 'appendNodesTo' : 'insertNodesBefore';
@@ -297,7 +305,7 @@ export class ViewSlot {
     return view;
   }
 
-  contentSelectorRemoveAll(){
+  contentSelectorRemoveAll():any{
     var children = this.children,
         contentSelectors = this.contentSelectors,
         ii = children.length,

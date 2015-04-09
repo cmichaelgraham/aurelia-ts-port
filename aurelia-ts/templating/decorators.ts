@@ -39,7 +39,7 @@ export function customAttribute(name){
 
 Decorators.configure.parameterizedDecorator('customAttribute', customAttribute);
 
-export function templateController(target){
+export function templateController(target?):any{
   var deco = function(target){
     var resource = Metadata.on(target).firstOrAdd(HtmlBehaviorResource);
     resource.liftsContent = true;
@@ -79,7 +79,7 @@ export function bindable(nameOrConfigOrTarget, key?, descriptor?):any{
 
 Decorators.configure.parameterizedDecorator('bindable', bindable);
 
-export function dynamicOptions(target){
+export function dynamicOptions(target?):any{
   var deco = function(target){
     var resource = Metadata.on(target).firstOrAdd(HtmlBehaviorResource);
     resource.hasDynamicOptions = true;

@@ -53,7 +53,7 @@ export class CustomElement extends ResourceType {
     registry.registerElement(name || this.name, this);
   }
 
-  load(container, target, viewStrategy, transientView){
+  load(container, target, viewStrategy?, transientView?){
     var options;
 
     viewStrategy = viewStrategy || this.viewStrategy || ViewStrategy.getDefault(target);

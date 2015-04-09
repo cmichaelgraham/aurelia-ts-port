@@ -22,7 +22,7 @@ define(["require", "exports", '../dependency-injection/index', '../templating/in
             }
             if (viewStrategy) {
                 viewStrategy = index_2.ViewStrategy.normalize(viewStrategy);
-                viewStrategy.makeRelativeTo(index_4.Origin.get(component.router.container.viewModel.constructor).moduleId);
+                viewStrategy.makeRelativeTo((index_4.Origin.get(component.router.container.viewModel.constructor)).moduleId);
             }
             return metadata.load(childContainer, viewModelResource.value, viewStrategy, true).then(function (viewFactory) {
                 viewPortInstruction.behavior = metadata.create(childContainer, {

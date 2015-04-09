@@ -4,7 +4,7 @@ import {BindingLanguage} from './binding-language';
 
 var nextInjectorId = 0,
     defaultCompileOptions = { targetShadowDOM:false },
-    hasShadowDOM = !!HTMLElement.prototype.createShadowRoot;
+    hasShadowDOM = !!(<any>HTMLElement.prototype).createShadowRoot;
 
 function getNextInjectorId(){
   return ++nextInjectorId;
@@ -43,12 +43,13 @@ function makeIntoInstructionTarget(element){
 }
 
 export class ViewCompiler {
+  public bindingLanguage;
   static inject() { return [BindingLanguage]; }
   constructor(bindingLanguage){
     this.bindingLanguage = bindingLanguage;
   }
 
-  compile(templateOrFragment, resources, options=defaultCompileOptions){
+  compile(templateOrFragment, resources, options:any=defaultCompileOptions){
     var instructions = [],
         targetShadowDOM = options.targetShadowDOM,
         content;
@@ -60,7 +61,7 @@ export class ViewCompiler {
     }
 
     if(templateOrFragment.content){
-      content = document.adoptNode(templateOrFragment.content, true);
+      content = (<any>window).document.adoptNode(templateOrFragment.content, true);
     }else{
       content = templateOrFragment;
     }
