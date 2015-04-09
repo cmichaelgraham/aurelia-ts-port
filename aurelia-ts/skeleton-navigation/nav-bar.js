@@ -8,10 +8,11 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
 define(["require", "exports", '../framework/index'], function (require, exports, index_1) {
     var NavBar = (function () {
         function NavBar() {
+            this.router = null;
         }
-        NavBar = __decorate([
-            index_1.bindableProperty('router')
-        ], NavBar);
+        __decorate([
+            index_1.bindable
+        ], NavBar.prototype, "router");
         return NavBar;
     })();
     exports.NavBar = NavBar;

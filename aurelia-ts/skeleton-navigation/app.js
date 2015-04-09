@@ -5,7 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-define(["require", "exports", '../framework/index', '../router/index'], function (require, exports, index_1, index_2) {
+define(["require", "exports", '../framework/index', '../router/index', 'bootstrap', 'bootstrap/css/bootstrap.css!'], function (require, exports, index_1, index_2, , ) {
     var App = (function () {
         function App(router) {
             this.router = router;

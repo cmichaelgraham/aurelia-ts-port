@@ -1,6 +1,7 @@
 import {inject} from '../framework/index'
 import {Router} from '../router/index';
-import bootstrap from 'bootstrap';
+import 'bootstrap';
+import 'bootstrap/css/bootstrap.css!';
 
 @inject(Router)
 export class App {

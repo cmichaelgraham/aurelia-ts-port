@@ -10,6 +10,7 @@ define(["require", "exports", '../framework/index', '../http-client/index'], fun
         function Flickr(http) {
             this.heading = 'Flickr';
             this.images = [];
+            this.url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=rainier&tagmode=any&format=json';
             this.http = http;
         }
         Flickr.inject = function () { return [index_2.HttpClient]; };

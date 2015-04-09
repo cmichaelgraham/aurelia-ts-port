@@ -24,14 +24,12 @@ define(["require", "exports", '../metadata/index', './metadata', './metadata', '
         }
         return function (target) {
             target.inject = rest;
-            return target;
         };
     }
     exports.inject = inject;
     function transient(key) {
         return function (target) {
             index_1.Metadata.on(target).add(new metadata_1.TransientRegistration(key));
-            return target;
         };
     }
     exports.transient = transient;
@@ -39,13 +37,11 @@ define(["require", "exports", '../metadata/index', './metadata', './metadata', '
         if (registerInChild === void 0) { registerInChild = false; }
         return function (target) {
             index_1.Metadata.on(target).add(new metadata_1.SingletonRegistration(keyOrRegisterInChild, registerInChild));
-            return target;
         };
     }
     exports.singleton = singleton;
     function factory(target) {
         index_1.Metadata.on(target).add(new metadata_1.FactoryActivator());
-        return target;
     }
     exports.factory = factory;
     index_1.Decorators.configure.parameterizedDecorator('inject', inject);

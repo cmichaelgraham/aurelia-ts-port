@@ -1,4 +1,5 @@
-import {Behavior, bindableProperty} from '../framework/index';
+import {bindable} from '../framework/index';
 
-@bindableProperty('router')
-export class NavBar {}
+export class NavBar {
+  @bindable public router = null;
+}

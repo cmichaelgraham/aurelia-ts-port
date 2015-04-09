@@ -4,10 +4,9 @@ import {Router} from '../router/index';
 @inject(Router)
 export class ChildRouter{
   static inject() { return [Router]; }
-  public heading;
+  public heading = 'Child Router';
   public router;
   constructor(router){
-    this.heading = 'Child Router';
     this.router = router;
     router.configure(config => {
       config.map([
