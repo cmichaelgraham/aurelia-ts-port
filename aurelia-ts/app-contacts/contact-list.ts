@@ -16,7 +16,7 @@ export class ContactList {
     ea.subscribe(ContactUpdated, msg => {
       let id = msg.contact.id;
       let found = this.contacts.filter(x => x.id == id)[0];
-      Object.assign(found, msg.contact);
+      (<any>Object).assign(found, msg.contact);
     });
   }
 

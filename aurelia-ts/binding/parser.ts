@@ -26,7 +26,6 @@ export class ParserImplementation {
   public index;
   public input;
   public tokens;
-  public optional;
   constructor(lexer, input) {
     this.index = 0;
     this.input = input;

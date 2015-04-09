@@ -22,8 +22,8 @@ import {
   ComputedPropertyObserver
 } from './computed-observation';
 
-if(typeof Object.getPropertyDescriptor !== 'function'){
- Object.getPropertyDescriptor = function (subject, name) {
+if(typeof (<any>Object).getPropertyDescriptor !== 'function'){
+  (<any>Object).getPropertyDescriptor = function (subject, name) {
     var pd = Object.getOwnPropertyDescriptor(subject, name);
     var proto = Object.getPrototypeOf(subject);
     while (typeof pd === 'undefined' && proto !== null) {
@@ -35,7 +35,7 @@ if(typeof Object.getPropertyDescriptor !== 'function'){
 }
 
 var hasObjectObserve = (function detectObjectObserve() {
-      if (typeof Object.observe !== 'function') {
+      if (typeof (<any>Object).observe !== 'function') {
         return false;
       }
 
@@ -45,13 +45,13 @@ var hasObjectObserve = (function detectObjectObserve() {
         records = recs;
       }
 
-      var test = {};
-      Object.observe(test, callback);
+      var test:any = {};
+      (<any>Object).observe(test, callback);
       test.id = 1;
       test.id = 2;
       delete test.id;
 
-      Object.deliverChangeRecords(callback);
+      (<any>Object).deliverChangeRecords(callback);
       if (records.length !== 3)
         return false;
 
@@ -61,7 +61,7 @@ var hasObjectObserve = (function detectObjectObserve() {
         return false;
       }
 
-      Object.unobserve(test, callback);
+      (<any>Object).unobserve(test, callback);
 
       return true;
     })();
@@ -97,6 +97,10 @@ function createObserverLookup(obj, observerLocator) {
 }
 
 export class ObserverLocator {
+  public taskQueue;
+  public eventManager;
+  public dirtyChecker;
+  public observationAdapters;
   static inject(){ return [TaskQueue, EventManager, DirtyChecker, All.of(ObjectObservationAdapter)]; }
   constructor(taskQueue, eventManager, dirtyChecker, observationAdapters){
     this.taskQueue = taskQueue;
@@ -158,7 +162,7 @@ export class ObserverLocator {
       }
     }
 
-    descriptor = Object.getPropertyDescriptor(obj, propertyName);
+    descriptor = (<any>Object).getPropertyDescriptor(obj, propertyName);
 
     if (hasDeclaredDependencies(descriptor)) {
       return new ComputedPropertyObserver(obj, propertyName, descriptor, this)

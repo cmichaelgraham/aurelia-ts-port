@@ -1,4 +1,9 @@
 export class PathObserver {
+  public leftObserver;
+  public disposeLeft;
+  public rightObserver;
+  public disposeRight;
+  public callback;
   constructor(leftObserver, getRightObserver, value){
     this.leftObserver = leftObserver;
 

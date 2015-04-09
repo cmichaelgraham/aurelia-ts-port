@@ -1,3 +1,10 @@
+var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
+};
 define(["require", "exports", '../metadata/index', './value-converter', './event-manager', './observer-locator', './value-converter', './array-change-records', './binding-modes', './parser', './binding-expression', './listener-expression', './name-expression', './call-expression', './dirty-checking', './map-change-records', './computed-observation'], function (require, exports, index_1, value_converter_1, event_manager_1, observer_locator_1, value_converter_2, array_change_records_1, binding_modes_1, parser_1, binding_expression_1, listener_expression_1, name_expression_1, call_expression_1, dirty_checking_1, map_change_records_1, computed_observation_1) {
     function __export(m) {
         for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];

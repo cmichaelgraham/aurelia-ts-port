@@ -8,7 +8,7 @@ var emptyParameters = Object.freeze([]),
 
 // Fix Function#name on browsers that do not support it (IE):
 function test(){}
-if (!test.name) {
+if (!(<any>test).name) {
   Object.defineProperty(Function.prototype, 'name', {
     get: function() {
       var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];

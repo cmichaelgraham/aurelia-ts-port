@@ -1,15 +1,9 @@
-var __decorate = this.__decorate || function (decorators, target, key, value) {
-    var kind = typeof (arguments.length == 2 ? value = target : value);
-    for (var i = decorators.length - 1; i >= 0; --i) {
-        var decorator = decorators[i];
-        switch (kind) {
-            case "function": value = decorator(value) || value; break;
-            case "number": decorator(target, key, value); break;
-            case "undefined": decorator(target, key); break;
-            case "object": value = decorator(target, key, value) || value; break;
-        }
+var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
-    return value;
 };
 define(["require", "exports", '../task-queue/index', './array-observation', './map-observation', './event-manager', './dirty-checking', './property-observation', './element-observation', '../dependency-injection/index', './computed-observation'], function (require, exports, index_1, array_observation_1, map_observation_1, event_manager_1, dirty_checking_1, property_observation_1, element_observation_1, index_2, computed_observation_1) {
     if (typeof Object.getPropertyDescriptor !== 'function') {
