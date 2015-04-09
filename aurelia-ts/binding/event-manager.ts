@@ -1,4 +1,5 @@
 class DefaultEventStrategy {
+  public delegatedEvents;
   constructor(){
     this.delegatedEvents = {};
   }
@@ -72,6 +73,9 @@ class DefaultEventStrategy {
 }
 
 export class EventManager {
+  public elementHandlerLookup;
+  public eventStrategyLookup;
+  public defaultEventStrategy;
   constructor(){
     this.elementHandlerLookup = {};
     this.eventStrategyLookup = {};

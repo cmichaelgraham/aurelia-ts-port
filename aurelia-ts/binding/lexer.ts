@@ -1,4 +1,9 @@
 export class Token {
+  public index;
+  public text;
+  public opKey;
+  public key;
+  public value;
   constructor(index, text){
     this.index = index;
     this.text = text;
@@ -40,6 +45,10 @@ export class Lexer {
 }
 
 export class Scanner {
+  public input;
+  public length;
+  public peek;
+  public index;
   constructor(input) {
     this.input = input;
     this.length = input.length;
@@ -417,7 +426,7 @@ function unescape(code) {
   }
 }
 
-function assert(condition, message) {
+function assert(condition, message?) {
   if (!condition) {
     throw message || "Assertion failed";
   }

@@ -1,3 +1,16 @@
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
 define(["require", "exports", '../dependency-injection/index', './pipeline', './navigation-plan', './route-loading', './navigation-context', './activation', './route-filters'], function (require, exports, index_1, pipeline_1, navigation_plan_1, route_loading_1, navigation_context_1, activation_1, route_filters_1) {
     var PipelineProvider = (function () {
         function PipelineProvider(container) {

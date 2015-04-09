@@ -1,7 +1,16 @@
 import {calcSplices, projectArraySplices} from './array-change-records';
+import {getChangeRecords} from './map-change-records';
 
 export class ModifyCollectionObserver {
-
+  public taskQueue;
+  public queued;
+  public callbacks;
+  public changeRecords;
+  public oldCollection;
+  public collection;
+  public lengthPropertyName;
+  public lengthObserver;
+  public array;
   constructor(taskQueue, collection){
     this.taskQueue = taskQueue;
     this.queued = false;
@@ -48,7 +57,7 @@ export class ModifyCollectionObserver {
 
   getObserver(propertyName){
     if(propertyName == this.lengthPropertyName){
-      return this.lengthObserver || (this.lengthObserver = new CollectionLengthObserver(this.collection, this.lengthPropertyName));
+      return this.lengthObserver || (this.lengthObserver = new CollectionLengthObserver(this.collection));
     }else{
       throw new Error(`You cannot observe the ${propertyName} property of an array.`);
     }
@@ -94,6 +103,10 @@ export class ModifyCollectionObserver {
 }
 
 export class CollectionLengthObserver {
+  public collection;
+  public callbacks;
+  public lengthPropertyName;
+  public currentValue;
   constructor(collection){
     this.collection = collection;
     this.callbacks = [];

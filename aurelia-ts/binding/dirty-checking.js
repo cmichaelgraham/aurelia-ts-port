@@ -17,9 +17,7 @@ define(["require", "exports"], function (require, exports) {
         };
         DirtyChecker.prototype.scheduleDirtyCheck = function () {
             var _this = this;
-            setTimeout(function () {
-                return _this.check();
-            }, this.checkDelay);
+            setTimeout(function () { return _this.check(); }, this.checkDelay);
         };
         DirtyChecker.prototype.check = function () {
             var tracked = this.tracked, i = tracked.length;

@@ -1,3 +1,16 @@
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
 define(["require", "exports", '../metadata/index', './view-strategy', './view-engine', './html-behavior'], function (require, exports, index_1, view_strategy_1, view_engine_1, html_behavior_1) {
     var CompositionEngine = (function () {
         function CompositionEngine(viewEngine) {

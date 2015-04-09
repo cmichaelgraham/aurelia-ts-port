@@ -163,7 +163,7 @@ ArraySplice.prototype = {
       return [];
 
     if (currentStart == currentEnd) {
-      var splice = newSplice(currentStart, [], 0);
+      var splice:any = newSplice(currentStart, [], 0);
       while (oldStart < oldEnd)
         splice.removed.push(old[oldStart++]);
 
@@ -175,7 +175,7 @@ ArraySplice.prototype = {
         this.calcEditDistances(current, currentStart, currentEnd,
                                old, oldStart, oldEnd));
 
-    var splice = undefined;
+    var splice:any = undefined;
     var splices = [];
     var index = currentStart;
     var oldIndex = oldStart;

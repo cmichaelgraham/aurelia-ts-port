@@ -4,7 +4,20 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../path/index'], function (require, exports, _index) {
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", '../path/index'], function (require, exports, index_1) {
     function register(lookup, name, resource, type) {
         if (!name) {
             return;
@@ -57,7 +70,7 @@ define(["require", "exports", '../path/index'], function (require, exports, _ind
             this.valueConverterLookupFunction = this.getValueConverter.bind(this);
         }
         ViewResources.prototype.relativeToView = function (path) {
-            return _index.relativeToFile(path, this.viewUrl);
+            return index_1.relativeToFile(path, this.viewUrl);
         };
         ViewResources.prototype.getElement = function (tagName) {
             return this.elements[tagName] || this.parent.getElement(tagName);

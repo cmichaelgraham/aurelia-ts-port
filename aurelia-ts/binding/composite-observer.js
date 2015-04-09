@@ -25,6 +25,7 @@ define(["require", "exports"], function (require, exports) {
         };
         CompositeObserver.prototype.dispose = function () {
             var subscriptions = this.subscriptions;
+            var i = subscriptions.length;
             while (i--) {
                 subscriptions[i]();
             }

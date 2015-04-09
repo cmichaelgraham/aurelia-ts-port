@@ -1,4 +1,11 @@
 export class ComputedPropertyObserver {
+  public obj;
+  public propertyName;
+  public descriptor;
+  public observerLocator;
+  public callbacks;
+  public oldValue;
+  public subscriptions;
   constructor(obj, propertyName, descriptor, observerLocator){
     this.obj = obj;
     this.propertyName = propertyName;
@@ -66,7 +73,7 @@ export function hasDeclaredDependencies(descriptor) {
 }
 
 export function declarePropertyDependencies(ctor, propertyName, dependencies) {
-  var descriptor = Object.getOwnPropertyDescriptor(ctor.prototype, propertyName);
+  var descriptor:any = Object.getOwnPropertyDescriptor(ctor.prototype, propertyName);
   if (descriptor.set)
     throw new Error('The property cannot have a setter function.');
   descriptor.get.dependencies = dependencies;

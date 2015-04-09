@@ -36,9 +36,7 @@ define(["require", "exports"], function (require, exports) {
                 dependencies = this.descriptor.get.dependencies;
                 for (i = 0, ii = dependencies.length; i < ii; i++) {
                     // todo:  consider throwing when a dependency's observer is an instance of DirtyCheckProperty.
-                    this.subscriptions.push(this.observerLocator.getObserver(this.obj, dependencies[i]).subscribe(function () {
-                        return _this.evaluate();
-                    }));
+                    this.subscriptions.push(this.observerLocator.getObserver(this.obj, dependencies[i]).subscribe(function () { return _this.evaluate(); }));
                 }
             }
             return function () {
@@ -55,7 +53,8 @@ define(["require", "exports"], function (require, exports) {
     })();
     exports.ComputedPropertyObserver = ComputedPropertyObserver;
     function hasDeclaredDependencies(descriptor) {
-        return descriptor && descriptor.get && !descriptor.set && descriptor.get.dependencies && descriptor.get.dependencies.length;
+        return descriptor && descriptor.get && !descriptor.set
+            && descriptor.get.dependencies && descriptor.get.dependencies.length;
     }
     exports.hasDeclaredDependencies = hasDeclaredDependencies;
     function declarePropertyDependencies(ctor, propertyName, dependencies) {

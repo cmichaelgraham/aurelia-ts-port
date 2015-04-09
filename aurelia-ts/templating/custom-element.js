@@ -4,12 +4,21 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../metadata/index', './behavior-instance', './behaviors', './content-selector', './view-engine', './view-strategy', './util'], function (require, exports, _index, _behavior_instance, _behaviors, _content_selector, _view_engine, _view_strategy, _util) {
-    var defaultInstruction = {
-        suppressBind: false
-    }, contentSelectorFactoryOptions = {
-        suppressBind: true
-    }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot, valuePropertyName = 'value';
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", '../metadata/index', './behavior-instance', './behaviors', './content-selector', './view-engine', './view-strategy', './util'], function (require, exports, index_1, behavior_instance_1, behaviors_1, content_selector_1, view_engine_1, view_strategy_1, util_1) {
+    var defaultInstruction = { suppressBind: false }, contentSelectorFactoryOptions = { suppressBind: true }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot, valuePropertyName = 'value';
     var UseShadowDOM = (function () {
         function UseShadowDOM() {
         }
@@ -32,12 +41,12 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
         }
         CustomElement.convention = function (name) {
             if (name.endsWith('CustomElement')) {
-                return new CustomElement(_util.hyphenate(name.substring(0, name.length - 13)));
+                return new CustomElement(util_1.hyphenate(name.substring(0, name.length - 13)));
             }
         };
         CustomElement.prototype.analyze = function (container, target) {
-            var meta = _index.Metadata.on(target);
-            _behaviors.configureBehavior(container, this, target, valuePropertyName);
+            var meta = index_1.Metadata.on(target);
+            behaviors_1.configureBehavior(container, this, target, valuePropertyName);
             this.targetShadowDOM = meta.has(UseShadowDOM);
             this.skipContentProcessing = meta.has(SkipContentProcessing);
             this.usesShadowDOM = this.targetShadowDOM && hasShadowDOM;
@@ -48,15 +57,15 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
         CustomElement.prototype.load = function (container, target, viewStrategy, transientView) {
             var _this = this;
             var options;
-            viewStrategy = viewStrategy || this.viewStrategy || _view_strategy.ViewStrategy.getDefault(target);
+            viewStrategy = viewStrategy || this.viewStrategy || view_strategy_1.ViewStrategy.getDefault(target);
             options = {
                 targetShadowDOM: this.targetShadowDOM,
                 beforeCompile: target.beforeCompile
             };
             if (!viewStrategy.moduleId) {
-                viewStrategy.moduleId = _index.Origin.get(target).moduleId;
+                viewStrategy.moduleId = index_1.Origin.get(target).moduleId;
             }
-            return viewStrategy.loadViewFactory(container.get(_view_engine.ViewEngine), options).then(function (viewFactory) {
+            return viewStrategy.loadViewFactory(container.get(view_engine_1.ViewEngine), options).then(function (viewFactory) {
                 if (!transientView) {
                     _this.viewFactory = viewFactory;
                 }
@@ -79,7 +88,7 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
         CustomElement.prototype.create = function (container, instruction, element) {
             if (instruction === void 0) { instruction = defaultInstruction; }
             if (element === void 0) { element = null; }
-            var executionContext = instruction.executionContext || container.get(this.target), behaviorInstance = new _behavior_instance.BehaviorInstance(this, executionContext, instruction), viewFactory = instruction.viewFactory || this.viewFactory, host;
+            var executionContext = instruction.executionContext || container.get(this.target), behaviorInstance = new behavior_instance_1.BehaviorInstance(this, executionContext, instruction), viewFactory = instruction.viewFactory || this.viewFactory, host;
             if (viewFactory) {
                 behaviorInstance.view = viewFactory.create(container, behaviorInstance.executionContext, instruction);
             }
@@ -96,9 +105,7 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
                         host = element;
                         if (instruction.contentFactory) {
                             var contentView = instruction.contentFactory.create(container, null, contentSelectorFactoryOptions);
-                            _content_selector.ContentSelector.applySelectors(contentView, behaviorInstance.view.contentSelectors, function (contentSelector, group) {
-                                return contentSelector.add(group);
-                            });
+                            content_selector_1.ContentSelector.applySelectors(contentView, behaviorInstance.view.contentSelectors, function (contentSelector, group) { return contentSelector.add(group); });
                             behaviorInstance.contentView = contentView;
                         }
                     }
@@ -114,6 +121,6 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
             return behaviorInstance;
         };
         return CustomElement;
-    })(_index.ResourceType);
+    })(index_1.ResourceType);
     exports.CustomElement = CustomElement;
 });

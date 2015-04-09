@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", './array-change-records', './collection-observation'], function (require, exports, _array_change_records, _collection_observation) {
+define(["require", "exports", './array-change-records', './collection-observation'], function (require, exports, array_change_records_1, collection_observation_1) {
     var arrayProto = Array.prototype, hasArrayObserve = (function detectArrayObserve() {
         if (typeof Array.observe !== 'function') {
             return false;
@@ -20,7 +20,8 @@ define(["require", "exports", './array-change-records', './collection-observatio
         Object.deliverChangeRecords(callback);
         if (records.length !== 2)
             return false;
-        if (records[0].type != 'splice' || records[1].type != 'splice') {
+        if (records[0].type != 'splice' ||
+            records[1].type != 'splice') {
             return false;
         }
         Array.unobserve(arr, callback);
@@ -110,7 +111,7 @@ define(["require", "exports", './array-change-records', './collection-observatio
             return observer;
         };
         return ModifyArrayObserver;
-    })(_collection_observation.ModifyCollectionObserver);
+    })(collection_observation_1.ModifyCollectionObserver);
     var ArrayObserveObserver = (function () {
         function ArrayObserveObserver(array) {
             this.array = array;
@@ -123,9 +124,7 @@ define(["require", "exports", './array-change-records', './collection-observatio
             callbacks.push(callback);
             if (!this.observing) {
                 this.observing = true;
-                Array.observe(this.array, function (changes) {
-                    return _this.handleChanges(changes);
-                });
+                Array.observe(this.array, function (changes) { return _this.handleChanges(changes); });
             }
             return function () {
                 callbacks.splice(callbacks.indexOf(callback), 1);
@@ -133,7 +132,7 @@ define(["require", "exports", './array-change-records', './collection-observatio
         };
         ArrayObserveObserver.prototype.getObserver = function (propertyName) {
             if (propertyName == 'length') {
-                return this.lengthObserver || (this.lengthObserver = new _collection_observation.CollectionLengthObserver(this.array));
+                return this.lengthObserver || (this.lengthObserver = new collection_observation_1.CollectionLengthObserver(this.array));
             }
             else {
                 throw new Error("You cannot observe the " + propertyName + " property of an array.");
@@ -144,7 +143,7 @@ define(["require", "exports", './array-change-records', './collection-observatio
             if (!i) {
                 return;
             }
-            splices = _array_change_records.projectArraySplices(this.array, changeRecords);
+            splices = array_change_records_1.projectArraySplices(this.array, changeRecords);
             while (i--) {
                 callbacks[i](splices);
             }

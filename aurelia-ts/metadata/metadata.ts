@@ -211,7 +211,7 @@ export var Metadata = {
 
     return metadata;
   },
-  configure: {
+  configure: <any>{
     /**
     * Adds a function capable of locating metadata.
     *

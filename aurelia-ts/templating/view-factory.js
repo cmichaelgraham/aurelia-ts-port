@@ -1,4 +1,17 @@
-define(["require", "exports", './view', './view-slot', './content-selector', './resource-registry'], function (require, exports, _view, _view_slot, _content_selector, _resource_registry) {
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", './view', './view-slot', './content-selector', './resource-registry'], function (require, exports, view_1, view_slot_1, content_selector_1, resource_registry_1) {
     function elementContainerGet(key) {
         if (key === Element) {
             return this.element;
@@ -6,14 +19,14 @@ define(["require", "exports", './view', './view-slot', './content-selector', './
         if (key === BoundViewFactory) {
             return this.boundViewFactory || (this.boundViewFactory = new BoundViewFactory(this, this.instruction.viewFactory, this.executionContext));
         }
-        if (key === _view_slot.ViewSlot) {
+        if (key === view_slot_1.ViewSlot) {
             if (this.viewSlot === undefined) {
-                this.viewSlot = new _view_slot.ViewSlot(this.element, this.instruction.anchorIsContainer, this.executionContext);
+                this.viewSlot = new view_slot_1.ViewSlot(this.element, this.instruction.anchorIsContainer, this.executionContext);
                 this.children.push(this.viewSlot);
             }
             return this.viewSlot;
         }
-        if (key === _resource_registry.ViewResources) {
+        if (key === resource_registry_1.ViewResources) {
             return this.viewResources;
         }
         return this.superGet(key);
@@ -42,11 +55,12 @@ define(["require", "exports", './view', './view-slot', './content-selector', './
             return;
         }
         if (instruction.contentSelector) {
-            contentSelectors.push(new _content_selector.ContentSelector(element, instruction.selector));
+            contentSelectors.push(new content_selector_1.ContentSelector(element, instruction.selector));
             return;
         }
         if (behaviorInstructions.length) {
-            containers[instruction.injectorId] = elementContainer = createElementContainer(containers[instruction.parentInjectorId], element, instruction, executionContext, children, resources);
+            containers[instruction.injectorId] = elementContainer =
+                createElementContainer(containers[instruction.parentInjectorId], element, instruction, executionContext, children, resources);
             for (i = 0, ii = behaviorInstructions.length; i < ii; ++i) {
                 current = behaviorInstructions[i];
                 instance = current.type.create(elementContainer, current, element, bindings);
@@ -65,9 +79,7 @@ define(["require", "exports", './view', './view-slot', './content-selector', './
             this.parentContainer = parentContainer;
             this.viewFactory = viewFactory;
             this.executionContext = executionContext;
-            this.factoryOptions = {
-                behaviorInstance: false
-            };
+            this.factoryOptions = { behaviorInstance: false };
         }
         BoundViewFactory.prototype.create = function (executionContext) {
             var childContainer = this.parentContainer.createChild(), context = executionContext || this.executionContext;
@@ -89,13 +101,11 @@ define(["require", "exports", './view', './view-slot', './content-selector', './
         }
         ViewFactory.prototype.create = function (container, executionContext, options) {
             if (options === void 0) { options = defaultFactoryOptions; }
-            var fragment = this.template.cloneNode(true), instructables = fragment.querySelectorAll('.au-target'), instructions = this.instructions, resources = this.resources, behaviors = [], bindings = [], children = [], contentSelectors = [], containers = {
-                root: container
-            }, i, ii, view;
+            var fragment = this.template.cloneNode(true), instructables = fragment.querySelectorAll('.au-target'), instructions = this.instructions, resources = this.resources, behaviors = [], bindings = [], children = [], contentSelectors = [], containers = { root: container }, i, ii, view;
             for (i = 0, ii = instructables.length; i < ii; ++i) {
                 applyInstructions(containers, executionContext, instructables[i], instructions[i], behaviors, bindings, children, contentSelectors, resources);
             }
-            view = new _view.View(fragment, behaviors, bindings, children, options.systemControlled, contentSelectors);
+            view = new view_1.View(fragment, behaviors, bindings, children, options.systemControlled, contentSelectors);
             view.created(executionContext);
             if (!options.suppressBind) {
                 view.bind(executionContext);

@@ -15,6 +15,7 @@ define(["require", "exports", '../metadata/index', './value-converter', './event
     exports.CallExpression = call_expression_1.CallExpression;
     exports.DirtyChecker = dirty_checking_1.DirtyChecker;
     exports.getChangeRecords = map_change_records_1.getChangeRecords;
+    exports.ComputedPropertyObserver = computed_observation_1.ComputedPropertyObserver;
     exports.declarePropertyDependencies = computed_observation_1.declarePropertyDependencies;
     //ES7 Decorators
     function valueConverter(name) {

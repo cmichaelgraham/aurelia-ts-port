@@ -1,3 +1,16 @@
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
 define(["require", "exports", '../route-recognizer/index', '../path/index', './navigation-context', './navigation-instruction', './router-configuration', './util'], function (require, exports, index_1, index_2, navigation_context_1, navigation_instruction_1, router_configuration_1, util_1) {
     var Router = (function () {
         function Router(container, history) {

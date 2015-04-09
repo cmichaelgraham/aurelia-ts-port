@@ -334,10 +334,17 @@ define(["require", "exports"], function (require, exports) {
         return (code >= $TAB && code <= $SPACE) || (code === $NBSP);
     }
     function isIdentifierStart(code) {
-        return ($a <= code && code <= $z) || ($A <= code && code <= $Z) || (code === $_) || (code === $$);
+        return ($a <= code && code <= $z)
+            || ($A <= code && code <= $Z)
+            || (code === $_)
+            || (code === $$);
     }
     function isIdentifierPart(code) {
-        return ($a <= code && code <= $z) || ($A <= code && code <= $Z) || ($0 <= code && code <= $9) || (code === $_) || (code === $$);
+        return ($a <= code && code <= $z)
+            || ($A <= code && code <= $Z)
+            || ($0 <= code && code <= $9)
+            || (code === $_)
+            || (code === $$);
     }
     function isDigit(code) {
         return ($0 <= code && code <= $9);
@@ -350,18 +357,12 @@ define(["require", "exports"], function (require, exports) {
     }
     function unescape(code) {
         switch (code) {
-            case $n:
-                return $LF;
-            case $f:
-                return $FF;
-            case $r:
-                return $CR;
-            case $t:
-                return $TAB;
-            case $v:
-                return $VTAB;
-            default:
-                return code;
+            case $n: return $LF;
+            case $f: return $FF;
+            case $r: return $CR;
+            case $t: return $TAB;
+            case $v: return $VTAB;
+            default: return code;
         }
     }
     function assert(condition, message) {

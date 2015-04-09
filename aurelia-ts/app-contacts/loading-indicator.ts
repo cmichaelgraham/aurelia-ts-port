@@ -1,7 +1,7 @@
 import nprogress from 'nprogress';
-import {bindableProperty, noView} from '../framework/index';
+import {bindable, noView} from '../framework/index';
 
-@bindableProperty('loading')
+@bindable('loading')
 @noView
 export class LoadingIndicator {
   loadingChanged(newValue){

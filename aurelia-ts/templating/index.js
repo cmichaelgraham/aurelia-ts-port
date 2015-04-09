@@ -1,38 +1,37 @@
-define(["require", "exports", '../metadata/index', './property', './attached-behavior', './children', './custom-element', './element-config', './template-controller', './view-strategy', './attached-behavior', './property', './resource-registry', './children', './custom-element', './element-config', './template-controller', './view-strategy', './view-compiler', './view-engine', './view-factory', './view-slot', './binding-language', './composition-engine', './animator'], function (require, exports, _index, _property, _attached_behavior, _children, _custom_element, _element_config, _template_controller, _view_strategy, _attached_behavior_1, _property_1, _resource_registry, _children_1, _custom_element_1, _element_config_1, _template_controller_1, _view_strategy_1, _view_compiler, _view_engine, _view_factory, _view_slot, _binding_language, _composition_engine, _animator) {
-    exports.AttachedBehavior = _attached_behavior_1.AttachedBehavior;
-    exports.BehaviorProperty = _property_1.BehaviorProperty;
-    exports.OptionsProperty = _property_1.OptionsProperty;
-    exports.ResourceRegistry = _resource_registry.ResourceRegistry;
-    exports.ViewResources = _resource_registry.ViewResources;
-    exports.ChildObserver = _children_1.ChildObserver;
-    exports.CustomElement = _custom_element_1.CustomElement;
-    exports.UseShadowDOM = _custom_element_1.UseShadowDOM;
-    exports.SkipContentProcessing = _custom_element_1.SkipContentProcessing;
-    exports.ElementConfig = _element_config_1.ElementConfig;
-    exports.TemplateController = _template_controller_1.TemplateController;
-    exports.ViewStrategy = _view_strategy_1.ViewStrategy;
-    exports.UseView = _view_strategy_1.UseView;
-    exports.ConventionalView = _view_strategy_1.ConventionalView;
-    exports.NoView = _view_strategy_1.NoView;
-    exports.ViewCompiler = _view_compiler.ViewCompiler;
-    exports.ViewEngine = _view_engine.ViewEngine;
-    exports.ViewFactory = _view_factory.ViewFactory;
-    exports.BoundViewFactory = _view_factory.BoundViewFactory;
-    exports.ViewSlot = _view_slot.ViewSlot;
-    exports.BindingLanguage = _binding_language.BindingLanguage;
-    exports.CompositionEngine = _composition_engine.CompositionEngine;
-    exports.Animator = _animator.Animator;
-    exports.Behavior = _index.Metadata;
-    exports.Behaviour = _index.Metadata;
-    _index.Metadata.configure.classHelper('withProperty', _property.BehaviorProperty);
-    _index.Metadata.configure.classHelper('withOptions', _property.OptionsProperty);
-    _index.Metadata.configure.classHelper('attachedBehavior', _attached_behavior.AttachedBehavior);
-    _index.Metadata.configure.classHelper('syncChildren', _children.ChildObserver);
-    _index.Metadata.configure.classHelper('customElement', _custom_element.CustomElement);
-    _index.Metadata.configure.classHelper('useShadowDOM', _custom_element.UseShadowDOM);
-    _index.Metadata.configure.classHelper('elementConfig', _element_config.ElementConfig);
-    _index.Metadata.configure.classHelper('templateController', _template_controller.TemplateController);
-    _index.Metadata.configure.classHelper('useView', _view_strategy.UseView);
-    _index.Metadata.configure.classHelper('noView', _view_strategy.NoView);
-    _index.Metadata.configure.classHelper('skipContentProcessing', _custom_element.SkipContentProcessing);
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", './html-behavior', './bindable-property', './resource-registry', './children', './element-config', './view-strategy', './view-compiler', './view-engine', './view-factory', './view-slot', './binding-language', './composition-engine', './animator', './decorators'], function (require, exports, html_behavior_1, bindable_property_1, resource_registry_1, children_1, element_config_1, view_strategy_1, view_compiler_1, view_engine_1, view_factory_1, view_slot_1, binding_language_1, composition_engine_1, animator_1, decorators_1) {
+    function __export(m) {
+        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+    }
+    exports.HtmlBehaviorResource = html_behavior_1.HtmlBehaviorResource;
+    exports.BindableProperty = bindable_property_1.BindableProperty;
+    exports.ResourceRegistry = resource_registry_1.ResourceRegistry;
+    exports.ViewResources = resource_registry_1.ViewResources;
+    exports.ChildObserver = children_1.ChildObserver;
+    exports.ElementConfigResource = element_config_1.ElementConfigResource;
+    exports.ViewStrategy = view_strategy_1.ViewStrategy;
+    exports.UseViewStrategy = view_strategy_1.UseViewStrategy;
+    exports.ConventionalViewStrategy = view_strategy_1.ConventionalViewStrategy;
+    exports.NoViewStrategy = view_strategy_1.NoViewStrategy;
+    exports.ViewCompiler = view_compiler_1.ViewCompiler;
+    exports.ViewEngine = view_engine_1.ViewEngine;
+    exports.ViewFactory = view_factory_1.ViewFactory;
+    exports.BoundViewFactory = view_factory_1.BoundViewFactory;
+    exports.ViewSlot = view_slot_1.ViewSlot;
+    exports.BindingLanguage = binding_language_1.BindingLanguage;
+    exports.CompositionEngine = composition_engine_1.CompositionEngine;
+    exports.Animator = animator_1.Animator;
+    __export(decorators_1);
 });

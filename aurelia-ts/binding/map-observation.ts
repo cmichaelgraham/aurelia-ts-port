@@ -1,5 +1,5 @@
-import core from '../core-js/index'
-import {getEntries, getChangeRecords} from './map-change-records';
+import core from 'core-js'
+import {getChangeRecords} from './map-change-records';
 import {ModifyCollectionObserver} from './collection-observation';
 
 var mapProto = Map.prototype;

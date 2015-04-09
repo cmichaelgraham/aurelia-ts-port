@@ -1,3 +1,16 @@
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
 define(["require", "exports", '../logging/index', '../dependency-injection/index', '../loader/index', '../path/index', './plugins', '../templating/index'], function (require, exports, LogManager, index_1, index_2, index_3, plugins_1, index_4) {
     var logger = LogManager.getLogger('aurelia'), slice = Array.prototype.slice;
     if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {

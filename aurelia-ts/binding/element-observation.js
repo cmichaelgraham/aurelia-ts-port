@@ -1,8 +1,5 @@
 define(["require", "exports"], function (require, exports) {
     var XLinkAttributeObserver = (function () {
-        // xlink namespaced attributes require getAttributeNS/setAttributeNS
-        // (even though the NS version doesn't work for other namespaces
-        // in html5 documents)
         function XLinkAttributeObserver(element, propertyName, attributeName) {
             this.element = element;
             this.propertyName = propertyName;
@@ -131,7 +128,8 @@ define(["require", "exports"], function (require, exports) {
             }
             // subscribe to new array.
             if (Array.isArray(newValue)) {
-                this.arraySubscription = this.observerLocator.getArrayObserver(newValue).subscribe(this.synchronizeOptions.bind(this));
+                this.arraySubscription = this.observerLocator.getArrayObserver(newValue)
+                    .subscribe(this.synchronizeOptions.bind(this));
             }
             // assign and sync element.
             this.value = newValue;
@@ -139,11 +137,7 @@ define(["require", "exports"], function (require, exports) {
             // queue up an initial sync after the bindings have been evaluated.
             if (this.element.options.length > 0 && !this.initialSync) {
                 this.initialSync = true;
-                this.observerLocator.taskQueue.queueMicroTask({
-                    call: function () {
-                        return _this.synchronizeOptions();
-                    }
-                });
+                this.observerLocator.taskQueue.queueMicroTask({ call: function () { return _this.synchronizeOptions(); } });
             }
         };
         SelectValueObserver.prototype.synchronizeOptions = function () {
@@ -201,7 +195,8 @@ define(["require", "exports"], function (require, exports) {
         SelectValueObserver.prototype.subscribe = function (callback) {
             if (!this.callbacks) {
                 this.callbacks = [];
-                this.disposeHandler = this.handler.subscribe(this.element, this.synchronizeValue.bind(this, false));
+                this.disposeHandler = this.handler
+                    .subscribe(this.element, this.synchronizeValue.bind(this, false));
             }
             this.callbacks.push(callback);
             return this.unsubscribe.bind(this, callback);
@@ -217,10 +212,7 @@ define(["require", "exports"], function (require, exports) {
         };
         SelectValueObserver.prototype.bind = function () {
             this.domObserver = new MutationObserver(this.synchronizeOptions.bind(this));
-            this.domObserver.observe(this.element, {
-                childList: true,
-                subtree: true
-            });
+            this.domObserver.observe(this.element, { childList: true, subtree: true });
         };
         SelectValueObserver.prototype.unbind = function () {
             this.domObserver.disconnect();
@@ -254,7 +246,8 @@ define(["require", "exports"], function (require, exports) {
             }
             // subscribe to new array.
             if (this.element.type === 'checkbox' && Array.isArray(newValue)) {
-                this.arraySubscription = this.observerLocator.getArrayObserver(newValue).subscribe(this.synchronizeElement.bind(this));
+                this.arraySubscription = this.observerLocator.getArrayObserver(newValue)
+                    .subscribe(this.synchronizeElement.bind(this));
             }
             // assign and sync element.
             this.value = newValue;
@@ -262,16 +255,15 @@ define(["require", "exports"], function (require, exports) {
             // queue up an initial sync after the bindings have been evaluated.
             if (!this.element.hasOwnProperty('model') && !this.initialSync) {
                 this.initialSync = true;
-                this.observerLocator.taskQueue.queueMicroTask({
-                    call: function () {
-                        return _this.synchronizeElement();
-                    }
-                });
+                this.observerLocator.taskQueue.queueMicroTask({ call: function () { return _this.synchronizeElement(); } });
             }
         };
         CheckedObserver.prototype.synchronizeElement = function () {
             var value = this.value, element = this.element, elementValue = element.hasOwnProperty('model') ? element.model : element.value, isRadio = element.type === 'radio';
-            element.checked = isRadio && value === elementValue || !isRadio && value === true || !isRadio && Array.isArray(value) && value.indexOf(elementValue) !== -1;
+            element.checked =
+                isRadio && value === elementValue
+                    || !isRadio && value === true
+                    || !isRadio && Array.isArray(value) && value.indexOf(elementValue) !== -1;
         };
         CheckedObserver.prototype.synchronizeValue = function () {
             var value = this.value, element = this.element, elementValue = element.hasOwnProperty('model') ? element.model : element.value, index;
@@ -311,7 +303,8 @@ define(["require", "exports"], function (require, exports) {
         CheckedObserver.prototype.subscribe = function (callback) {
             if (!this.callbacks) {
                 this.callbacks = [];
-                this.disposeHandler = this.handler.subscribe(this.element, this.synchronizeValue.bind(this, false));
+                this.disposeHandler = this.handler
+                    .subscribe(this.element, this.synchronizeValue.bind(this, false));
             }
             this.callbacks.push(callback);
             return this.unsubscribe.bind(this, callback);

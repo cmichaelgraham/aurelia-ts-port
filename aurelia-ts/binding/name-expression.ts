@@ -1,4 +1,7 @@
 export class NameExpression {
+  public property;
+  public discrete;
+  public mode;
   constructor(name, mode){
     this.property = name;
     this.discrete = true;
@@ -11,6 +14,9 @@ export class NameExpression {
 }
 
 class NameBinder {
+  public property;
+  public target;
+  public source;
   constructor(property, target, mode){
     this.property = property;
 

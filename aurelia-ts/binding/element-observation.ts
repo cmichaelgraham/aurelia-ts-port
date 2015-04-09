@@ -2,6 +2,9 @@ export class XLinkAttributeObserver {
   // xlink namespaced attributes require getAttributeNS/setAttributeNS
   // (even though the NS version doesn't work for other namespaces
   // in html5 documents)
+  public element;
+  public propertyName;
+  public attributeName;
   constructor(element, propertyName, attributeName) {
     this.element = element;
     this.propertyName = propertyName;
@@ -22,6 +25,8 @@ export class XLinkAttributeObserver {
 }
 
 export class DataAttributeObserver {
+  public element;
+  public propertyName;
   constructor(element, propertyName) {
     this.element = element;
     this.propertyName = propertyName;
@@ -41,6 +46,8 @@ export class DataAttributeObserver {
 }
 
 export class StyleObserver {
+  public element;
+  public propertyName;
   constructor(element, propertyName) {
     this.element = element;
     this.propertyName = propertyName;
@@ -73,6 +80,12 @@ export class StyleObserver {
 }
 
 export class ValueAttributeObserver {
+  public element;
+  public propertyName;
+  public handler;
+  public callbacks;
+  public oldValue;
+  public disposeHandler;
   constructor(element, propertyName, handler){
     this.element = element;
     this.propertyName = propertyName;
@@ -126,6 +139,16 @@ export class ValueAttributeObserver {
 }
 
 export class SelectValueObserver {
+  public element;
+  public handler;
+  public observerLocator;
+  public value;
+  public arraySubscription;
+  public initialSync;
+  public oldValue;
+  public callbacks;
+  public disposeHandler;
+  public domObserver;
   constructor(element, handler, observerLocator){
     this.element = element;
     this.handler = handler;
@@ -263,6 +286,15 @@ export class SelectValueObserver {
 }
 
 export class CheckedObserver {
+  public element;
+  public handler;
+  public observerLocator;
+  public value;
+  public arraySubscription;
+  public initialSync;
+  public oldValue;
+  public callbacks;
+  public disposeHandler;
   constructor(element, handler, observerLocator){
     this.element = element;
     this.handler = handler;

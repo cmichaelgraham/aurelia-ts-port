@@ -1,5 +1,5 @@
 import {Lexer,Token} from './lexer';
-import {Expression, ArrayOfExpression, Chain, ValueConverter, Assign,
+import {Expression, Chain, ValueConverter, Assign,
         Conditional, AccessScope, AccessMember, AccessKeyed,
         CallScope, CallFunction, CallMember, PrefixNot,
         Binary, LiteralPrimitive, LiteralArray, LiteralObject, LiteralString} from './ast';
@@ -7,6 +7,8 @@ import {Expression, ArrayOfExpression, Chain, ValueConverter, Assign,
 var EOF = new Token(-1, null);
 
 export class Parser {
+  public cache;
+  public lexer;
   constructor(){
     this.cache = {};
     this.lexer = new Lexer();
@@ -21,6 +23,10 @@ export class Parser {
 }
 
 export class ParserImplementation {
+  public index;
+  public input;
+  public tokens;
+  public optional;
   constructor(lexer, input) {
     this.index = 0;
     this.input = input;

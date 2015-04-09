@@ -16,8 +16,7 @@ define(["require", "exports"], function (require, exports) {
     var EDIT_UPDATE = 1;
     var EDIT_ADD = 2;
     var EDIT_DELETE = 3;
-    function ArraySplice() {
-    }
+    function ArraySplice() { }
     ArraySplice.prototype = {
         // Note: This function is *based* on the computation of the Levenshtein
         // "edit" distance. The one change is that "updates" are treated as two
@@ -151,14 +150,10 @@ define(["require", "exports"], function (require, exports) {
                 var splice = newSplice(currentStart, [], 0);
                 while (oldStart < oldEnd)
                     splice.removed.push(old[oldStart++]);
-                return [
-                    splice
-                ];
+                return [splice];
             }
             else if (oldStart == oldEnd)
-                return [
-                    newSplice(currentStart, [], currentEnd - currentStart)
-                ];
+                return [newSplice(currentStart, [], currentEnd - currentStart)];
             var ops = this.spliceOperationsFromEditDistances(this.calcEditDistances(current, currentStart, currentEnd, old, oldStart, oldEnd));
             var splice = undefined;
             var splices = [];
@@ -265,7 +260,8 @@ define(["require", "exports"], function (require, exports) {
                 i--;
                 insertionOffset -= current.addedCount - current.removed.length;
                 splice.addedCount += current.addedCount - intersectCount;
-                var deleteCount = splice.removed.length + current.removed.length - intersectCount;
+                var deleteCount = splice.removed.length +
+                    current.removed.length - intersectCount;
                 if (!splice.addedCount && !deleteCount) {
                     // merged splice is a noop. discard.
                     inserted = true;
@@ -318,9 +314,7 @@ define(["require", "exports"], function (require, exports) {
                     var index = toNumber(record.name);
                     if (index < 0)
                         continue;
-                    mergeSplice(splices, index, [
-                        record.oldValue
-                    ], record.type === 'delete' ? 0 : 1);
+                    mergeSplice(splices, index, [record.oldValue], record.type === 'delete' ? 0 : 1);
                     break;
                 default:
                     console.error('Unexpected record type: ' + JSON.stringify(record));

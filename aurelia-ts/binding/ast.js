@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", './path-observer', './composite-observer'], function (require, exports, _path_observer, _composite_observer) {
+define(["require", "exports", './path-observer', './composite-observer'], function (require, exports, path_observer_1, composite_observer_1) {
     var Expression = (function () {
         function Expression() {
             this.isChain = false;
@@ -70,9 +70,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 throw new Error("No ValueConverter named \"" + this.name + "\" was found!");
             }
             if ('fromView' in converter) {
-                value = converter.fromView.apply(converter, [
-                    value
-                ].concat(evalList(scope, this.args, valueConverters)));
+                value = converter.fromView.apply(converter, [value].concat(evalList(scope, this.args, valueConverters)));
             }
             return this.allArgs[0].assign(scope, value, valueConverters);
         };
@@ -90,7 +88,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 }
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -116,9 +114,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
             vistor.visitAssign(this);
         };
         Assign.prototype.connect = function (binding, scope) {
-            return {
-                value: this.evaluate(scope, binding.valueConverterLookupFunction)
-            };
+            return { value: this.evaluate(scope, binding.valueConverterLookupFunction) };
         };
         return Assign;
     })(Expression);
@@ -150,7 +146,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 childObservers.push(noInfo.observer);
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -198,7 +194,9 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
         }
         AccessMember.prototype.evaluate = function (scope, valueConverters) {
             var instance = this.object.evaluate(scope, valueConverters);
-            return instance === null || instance === undefined ? instance : instance[this.name];
+            return instance === null || instance === undefined
+                ? instance
+                : instance[this.name];
         };
         AccessMember.prototype.assign = function (scope, value) {
             var instance = this.object.evaluate(scope);
@@ -215,7 +213,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
             var _this = this;
             var info = this.object.connect(binding, scope), objectInstance = info.value, objectObserver = info.observer, observer;
             if (objectObserver) {
-                observer = new _path_observer.PathObserver(objectObserver, function (value) {
+                observer = new path_observer_1.PathObserver(objectObserver, function (value) {
                     if (value == null || value == undefined) {
                         return value;
                     }
@@ -264,7 +262,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 childObservers.push(keyInfo.observer);
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -301,7 +299,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 }
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -343,7 +341,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 }
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -388,7 +386,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 }
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -411,21 +409,15 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
         Binary.prototype.evaluate = function (scope, valueConverters) {
             var left = this.left.evaluate(scope);
             switch (this.operation) {
-                case '&&':
-                    return !!left && !!this.right.evaluate(scope);
-                case '||':
-                    return !!left || !!this.right.evaluate(scope);
+                case '&&': return !!left && !!this.right.evaluate(scope);
+                case '||': return !!left || !!this.right.evaluate(scope);
             }
             var right = this.right.evaluate(scope);
             switch (this.operation) {
-                case '==':
-                    return left == right;
-                case '===':
-                    return left === right;
-                case '!=':
-                    return left != right;
-                case '!==':
-                    return left !== right;
+                case '==': return left == right;
+                case '===': return left === right;
+                case '!=': return left != right;
+                case '!==': return left !== right;
             }
             // Null check for the operations.
             if (left === null || right === null) {
@@ -446,28 +438,17 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 return null;
             }
             switch (this.operation) {
-                case '+':
-                    return autoConvertAdd(left, right);
-                case '-':
-                    return left - right;
-                case '*':
-                    return left * right;
-                case '/':
-                    return left / right;
-                case '%':
-                    return left % right;
-                case '<':
-                    return left < right;
-                case '>':
-                    return left > right;
-                case '<=':
-                    return left <= right;
-                case '>=':
-                    return left >= right;
-                case '^':
-                    return left ^ right;
-                case '&':
-                    return left & right;
+                case '+': return autoConvertAdd(left, right);
+                case '-': return left - right;
+                case '*': return left * right;
+                case '/': return left / right;
+                case '%': return left % right;
+                case '<': return left < right;
+                case '>': return left > right;
+                case '<=': return left <= right;
+                case '>=': return left >= right;
+                case '^': return left ^ right;
+                case '&': return left & right;
             }
             throw new Error("Internal error [" + this.operation + "] not handled");
         };
@@ -484,7 +465,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 childObservers.push(rightInfo.observer);
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -513,9 +494,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
             var _this = this;
             var info = this.expression.connect(binding, scope), observer;
             if (info.observer) {
-                observer = new _composite_observer.CompositeObserver([
-                    info.observer
-                ], function () {
+                observer = new composite_observer_1.CompositeObserver([info.observer], function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -540,9 +519,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
             visitor.visitLiteralPrimitive(this);
         };
         LiteralPrimitive.prototype.connect = function (binding, scope) {
-            return {
-                value: this.value
-            };
+            return { value: this.value };
         };
         return LiteralPrimitive;
     })(Expression);
@@ -560,9 +537,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
             visitor.visitLiteralString(this);
         };
         LiteralString.prototype.connect = function (binding, scope) {
-            return {
-                value: this.value
-            };
+            return { value: this.value };
         };
         return LiteralString;
     })(Expression);
@@ -595,7 +570,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 results[i] = expInfo.value;
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -635,7 +610,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
                 instance[keys[i]] = valueInfo.value;
             }
             if (childObservers.length) {
-                observer = new _composite_observer.CompositeObserver(childObservers, function () {
+                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
                     return _this.evaluate(scope, binding.valueConverterLookupFunction);
                 });
             }
@@ -773,39 +748,12 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
         return Unparser;
     })();
     exports.Unparser = Unparser;
-    var evalListCache = [
-        [],
-        [
-            0
-        ],
-        [
-            0,
-            0
-        ],
-        [
-            0,
-            0,
-            0
-        ],
-        [
-            0,
-            0,
-            0,
-            0
-        ],
-        [
-            0,
-            0,
-            0,
-            0,
-            0
-        ]
-    ];
+    var evalListCache = [[], [0], [0, 0], [0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0, 0]];
     /// Evaluate the [list] in context of the [scope].
     function evalList(scope, list, valueConverters) {
         var length = list.length, cacheLength, i;
         for (cacheLength = evalListCache.length; cacheLength <= length; ++cacheLength) {
-            _evalListCache.push([]);
+            evalListCache.push([]);
         }
         var result = evalListCache[length];
         for (i = 0; i < length; ++i) {

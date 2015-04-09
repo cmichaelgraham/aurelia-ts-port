@@ -1,4 +1,10 @@
 export class ListenerExpression {
+  public eventManager;
+  public targetEvent;
+  public sourceExpression;
+  public delegate;
+  public discrete;
+  public preventDefault;
   constructor(eventManager, targetEvent, sourceExpression, delegate, preventDefault){
     this.eventManager = eventManager;
     this.targetEvent = targetEvent;
@@ -21,6 +27,14 @@ export class ListenerExpression {
 }
 
 class Listener {
+  public eventManager;
+  public targetEvent;
+  public sourceExpression;
+  public delegate;
+  public target;
+  public preventDefault;
+  public source;
+  private _disposeListener;
   constructor(eventManager, targetEvent, delegate, sourceExpression, target, preventDefault){
     this.eventManager = eventManager;
     this.targetEvent = targetEvent;

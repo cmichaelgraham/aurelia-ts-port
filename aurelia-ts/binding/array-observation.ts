@@ -3,7 +3,7 @@ import {ModifyCollectionObserver, CollectionLengthObserver} from './collection-o
 
 var arrayProto = Array.prototype,
     hasArrayObserve = (function detectArrayObserve() {
-      if (typeof Array.observe !== 'function') {
+      if (typeof (<any>Array).observe !== 'function') {
         return false;
       }
 
@@ -14,11 +14,11 @@ var arrayProto = Array.prototype,
       }
 
       var arr = [];
-      Array.observe(arr, callback);
+      (<any>Array).observe(arr, callback);
       arr.push(1, 2);
       arr.length = 0;
 
-      Object.deliverChangeRecords(callback);
+      (<any>Object).deliverChangeRecords(callback);
       if (records.length !== 2)
         return false;
 
@@ -27,12 +27,12 @@ var arrayProto = Array.prototype,
         return false;
       }
 
-      Array.unobserve(arr, callback);
+      (<any>Array).unobserve(arr, callback);
 
       return true;
     })();
 
-export function getArrayObserver(taskQueue, array){
+export function getArrayObserver(taskQueue, array):any{
   if(hasArrayObserve){
     return new ArrayObserveObserver(array);
   }else{
@@ -125,6 +125,10 @@ class ModifyArrayObserver extends ModifyCollectionObserver {
 }
 
 class ArrayObserveObserver {
+  public array;
+  public callbacks;
+  public observing;
+  public lengthObserver;
   constructor(array){
     this.array = array;
     this.callbacks = [];
@@ -138,7 +142,7 @@ class ArrayObserveObserver {
 
     if(!this.observing){
       this.observing = true;
-      Array.observe(this.array, changes => this.handleChanges(changes));
+      (<any>Array).observe(this.array, changes => this.handleChanges(changes));
     }
 
     return function(){

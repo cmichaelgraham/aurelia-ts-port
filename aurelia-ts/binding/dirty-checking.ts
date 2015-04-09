@@ -1,4 +1,6 @@
 export class DirtyChecker {
+  public tracked;
+  public checkDelay;
   constructor(){
     this.tracked = [];
     this.checkDelay = 120;
@@ -42,6 +44,14 @@ export class DirtyChecker {
 }
 
 export class DirtyCheckProperty {
+  public dirtyChecker;
+  public obj;
+  public propertyName;
+  public callbacks;
+  public isSVG;
+  public oldValue;
+  public tracking;
+  public newValue;
   constructor(dirtyChecker, obj, propertyName){
     this.dirtyChecker = dirtyChecker;
     this.obj = obj;

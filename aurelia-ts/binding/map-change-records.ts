@@ -1,4 +1,4 @@
-function newRecord(type, object, key, oldValue){
+function newRecord(type, object, key, oldValue?){
   return {
     type: type,
     object: object,

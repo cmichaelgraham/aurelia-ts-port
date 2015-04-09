@@ -4,25 +4,38 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", './util', '../binding/index'], function (require, exports, _util, _index) {
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", './util', '../binding/index'], function (require, exports, util_1, index_1) {
     var BehaviorProperty = (function () {
         function BehaviorProperty(name, changeHandler, attribute, defaultValue, defaultBindingMode) {
             this.name = name;
             this.changeHandler = changeHandler;
-            this.attribute = attribute || _util.hyphenate(name);
+            this.attribute = attribute || util_1.hyphenate(name);
             this.defaultValue = defaultValue;
-            this.defaultBindingMode = defaultBindingMode || _index.ONE_WAY;
+            this.defaultBindingMode = defaultBindingMode || index_1.ONE_WAY;
         }
         BehaviorProperty.prototype.bindingIsTwoWay = function () {
-            this.defaultBindingMode = _index.TWO_WAY;
+            this.defaultBindingMode = index_1.TWO_WAY;
             return this;
         };
         BehaviorProperty.prototype.bindingIsOneWay = function () {
-            this.defaultBindingMode = _index.ONE_WAY;
+            this.defaultBindingMode = index_1.ONE_WAY;
             return this;
         };
         BehaviorProperty.prototype.bindingIsOneTime = function () {
-            this.defaultBindingMode = _index.ONE_TIME;
+            this.defaultBindingMode = index_1.ONE_TIME;
             return this;
         };
         BehaviorProperty.prototype.define = function (taskQueue, behavior) {
@@ -51,9 +64,7 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
             var _this = this;
             var selfSubscriber = null;
             if (this.changeHandler) {
-                selfSubscriber = function (newValue, oldValue) {
-                    return executionContext[_this.changeHandler](newValue, oldValue);
-                };
+                selfSubscriber = function (newValue, oldValue) { return executionContext[_this.changeHandler](newValue, oldValue); };
             }
             return new BehaviorPropertyObserver(this.taskQueue, executionContext, this.name, selfSubscriber);
         };
@@ -71,10 +82,7 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
                     observer.call();
                 }
                 else if (attribute) {
-                    boundProperties.push({
-                        observer: observer,
-                        binding: attribute.createBinding(executionContext)
-                    });
+                    boundProperties.push({ observer: observer, binding: attribute.createBinding(executionContext) });
                 }
                 else if (this.defaultValue) {
                     executionContext[this.name] = this.defaultValue;
@@ -121,8 +129,7 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
                 properties[i].define(taskQueue, behavior);
             }
         };
-        OptionsProperty.prototype.createObserver = function (executionContext) {
-        };
+        OptionsProperty.prototype.createObserver = function (executionContext) { };
         OptionsProperty.prototype.initialize = function (executionContext, observerLookup, attributes, behaviorHandlesBind, boundProperties) {
             var value, key, info;
             if (!this.isDynamic) {
@@ -135,14 +142,10 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
         OptionsProperty.prototype.createDynamicProperty = function (executionContext, observerLookup, behaviorHandlesBind, name, attribute, boundProperties) {
             var changeHandlerName = name + 'Changed', selfSubscriber = null, observer, info;
             if (changeHandlerName in executionContext) {
-                selfSubscriber = function (newValue, oldValue) {
-                    return executionContext[changeHandlerName](newValue, oldValue);
-                };
+                selfSubscriber = function (newValue, oldValue) { return executionContext[changeHandlerName](newValue, oldValue); };
             }
             else if ('dynamicPropertyChanged' in executionContext) {
-                selfSubscriber = function (newValue, oldValue) {
-                    return executionContext['dynamicPropertyChanged'](name, newValue, oldValue);
-                };
+                selfSubscriber = function (newValue, oldValue) { return executionContext['dynamicPropertyChanged'](name, newValue, oldValue); };
             }
             observer = observerLookup[name] = new BehaviorPropertyObserver(this.taskQueue, executionContext, name, selfSubscriber);
             Object.defineProperty(executionContext, name, {
@@ -159,10 +162,7 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
                 observer.call();
             }
             else if (attribute) {
-                info = {
-                    observer: observer,
-                    binding: attribute.createBinding(executionContext)
-                };
+                info = { observer: observer, binding: attribute.createBinding(executionContext) };
                 boundProperties.push(info);
             }
             observer.publishing = true;

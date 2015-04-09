@@ -1,7 +1,18 @@
-define(["require", "exports", './view-factory', './binding-language'], function (require, exports, _view_factory, _binding_language) {
-    var nextInjectorId = 0, defaultCompileOptions = {
-        targetShadowDOM: false
-    }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot;
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", './view-factory', './binding-language'], function (require, exports, view_factory_1, binding_language_1) {
+    var nextInjectorId = 0, defaultCompileOptions = { targetShadowDOM: false }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot;
     function getNextInjectorId() {
         return ++nextInjectorId;
     }
@@ -33,11 +44,7 @@ define(["require", "exports", './view-factory', './binding-language'], function 
         function ViewCompiler(bindingLanguage) {
             this.bindingLanguage = bindingLanguage;
         }
-        ViewCompiler.inject = function () {
-            return [
-                _binding_language.BindingLanguage
-            ];
-        };
+        ViewCompiler.inject = function () { return [binding_language_1.BindingLanguage]; };
         ViewCompiler.prototype.compile = function (templateOrFragment, resources, options) {
             if (options === void 0) { options = defaultCompileOptions; }
             var instructions = [], targetShadowDOM = options.targetShadowDOM, content;
@@ -54,7 +61,7 @@ define(["require", "exports", './view-factory', './binding-language'], function 
             this.compileNode(content, resources, instructions, templateOrFragment, 'root', !targetShadowDOM);
             content.insertBefore(document.createComment('<view>'), content.firstChild);
             content.appendChild(document.createComment('</view>'));
-            return new _view_factory.ViewFactory(content, instructions, resources);
+            return new view_factory_1.ViewFactory(content, instructions, resources);
         };
         ViewCompiler.prototype.compileNode = function (node, resources, instructions, parentNode, parentInjectorId, targetLightDOM) {
             switch (node.nodeType) {
@@ -67,9 +74,7 @@ define(["require", "exports", './view-factory', './binding-language'], function 
                         marker.className = 'au-target';
                         (node.parentNode || parentNode).insertBefore(marker, node);
                         node.textContent = ' ';
-                        instructions.push({
-                            contentExpression: expression
-                        });
+                        instructions.push({ contentExpression: expression });
                     }
                     return node.nextSibling;
                 case 11:
@@ -101,10 +106,7 @@ define(["require", "exports", './view-factory', './binding-language'], function 
             else {
                 type = resources.getElement(tagName);
                 if (type) {
-                    elementInstruction = {
-                        type: type,
-                        attributes: {}
-                    };
+                    elementInstruction = { type: type, attributes: {} };
                     behaviorInstructions.push(elementInstruction);
                 }
             }
@@ -172,11 +174,7 @@ define(["require", "exports", './view-factory', './binding-language'], function 
                 }
                 else {
                     if (type) {
-                        instruction = {
-                            attrName: attrName,
-                            type: type,
-                            attributes: {}
-                        };
+                        instruction = { attrName: attrName, type: type, attributes: {} };
                         instruction.attributes[resources.mapAttribute(attrName)] = attrValue;
                         if (type.liftsContent) {
                             instruction.originalAttrName = attrName;
@@ -200,13 +198,9 @@ define(["require", "exports", './view-factory', './binding-language'], function 
                     anchorIsContainer: false,
                     parentInjectorId: parentInjectorId,
                     expressions: [],
-                    behaviorInstructions: [
-                        liftingInstruction
-                    ],
+                    behaviorInstructions: [liftingInstruction],
                     viewFactory: liftingInstruction.viewFactory,
-                    providers: [
-                        liftingInstruction.type.target
-                    ]
+                    providers: [liftingInstruction.type.target]
                 });
             }
             else {

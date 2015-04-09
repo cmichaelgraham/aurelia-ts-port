@@ -1,4 +1,4 @@
-define(["require", "exports", './array-change-records'], function (require, exports, _array_change_records) {
+define(["require", "exports", './array-change-records', './map-change-records'], function (require, exports, array_change_records_1, map_change_records_1) {
     var ModifyCollectionObserver = (function () {
         function ModifyCollectionObserver(taskQueue, collection) {
             this.taskQueue = taskQueue;
@@ -38,7 +38,7 @@ define(["require", "exports", './array-change-records'], function (require, expo
         };
         ModifyCollectionObserver.prototype.getObserver = function (propertyName) {
             if (propertyName == this.lengthPropertyName) {
-                return this.lengthObserver || (this.lengthObserver = new CollectionLengthObserver(this.collection, this.lengthPropertyName));
+                return this.lengthObserver || (this.lengthObserver = new CollectionLengthObserver(this.collection));
             }
             else {
                 throw new Error("You cannot observe the " + propertyName + " property of an array.");
@@ -53,11 +53,11 @@ define(["require", "exports", './array-change-records'], function (require, expo
                 if (oldCollection) {
                     // TODO (martingust) we might want to refactor this to a common, independent of collection type, way of getting the records
                     if (this.collection instanceof Map) {
-                        records = getChangeRecords(oldCollection);
+                        records = map_change_records_1.getChangeRecords(oldCollection);
                     }
                     else {
                         //we might need to combine this with existing change records....
-                        records = _array_change_records.calcSplices(this.collection, 0, this.collection.length, oldCollection, 0, oldCollection.length);
+                        records = array_change_records_1.calcSplices(this.collection, 0, this.collection.length, oldCollection, 0, oldCollection.length);
                     }
                 }
                 else {
@@ -65,7 +65,7 @@ define(["require", "exports", './array-change-records'], function (require, expo
                         records = changeRecords;
                     }
                     else {
-                        records = _array_change_records.projectArraySplices(this.collection, changeRecords);
+                        records = array_change_records_1.projectArraySplices(this.collection, changeRecords);
                     }
                 }
                 while (i--) {

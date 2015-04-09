@@ -4,6 +4,19 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
 define(["require", "exports", '../metadata/index', '../binding/index', '../task-queue/index', './view-strategy', './view-engine', './content-selector', './util', './bindable-property', './behavior-instance'], function (require, exports, index_1, index_2, index_3, view_strategy_1, view_engine_1, content_selector_1, util_1, bindable_property_1, behavior_instance_1) {
     var defaultInstruction = { suppressBind: false }, contentSelectorFactoryOptions = { suppressBind: true }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot;
     var HtmlBehaviorResource = (function (_super) {

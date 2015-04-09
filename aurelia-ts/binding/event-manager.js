@@ -66,31 +66,20 @@ define(["require", "exports"], function (require, exports) {
             this.registerElementConfig({
                 tagName: 'input',
                 properties: {
-                    value: [
-                        'change',
-                        'input'
-                    ],
-                    checked: [
-                        'change',
-                        'input'
-                    ]
+                    value: ['change', 'input'],
+                    checked: ['change', 'input']
                 }
             });
             this.registerElementConfig({
                 tagName: 'textarea',
                 properties: {
-                    value: [
-                        'change',
-                        'input'
-                    ]
+                    value: ['change', 'input']
                 }
             });
             this.registerElementConfig({
                 tagName: 'select',
                 properties: {
-                    value: [
-                        'change'
-                    ]
+                    value: ['change']
                 }
             });
             this.defaultEventStrategy = new DefaultEventStrategy();
@@ -138,7 +127,8 @@ define(["require", "exports"], function (require, exports) {
             return null;
         };
         EventManager.prototype.addEventListener = function (target, targetEvent, callback, delegate) {
-            return (this.eventStrategyLookup[targetEvent] || this.defaultEventStrategy).subscribe(target, targetEvent, callback, delegate);
+            return (this.eventStrategyLookup[targetEvent] || this.defaultEventStrategy)
+                .subscribe(target, targetEvent, callback, delegate);
         };
         return EventManager;
     })();

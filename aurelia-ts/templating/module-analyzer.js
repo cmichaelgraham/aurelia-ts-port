@@ -1,4 +1,17 @@
-define(["require", "exports", '../metadata/index', '../loader/index', '../binding/index', './custom-element', './attached-behavior', './template-controller', './view-strategy', './util'], function (require, exports, _index, _index_1, _index_2, _custom_element, _attached_behavior, _template_controller, _view_strategy, _util) {
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", '../metadata/index', '../loader/index', '../binding/index', './custom-element', './attached-behavior', './template-controller', './view-strategy', './util'], function (require, exports, index_1, index_2, index_3, custom_element_1, attached_behavior_1, template_controller_1, view_strategy_1, util_1) {
     var ResourceModule = (function () {
         function ResourceModule(moduleId) {
             this.id = moduleId;
@@ -73,16 +86,16 @@ define(["require", "exports", '../metadata/index', '../loader/index', '../bindin
         function ResourceDescription(key, exportedValue, allMetadata, resourceTypeMeta) {
             if (!resourceTypeMeta) {
                 if (!allMetadata) {
-                    allMetadata = _index.Metadata.on(exportedValue);
+                    allMetadata = index_1.Metadata.on(exportedValue);
                 }
-                resourceTypeMeta = allMetadata.first(_index.ResourceType);
+                resourceTypeMeta = allMetadata.first(index_1.ResourceType);
                 if (!resourceTypeMeta) {
-                    resourceTypeMeta = new _custom_element.CustomElement(_util.hyphenate(key));
+                    resourceTypeMeta = new custom_element_1.CustomElement(util_1.hyphenate(key));
                     allMetadata.add(resourceTypeMeta);
                 }
             }
             if (!resourceTypeMeta.name) {
-                resourceTypeMeta.name = _util.hyphenate(key);
+                resourceTypeMeta.name = util_1.hyphenate(key);
             }
             this.metadata = resourceTypeMeta;
             this.value = exportedValue;
@@ -105,9 +118,7 @@ define(["require", "exports", '../metadata/index', '../loader/index', '../bindin
             resourceModule = new ResourceModule(moduleId);
             this.cache[moduleId] = resourceModule;
             if (typeof moduleInstance === 'function') {
-                moduleInstance = {
-                    'default': moduleInstance
-                };
+                moduleInstance = { 'default': moduleInstance };
             }
             if (viewModelMember) {
                 mainResource = new ResourceDescription(viewModelMember, moduleInstance[viewModelMember]);
@@ -117,24 +128,24 @@ define(["require", "exports", '../metadata/index', '../loader/index', '../bindin
                 if (key === viewModelMember || typeof exportedValue !== 'function') {
                     continue;
                 }
-                allMetadata = _index.Metadata.on(exportedValue);
-                resourceTypeMeta = allMetadata.first(_index.ResourceType);
+                allMetadata = index_1.Metadata.on(exportedValue);
+                resourceTypeMeta = allMetadata.first(index_1.ResourceType);
                 if (resourceTypeMeta) {
-                    if (!mainResource && resourceTypeMeta instanceof _custom_element.CustomElement) {
+                    if (!mainResource && resourceTypeMeta instanceof custom_element_1.CustomElement) {
                         mainResource = new ResourceDescription(key, exportedValue, allMetadata, resourceTypeMeta);
                     }
                     else {
                         resources.push(new ResourceDescription(key, exportedValue, allMetadata, resourceTypeMeta));
                     }
                 }
-                else if (exportedValue instanceof _view_strategy.ViewStrategy) {
+                else if (exportedValue instanceof view_strategy_1.ViewStrategy) {
                     viewStrategy = exportedValue;
                 }
-                else if (exportedValue instanceof _index_1.TemplateRegistryEntry) {
-                    viewStrategy = new _view_strategy.TemplateRegistryViewStrategy(moduleId, exportedValue);
+                else if (exportedValue instanceof index_2.TemplateRegistryEntry) {
+                    viewStrategy = new view_strategy_1.TemplateRegistryViewStrategy(moduleId, exportedValue);
                 }
                 else {
-                    if (conventional = _custom_element.CustomElement.convention(key)) {
+                    if (conventional = custom_element_1.CustomElement.convention(key)) {
                         if (!mainResource) {
                             mainResource = new ResourceDescription(key, exportedValue, allMetadata, conventional);
                         }
@@ -143,15 +154,15 @@ define(["require", "exports", '../metadata/index', '../loader/index', '../bindin
                         }
                         allMetadata.add(conventional);
                     }
-                    else if (conventional = _attached_behavior.AttachedBehavior.convention(key)) {
+                    else if (conventional = attached_behavior_1.AttachedBehavior.convention(key)) {
                         resources.push(new ResourceDescription(key, exportedValue, allMetadata, conventional));
                         allMetadata.add(conventional);
                     }
-                    else if (conventional = _template_controller.TemplateController.convention(key)) {
+                    else if (conventional = template_controller_1.TemplateController.convention(key)) {
                         resources.push(new ResourceDescription(key, exportedValue, allMetadata, conventional));
                         allMetadata.add(conventional);
                     }
-                    else if (conventional = _index_2.ValueConverter.convention(key)) {
+                    else if (conventional = index_3.ValueConverter.convention(key)) {
                         resources.push(new ResourceDescription(key, exportedValue, allMetadata, conventional));
                         allMetadata.add(conventional);
                     }

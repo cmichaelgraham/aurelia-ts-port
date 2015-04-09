@@ -50,7 +50,7 @@ export function templateController(target){
 
 Decorators.configure.simpleDecorator('templateController', templateController);
 
-export function bindable(nameOrConfigOrTarget, key, descriptor):any{
+export function bindable(nameOrConfigOrTarget, key?, descriptor?):any{
   var deco = function(target, key, descriptor){
     var resource = Metadata.on(target).firstOrAdd(HtmlBehaviorResource),
         prop;
@@ -129,7 +129,7 @@ export function useView(path){
 
 Decorators.configure.parameterizedDecorator('useView', useView);
 
-export function noView(target){
+export function noView(target?):any{
   var deco = function(target){
     Metadata.on(target).add(new NoViewStrategy());
   };

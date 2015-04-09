@@ -1,4 +1,8 @@
 export class CallExpression {
+  public observerLocator;
+  public targetProperty;
+  public sourceExpression;
+  public valueConverterLookupFunction;
   constructor(observerLocator, targetProperty, sourceExpression, valueConverterLookupFunction){
     this.observerLocator = observerLocator;
     this.targetProperty = targetProperty;
@@ -18,6 +22,11 @@ export class CallExpression {
 }
 
 class Call {
+  public sourceExpression;
+  public target;
+  public targetProperty;
+  public valueConverterLookupFunction;
+  public source;
   constructor(observerLocator, sourceExpression, target, targetProperty, valueConverterLookupFunction){
     this.sourceExpression = sourceExpression
     this.target = target;

@@ -2,6 +2,8 @@ import {PathObserver} from './path-observer';
 import {CompositeObserver} from './composite-observer';
 
 export class Expression {
+  public isChain;
+  public isAssignable;
   constructor(){
     this.isChain = false;
     this.isAssignable = false;
@@ -21,6 +23,7 @@ export class Expression {
 }
 
 export class Chain extends Expression {
+  public expressions;
   constructor(expressions){
     super();
 
@@ -28,7 +31,7 @@ export class Chain extends Expression {
     this.isChain = true;
   }
 
-  evaluate(scope, valueConverters) {
+  evaluate(scope?, valueConverters?) {
     var result,
         expressions = this.expressions,
         length = expressions.length,
@@ -51,6 +54,10 @@ export class Chain extends Expression {
 }
 
 export class ValueConverter extends Expression {
+  public expression;
+  public name;
+  public args;
+  public allArgs;
   constructor(expression, name, args, allArgs){
     super();
 
@@ -60,7 +67,7 @@ export class ValueConverter extends Expression {
     this.allArgs = allArgs;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     var converter = valueConverters(this.name);
     if(!converter){
       throw new Error(`No ValueConverter named "${this.name}" was found!`);
@@ -73,7 +80,7 @@ export class ValueConverter extends Expression {
     return this.allArgs[0].evaluate(scope, valueConverters);
   }
 
-  assign(scope, value, valueConverters){
+  assign(scope?, value?, valueConverters?){
     var converter = valueConverters(this.name);
     if(!converter){
       throw new Error(`No ValueConverter named "${this.name}" was found!`);
@@ -118,6 +125,8 @@ export class ValueConverter extends Expression {
 }
 
 export class Assign extends Expression {
+  public target;
+  public value;
   constructor(target, value){
     super();
 
@@ -125,7 +134,7 @@ export class Assign extends Expression {
     this.value = value;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     return this.target.assign(scope, this.value.evaluate(scope, valueConverters));
   }
 
@@ -139,6 +148,9 @@ export class Assign extends Expression {
 }
 
 export class Conditional extends Expression {
+  public condition;
+  public yes;
+  public no;
   constructor(condition, yes, no){
     super();
 
@@ -147,7 +159,7 @@ export class Conditional extends Expression {
     this.no = no;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     return (!!this.condition.evaluate(scope)) ? this.yes.evaluate(scope) : this.no.evaluate(scope);
   }
 
@@ -188,6 +200,8 @@ export class Conditional extends Expression {
 }
 
 export class AccessScope extends Expression {
+  public name;
+  public isAssignable;
   constructor(name){
     super();
 
@@ -195,11 +209,11 @@ export class AccessScope extends Expression {
     this.isAssignable = true;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     return scope[this.name];
   }
 
-  assign(scope, value){
+  assign(scope?, value?){
     return scope[this.name] = value;
   }
 
@@ -218,6 +232,9 @@ export class AccessScope extends Expression {
 }
 
 export class AccessMember extends Expression {
+  public object;
+  public name;
+  public isAssignable;
   constructor(object, name){
     super();
 
@@ -226,14 +243,14 @@ export class AccessMember extends Expression {
     this.isAssignable = true;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     var instance = this.object.evaluate(scope, valueConverters);
     return instance === null || instance === undefined
       ? instance
       : instance[this.name];
   }
 
-  assign(scope, value){
+  assign(scope?, value?){
     var instance = this.object.evaluate(scope);
 
     if(instance === null || instance === undefined){
@@ -278,6 +295,9 @@ export class AccessMember extends Expression {
 }
 
 export class AccessKeyed extends Expression {
+  public object;
+  public key;
+  public isAssignable;
   constructor(object, key){
     super();
 
@@ -286,13 +306,13 @@ export class AccessKeyed extends Expression {
     this.isAssignable = true;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     var instance = this.object.evaluate(scope, valueConverters);
     var lookup = this.key.evaluate(scope, valueConverters);
     return getKeyed(instance, lookup);
   }
 
-  assign(scope, value){
+  assign(scope?, value?){
     var instance = this.object.evaluate(scope);
     var lookup = this.key.evaluate(scope);
     return setKeyed(instance, lookup, value);
@@ -330,6 +350,8 @@ export class AccessKeyed extends Expression {
 }
 
 export class CallScope extends Expression {
+  public name;
+  public args;
   constructor(name, args){
     super();
 
@@ -337,7 +359,7 @@ export class CallScope extends Expression {
     this.args = args;
   }
 
-  evaluate(scope, valueConverters, args){
+  evaluate(scope?, valueConverters?, args?){
     args = args || evalList(scope, this.args, valueConverters);
     return ensureFunctionFromMap(scope, this.name).apply(scope, args);
   }
@@ -374,6 +396,9 @@ export class CallScope extends Expression {
 }
 
 export class CallMember extends Expression {
+  public object;
+  public name;
+  public args;
   constructor(object, name, args){
     super();
 
@@ -382,7 +407,7 @@ export class CallMember extends Expression {
     this.args = args;
   }
 
-  evaluate(scope, valueConverters, args){
+  evaluate(scope?, valueConverters?, args?){
     var instance = this.object.evaluate(scope, valueConverters);
     args = args || evalList(scope, this.args, valueConverters);
     return ensureFunctionFromMap(instance, this.name).apply(instance, args);
@@ -425,6 +450,8 @@ export class CallMember extends Expression {
 }
 
 export class CallFunction extends Expression {
+  public func;
+  public args;
   constructor(func,args){
     super();
 
@@ -432,7 +459,7 @@ export class CallFunction extends Expression {
     this.args = args;
   }
 
-  evaluate(scope, valueConverters, args){
+  evaluate(scope?, valueConverters?, args?){
     var func = this.func.evaluate(scope, valueConverters);
 
     if (typeof func !== 'function') {
@@ -479,6 +506,9 @@ export class CallFunction extends Expression {
 }
 
 export class Binary extends Expression {
+  public operation;
+  public left;
+  public right;
   constructor(operation, left, right){
     super();
 
@@ -487,7 +517,7 @@ export class Binary extends Expression {
     this.right = right;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     var left = this.left.evaluate(scope);
 
     switch (this.operation) {
@@ -569,6 +599,8 @@ export class Binary extends Expression {
 }
 
 export class PrefixNot extends Expression {
+  public operation;
+  public expression;
   constructor(operation, expression){
     super();
 
@@ -576,7 +608,7 @@ export class PrefixNot extends Expression {
     this.expression = expression;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     return !this.expression.evaluate(scope);
   }
 
@@ -602,13 +634,14 @@ export class PrefixNot extends Expression {
 }
 
 export class LiteralPrimitive extends Expression {
+  public value;
   constructor(value){
     super();
 
     this.value = value;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     return this.value;
   }
 
@@ -622,13 +655,14 @@ export class LiteralPrimitive extends Expression {
 }
 
 export class LiteralString extends Expression {
+  public value;
   constructor(value){
     super();
 
     this.value = value;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     return this.value;
   }
 
@@ -642,13 +676,14 @@ export class LiteralString extends Expression {
 }
 
 export class LiteralArray extends Expression {
+  public elements;
   constructor(elements){
     super();
 
     this.elements = elements;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     var elements = this.elements,
         length = elements.length,
         result = [],
@@ -696,6 +731,8 @@ export class LiteralArray extends Expression {
 }
 
 export class LiteralObject extends Expression {
+  public keys;
+  public values;
   constructor(keys, values){
     super();
 
@@ -703,7 +740,7 @@ export class LiteralObject extends Expression {
     this.values = values;
   }
 
-  evaluate(scope, valueConverters){
+  evaluate(scope?, valueConverters?){
     var instance = {},
         keys = this.keys,
         values = this.values,
@@ -754,6 +791,7 @@ export class LiteralObject extends Expression {
 }
 
 export class Unparser {
+  public buffer;
   constructor(buffer) {
     this.buffer = buffer;
   }
@@ -934,7 +972,7 @@ function evalList(scope, list, valueConverters) {
       cacheLength, i;
 
   for (cacheLength = evalListCache.length; cacheLength <= length; ++cacheLength) {
-    _evalListCache.push([]);
+    evalListCache.push([]);
   }
 
   var result = evalListCache[length];

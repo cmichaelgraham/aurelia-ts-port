@@ -4,7 +4,20 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", '../metadata/index', './behavior-instance', './behaviors', './util'], function (require, exports, _index, _behavior_instance, _behaviors, _util) {
+var __decorate = this.__decorate || function (decorators, target, key, value) {
+    var kind = typeof (arguments.length == 2 ? value = target : value);
+    for (var i = decorators.length - 1; i >= 0; --i) {
+        var decorator = decorators[i];
+        switch (kind) {
+            case "function": value = decorator(value) || value; break;
+            case "number": decorator(target, key, value); break;
+            case "undefined": decorator(target, key); break;
+            case "object": value = decorator(target, key, value) || value; break;
+        }
+    }
+    return value;
+};
+define(["require", "exports", '../metadata/index', './behavior-instance', './behaviors', './util'], function (require, exports, index_1, behavior_instance_1, behaviors_1, util_1) {
     var TemplateController = (function (_super) {
         __extends(TemplateController, _super);
         function TemplateController(attribute) {
@@ -15,11 +28,11 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
         }
         TemplateController.convention = function (name) {
             if (name.endsWith('TemplateController')) {
-                return new TemplateController(_util.hyphenate(name.substring(0, name.length - 18)));
+                return new TemplateController(util_1.hyphenate(name.substring(0, name.length - 18)));
             }
         };
         TemplateController.prototype.analyze = function (container, target) {
-            _behaviors.configureBehavior(container, this, target);
+            behaviors_1.configureBehavior(container, this, target);
         };
         TemplateController.prototype.load = function (container, target) {
             return Promise.resolve(this);
@@ -48,7 +61,7 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
             return node;
         };
         TemplateController.prototype.create = function (container, instruction, element) {
-            var executionContext = instruction.executionContext || container.get(this.target), behaviorInstance = new _behavior_instance.BehaviorInstance(this, executionContext, instruction);
+            var executionContext = instruction.executionContext || container.get(this.target), behaviorInstance = new behavior_instance_1.BehaviorInstance(this, executionContext, instruction);
             element.primaryBehavior = behaviorInstance;
             if (!(this.apiName in element)) {
                 element[this.apiName] = behaviorInstance.executionContext;
@@ -56,6 +69,6 @@ define(["require", "exports", '../metadata/index', './behavior-instance', './beh
             return behaviorInstance;
         };
         return TemplateController;
-    })(_index.ResourceType);
+    })(index_1.ResourceType);
     exports.TemplateController = TemplateController;
 });
