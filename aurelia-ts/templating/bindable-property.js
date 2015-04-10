@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", './util', '../binding/index'], function (require, exports, util_1, index_1) {
     function getObserver(behavior, instance, name) {
         var lookup = instance.__observers__;
@@ -53,7 +46,7 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
         BindableProperty.prototype.createObserver = function (executionContext) {
             var _this = this;
             var selfSubscriber = null;
-            if (this.hasOptions || this.isDynamic) {
+            if (this.hasOptions) {
                 return;
             }
             if (this.changeHandler !== undefined) {
@@ -63,15 +56,12 @@ define(["require", "exports", './util', '../binding/index'], function (require, 
         };
         BindableProperty.prototype.initialize = function (executionContext, observerLookup, attributes, behaviorHandlesBind, boundProperties) {
             var selfSubscriber, observer, attribute;
-            if (this.hasOptions) {
-                return;
-            }
-            else if (this.isDynamic) {
+            if (this.isDynamic) {
                 for (var key in attributes) {
                     this.createDynamicProperty(executionContext, observerLookup, behaviorHandlesBind, key, attributes[key], boundProperties);
                 }
             }
-            else {
+            else if (!this.hasOptions) {
                 observer = observerLookup[this.name];
                 if (attributes !== undefined) {
                     selfSubscriber = observer.selfSubscriber;

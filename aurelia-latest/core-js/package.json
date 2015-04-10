@@ -56,7 +56,7 @@
   "homepage": "https://github.com/zloirock/core-js",
   "_id": "core-js@0.8.1",
   "_shasum": "15d81691a7f391b20a6eab693ffe84def62f80c2",
-  "_from": "core-js@*",
+  "_from": "core-js@",
   "_npmVersion": "2.7.1",
   "_nodeVersion": "1.6.2",
   "_npmUser": {
@@ -74,6 +74,5 @@
     "tarball": "http://registry.npmjs.org/core-js/-/core-js-0.8.1.tgz"
   },
   "directories": {},
-  "_resolved": "https://registry.npmjs.org/core-js/-/core-js-0.8.1.tgz",
-  "readme": "ERROR: No README data found!"
+  "_resolved": "https://registry.npmjs.org/core-js/-/core-js-0.8.1.tgz"
 }
