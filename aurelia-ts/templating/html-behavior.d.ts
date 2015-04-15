@@ -1,0 +1,32 @@
+import { ResourceType } from '../metadata/index';
+export declare class HtmlBehaviorResource extends ResourceType {
+    elementName: any;
+    attributeName: any;
+    liftsContent: any;
+    targetShadowDOM: any;
+    skipContentProcessing: any;
+    usesShadowDOM: any;
+    childExpression: any;
+    hasDynamicOptions: any;
+    properties: any;
+    attributes: any;
+    observerLocator: any;
+    taskQueue: any;
+    target: any;
+    handlesCreated: any;
+    handlesBind: any;
+    handlesUnbind: any;
+    handlesAttached: any;
+    handlesDetached: any;
+    apiName: any;
+    viewStrategy: any;
+    viewFactory: any;
+    constructor();
+    static convention(name: any, existing?: any): any;
+    analyze(container: any, target: any): void;
+    load(container: any, target: any, viewStrategy?: any, transientView?: any): any;
+    register(registry: any, name: any): void;
+    compile(compiler: any, resources: any, node: any, instruction: any, parentNode: any): any;
+    create(container: any, instruction?: any, element?: any, bindings?: any): any;
+    ensurePropertiesDefined(instance: any, lookup: any): void;
+}

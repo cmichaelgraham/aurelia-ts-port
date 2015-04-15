@@ -1,0 +1,33 @@
+import { NavigationContext } from './navigation-context';
+export declare class Router {
+    container: any;
+    history: any;
+    viewPorts: any;
+    baseUrl: any;
+    isConfigured: any;
+    parent: any;
+    navigation: any;
+    recognizer: any;
+    childRecognizer: any;
+    catchAllHandler: any;
+    routes: any;
+    fallbackOrder: any;
+    isNavigating: any;
+    constructor(container: any, history: any);
+    isRoot: boolean;
+    registerViewPort(viewPort: any, name: any): void;
+    refreshBaseUrl(): void;
+    refreshNavigation(): void;
+    configure(callbackOrConfig: any): Router;
+    navigate(fragment: any, options: any): any;
+    navigateBack(): void;
+    createChild(container: any): Router;
+    createNavigationInstruction(url?: string, parentInstruction?: any): any;
+    createNavigationContext(instruction: any): NavigationContext;
+    generate(name: any, params: any, options: any): any;
+    addRoute(config: any, navModel?: any): void;
+    hasRoute(name: any): boolean;
+    hasOwnRoute(name: any): any;
+    handleUnknownRoutes(config: any): void;
+    reset(): void;
+}
