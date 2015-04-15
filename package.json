@@ -1,0 +1,35 @@
+{
+  "name": "aurelia-ts-port",
+  "version": "0.1.0",
+  "description": "port of aurelia repos to typescript",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "dts-generator": "git://github.com/sitepen/dts-generator.git",
+    "browser-sync": "^1.8.1",
+    "del": "^1.1.0",
+    "gulp": "^3.8.10",
+    "gulp-changed": "^1.1.0",
+    "merge2": "*",
+    "gulp-typescript": "*",
+    "typescript": "Microsoft/TypeScript",
+    "run-sequence": "^1.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmichaelgraham/aurelia-ts-port.git"
+  },
+  "keywords": [
+    "aurelia",
+    "typescript"
+  ],
+  "author": "cmichaelgraham",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cmichaelgraham/aurelia-ts-port/issues"
+  },
+  "homepage": "https://github.com/cmichaelgraham/aurelia-ts-port"
+}
