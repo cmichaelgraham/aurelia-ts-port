@@ -100,6 +100,6 @@ declare module 'aurelia-logging/index' {
 
 }
 declare module 'aurelia-logging' {
-	import main = require('index.ts');
+	import main = require('aurelia-logging/index');
 	export = main;
 }
