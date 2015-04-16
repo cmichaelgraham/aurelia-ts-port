@@ -3,6 +3,16 @@ var browserSync = require('browser-sync');
 var runSequence = require('run-sequence');
 var ts = require('gulp-typescript');
 var merge = require('merge2');
+var dtsGenerator = require('dts-generator')
+
+gulp.task('dts-gen', function() {
+    dtsGenerator.generate({
+        name: 'logging',
+        baseDir: '/c/a/aurelia-ts-port/aurelia-ts/logging',
+        files: [ 'index.d.ts' ],
+          out: 'logging.d.ts'
+    });
+});
 
 gulp.task('build-ts', function () {
     var tsResult = gulp.src([
