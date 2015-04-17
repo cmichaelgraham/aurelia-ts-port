@@ -420,4 +420,5 @@ declare module 'aurelia-templating/template-controller' {
 }
 declare module 'aurelia-templating' {
 	import main = require('aurelia-templating/index');
-	
+	export = main;
+}
