@@ -1,4 +1,4 @@
-import {Container} from '../dependency-injection/index';
+import {Container} from 'aurelia-dependency-injection';
 import {View} from './view';
 import {ViewSlot} from './view-slot';
 import {ContentSelector} from './content-selector';

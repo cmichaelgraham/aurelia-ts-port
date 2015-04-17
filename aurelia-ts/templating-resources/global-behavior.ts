@@ -1,7 +1,7 @@
-import {inject} from '../dependency-injection/index';
-import {customAttribute, dynamicOptions} from '../templating/index';
-import {AggregateError} from '../logging/index';
-import * as LogManager from '../logging/index';
+import {inject} from 'aurelia-dependency-injection';
+import {customAttribute, dynamicOptions} from 'aurelia-templating';
+import {AggregateError} from 'aurelia-logging';
+import * as LogManager from 'aurelia-logging';
 
 @customAttribute('global-behavior')
 @dynamicOptions

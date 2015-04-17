@@ -1,5 +1,5 @@
-import {inject} from '../framework/index';
-import {EventAggregator} from '../event-aggregator/index';
+import {inject} from 'aurelia-framework';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {WebAPI} from './web-api';
 import {App} from './app';
 import {ContactUpdated,ContactViewed} from './messages';

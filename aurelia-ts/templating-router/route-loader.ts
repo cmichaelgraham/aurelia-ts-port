@@ -1,8 +1,8 @@
-import {inject} from '../dependency-injection/index';
-import {CompositionEngine} from '../templating/index';
-import {RouteLoader, Router} from '../router/index';
-import {relativeToFile} from '../path/index';
-import {Origin} from '../metadata/index';
+import {inject} from 'aurelia-dependency-injection';
+import {CompositionEngine} from 'aurelia-templating';
+import {RouteLoader, Router} from 'aurelia-router';
+import {relativeToFile} from 'aurelia-path';
+import {Origin} from 'aurelia-metadata';
 
 @inject(CompositionEngine)
 export class TemplatingRouteLoader extends RouteLoader {

@@ -1,6 +1,6 @@
 import core from 'core-js'
-import * as LogManager from '../logging/index';
-import {Metadata} from '../metadata/index';
+import * as LogManager from 'aurelia-logging';
+import {Metadata} from 'aurelia-metadata';
 
 var logger = LogManager.getLogger('aurelia');
 

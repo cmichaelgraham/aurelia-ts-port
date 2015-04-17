@@ -1,5 +1,5 @@
 import core from 'core-js'
-import {ResourceType} from '../metadata/index';
+import {ResourceType} from 'aurelia-metadata';
 
 function camelCase(name){
   return name.charAt(0).toLowerCase() + name.slice(1);

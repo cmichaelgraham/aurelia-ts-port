@@ -1,5 +1,5 @@
-import {Origin} from '../metadata/index';
-import {Loader} from '../loader/index';
+import {Origin} from 'aurelia-metadata';
+import {Loader} from 'aurelia-loader';
 
 declare var require: any;
 declare var define: any;

@@ -1,4 +1,4 @@
-import {valueConverter} from '../binding/index';
+import {valueConverter} from 'aurelia-binding';
 
 var SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 

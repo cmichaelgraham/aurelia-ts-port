@@ -1,5 +1,5 @@
-import {inject} from '../dependency-injection/index';
-import {BoundViewFactory, ViewSlot, customAttribute, templateController} from '../templating/index';
+import {inject} from 'aurelia-dependency-injection';
+import {BoundViewFactory, ViewSlot, customAttribute, templateController} from 'aurelia-templating';
 
 @customAttribute('with')
 @templateController

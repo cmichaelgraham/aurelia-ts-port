@@ -73,14 +73,15 @@ gulp.task('test', function() {
       });
 
       var sources = [];
-      sources.push(__dirname + "/aurelia-ts/" + repo.name);
+      sources.push(__dirname + "/aurelia-ts/" + repo.name + "/*.ts");
+      sources.push(__dirname + "/aurelia-ts/*.d.ts");
       ringSources.forEach(function(ringSource) {
-        sources.push(__dirname + "/aurelia-dts/" + ringSource + "/*.ts");
+        sources.push(ringSource);
       });
 
       // build here
       console.log('    build ' + repo.name + " ::: " + JSON.stringify(sources));
-    /*var tsResult = gulp.src(sources,
+    var tsResult = gulp.src(sources,
         {base: "."})
     .pipe(ts({
          typescript: require('typescript'),
@@ -91,13 +92,20 @@ gulp.task('test', function() {
          emitDecoratorMetadata: true
     }));
 
-    return merge([
+    /*return merge([
         tsResult.dts.pipe(gulp.dest('.')),
         tsResult.js.pipe(gulp.dest('.'))
-    ]); */
+    ]);*/
 
-      // gen dts here
-      console.log('    gen dts ' + repo.name);
+    // gen dts here
+    console.log('    gen dts ' + repo.name);
+    dtsGenerator.generate({
+        name: 'aurelia-' + repo.name,
+        baseDir: __dirname + '/aurelia-ts/' + repo.name,
+        files: repo.files,
+        out: 'aurelia-dts/' + ring.name + '/aurelia-' + repo.name + '.d.ts',
+        main: 'aurelia-' + repo.name + '/index'
+    });
 
       console.log('');
 

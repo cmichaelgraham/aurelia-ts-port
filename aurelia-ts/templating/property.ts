@@ -1,5 +1,5 @@
 import {hyphenate} from './util';
-import {ONE_WAY,TWO_WAY,ONE_TIME} from '../binding/index';
+import {ONE_WAY,TWO_WAY,ONE_TIME} from 'aurelia-binding';
 
 export class BehaviorProperty {
   public name;

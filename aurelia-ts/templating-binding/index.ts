@@ -1,4 +1,4 @@
-import {BindingLanguage} from '../templating/index';
+import {BindingLanguage} from 'aurelia-templating';
 import {TemplatingBindingLanguage} from './binding-language';
 import {SyntaxInterpreter} from './syntax-interpreter';
 

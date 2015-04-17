@@ -1,6 +1,6 @@
-import {Metadata, ResourceType} from '../metadata/index';
-import {TemplateRegistryEntry} from '../loader/index';
-import {ValueConverterResource} from '../binding/index';
+import {Metadata, ResourceType} from 'aurelia-metadata';
+import {TemplateRegistryEntry} from 'aurelia-loader';
+import {ValueConverterResource} from 'aurelia-binding';
 import {HtmlBehaviorResource} from './html-behavior';
 import {ViewStrategy,TemplateRegistryViewStrategy} from './view-strategy';
 import {hyphenate} from './util';

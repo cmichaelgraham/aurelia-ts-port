@@ -1,6 +1,6 @@
-import {Metadata, Origin} from '../metadata/index';
-import {relativeToFile} from '../path/index';
-import {AggregateError} from '../logging/index';
+import {Metadata, Origin} from 'aurelia-metadata';
+import {relativeToFile} from 'aurelia-path';
+import {AggregateError} from 'aurelia-logging';
 
 export class ViewStrategy {
   makeRelativeTo(baseUrl){}

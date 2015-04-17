@@ -1,7 +1,7 @@
 
-import {inject} from '../framework/index';
-import {ObserverLocator, calcSplices, getChangeRecords} from '../binding/index';
-import {BoundViewFactory, ViewSlot, customAttribute, bindable, templateController} from '../templating/index';
+import {inject} from 'aurelia-framework';
+import {ObserverLocator, calcSplices, getChangeRecords} from 'aurelia-binding';
+import {BoundViewFactory, ViewSlot, customAttribute, bindable, templateController} from 'aurelia-templating';
 
 @customAttribute('repeat')
 @bindable('items')

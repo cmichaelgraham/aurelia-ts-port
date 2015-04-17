@@ -1,5 +1,5 @@
 import core from 'core-js'
-import {History} from '../history/index';
+import {History} from 'aurelia-history';
 
 // Cached regex for stripping a leading hash/slash and trailing space.
 var routeStripper = /^[#\/]|\s+$/g;

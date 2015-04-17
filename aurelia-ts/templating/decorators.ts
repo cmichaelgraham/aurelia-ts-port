@@ -1,5 +1,5 @@
 import core from 'core-js';
-import {Metadata, Decorators} from '../metadata/index';
+import {Metadata, Decorators} from 'aurelia-metadata';
 import {BindableProperty} from './bindable-property';
 import {ChildObserver} from './children';
 import {ElementConfigResource} from './element-config';

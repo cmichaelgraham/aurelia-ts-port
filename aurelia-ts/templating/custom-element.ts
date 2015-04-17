@@ -1,4 +1,4 @@
-import {Metadata, Origin, ResourceType} from '../metadata/index';
+import {Metadata, Origin, ResourceType} from 'aurelia-metadata';
 import {BehaviorInstance} from './behavior-instance';
 import {configureBehavior} from './behaviors';
 import {ContentSelector} from './content-selector';

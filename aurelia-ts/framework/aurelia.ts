@@ -1,8 +1,8 @@
 import core from 'core-js'
-import * as LogManager from '../logging/index';
-import {Container} from '../dependency-injection/index';
-import {Loader} from '../loader/index';
-import {join,relativeToFile} from '../path/index';
+import * as LogManager from 'aurelia-logging';
+import {Container} from 'aurelia-dependency-injection';
+import {Loader} from 'aurelia-loader';
+import {join,relativeToFile} from 'aurelia-path';
 import {Plugins} from './plugins';
 import {
   BindingLanguage,

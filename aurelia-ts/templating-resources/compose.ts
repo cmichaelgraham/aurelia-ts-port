@@ -1,8 +1,8 @@
-import {Container, inject} from '../dependency-injection/index';
+import {Container, inject} from 'aurelia-dependency-injection';
 import {
   CompositionEngine, ViewSlot, ViewResources,
   customElement, bindable, noView
-} from '../templating/index';
+} from 'aurelia-templating';
 
 @customElement('compose')
 @bindable('model')

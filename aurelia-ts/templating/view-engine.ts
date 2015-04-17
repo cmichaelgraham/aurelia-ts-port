@@ -1,8 +1,8 @@
 import core from 'core-js';
-import * as LogManager from '../logging/index';
-import {Origin} from '../metadata/index';
-import {Loader,TemplateRegistryEntry} from '../loader/index';
-import {Container} from '../dependency-injection/index';
+import * as LogManager from 'aurelia-logging';
+import {Origin} from 'aurelia-metadata';
+import {Loader,TemplateRegistryEntry} from 'aurelia-loader';
+import {Container} from 'aurelia-dependency-injection';
 import {ViewCompiler} from './view-compiler';
 import {ResourceRegistry, ViewResources} from './resource-registry';
 import {ModuleAnalyzer} from './module-analyzer';

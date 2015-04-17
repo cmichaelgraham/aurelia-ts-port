@@ -1,5 +1,5 @@
-import {inject} from '../framework/index'
-import {Router} from '../router/index';
+import {inject} from 'aurelia-framework'
+import {Router} from 'aurelia-router';
 import 'bootstrap';
 import 'bootstrap/css/bootstrap.css!';
 

@@ -1,6 +1,6 @@
 import core from 'core-js';
 import {hyphenate} from './util';
-import {ONE_WAY,TWO_WAY,ONE_TIME} from '../binding/index';
+import {ONE_WAY,TWO_WAY,ONE_TIME} from 'aurelia-binding';
 
 function getObserver(behavior, instance, name){
   var lookup = instance.__observers__;

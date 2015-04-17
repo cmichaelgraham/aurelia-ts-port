@@ -1,4 +1,4 @@
-import {TaskQueue} from '../task-queue/index';
+import {TaskQueue} from 'aurelia-task-queue';
 import {getArrayObserver} from './array-observation';
 import {getMapObserver} from './map-observation';
 import {EventManager} from './event-manager';

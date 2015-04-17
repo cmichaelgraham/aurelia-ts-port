@@ -1,4 +1,4 @@
-import {ResourceType} from '../metadata/index';
+import {ResourceType} from 'aurelia-metadata';
 import {BehaviorInstance} from './behavior-instance';
 import {configureBehavior} from './behaviors';
 import {hyphenate} from './util';

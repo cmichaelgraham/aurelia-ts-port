@@ -1,5 +1,5 @@
 import nprogress from 'nprogress';
-import {bindable, noView} from '../framework/index';
+import {bindable, noView} from 'aurelia-framework';
 
 @bindable('loading')
 @noView

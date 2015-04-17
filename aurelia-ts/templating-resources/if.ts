@@ -1,5 +1,5 @@
-import {BoundViewFactory, ViewSlot, customAttribute, templateController} from '../templating/index';
-import {inject} from '../dependency-injection/index';
+import {BoundViewFactory, ViewSlot, customAttribute, templateController} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 
 @customAttribute('if')
 @templateController

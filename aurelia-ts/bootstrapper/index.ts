@@ -1,6 +1,6 @@
 import core from 'core-js'
-import {Aurelia, LogManager} from '../framework/index';
-import {ConsoleAppender} from '../logging-console/index';
+import {Aurelia, LogManager} from 'aurelia-framework';
+import {ConsoleAppender} from 'aurelia-logging-console';
 
 var logger = LogManager.getLogger('bootstrapper');
 

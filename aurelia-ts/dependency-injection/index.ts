@@ -3,7 +3,7 @@
  *
  * @module dependency-injection
  */
-import {Decorators, Metadata} from '../metadata/index';
+import {Decorators, Metadata} from 'aurelia-metadata';
 import {TransientRegistration, SingletonRegistration, FactoryActivator} from './metadata';
 export {
   Registration,

@@ -1,5 +1,5 @@
-import {inject} from '../framework/index'
-import {Router} from '../router/index';
+import {inject} from 'aurelia-framework'
+import {Router} from 'aurelia-router';
 import {WebAPI} from './web-api';
 
 @inject(Router, WebAPI)

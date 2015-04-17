@@ -1,7 +1,7 @@
-import {Container, inject} from '../dependency-injection/index';
-import {ViewSlot, ViewStrategy, customElement, noView} from '../templating/index';
-import {Router} from '../router/index';
-import {Metadata, Origin} from '../metadata/index';
+import {Container, inject} from 'aurelia-dependency-injection';
+import {ViewSlot, ViewStrategy, customElement, noView} from 'aurelia-templating';
+import {Router} from 'aurelia-router';
+import {Metadata, Origin} from 'aurelia-metadata';
 
 @customElement('router-view')
 @noView

@@ -1,4 +1,4 @@
-import {computedFrom} from '../framework/index';
+import {computedFrom} from 'aurelia-framework';
 
 export class Welcome{
   public heading = 'Welcome to the Aurelia Navigation App!';

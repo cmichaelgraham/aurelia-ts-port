@@ -1,6 +1,6 @@
-import {Metadata, Origin, ResourceType} from '../metadata/index';
-import {ObserverLocator} from '../binding/index';
-import {TaskQueue} from '../task-queue/index';
+import {Metadata, Origin, ResourceType} from 'aurelia-metadata';
+import {ObserverLocator} from 'aurelia-binding';
+import {TaskQueue} from 'aurelia-task-queue';
 import {ViewStrategy} from './view-strategy';
 import {ViewEngine} from './view-engine';
 import {ContentSelector} from './content-selector';

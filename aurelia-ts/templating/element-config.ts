@@ -1,5 +1,5 @@
-import {ResourceType} from '../metadata/index';
-import {EventManager} from '../binding/index';
+import {ResourceType} from 'aurelia-metadata';
+import {EventManager} from 'aurelia-binding';
 
 export class ElementConfigResource extends ResourceType {
   load(container, target){

@@ -1,6 +1,6 @@
 import core from 'core-js';
-import {Metadata} from '../metadata/index';
-import {AggregateError} from '../logging/index';
+import {Metadata} from 'aurelia-metadata';
+import {AggregateError} from 'aurelia-logging';
 import {Resolver, Registration, InstanceActivator, ClassActivator} from './metadata';
 
 var emptyParameters = Object.freeze([]),

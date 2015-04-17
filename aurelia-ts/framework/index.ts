@@ -5,12 +5,12 @@
  */
 
 export {Aurelia} from './aurelia';
-export * from '../dependency-injection/index';
-export * from '../binding/index';
-export * from '../metadata/index';
-export * from '../templating/index';
-export * from '../loader/index';
-export * from '../task-queue/index';
+export * from 'aurelia-dependency-injection';
+export * from 'aurelia-binding';
+export * from 'aurelia-metadata';
+export * from 'aurelia-templating';
+export * from 'aurelia-loader';
+export * from 'aurelia-task-queue';
 
-import * as TheLogManager from '../logging/index';
+import * as TheLogManager from 'aurelia-logging';
 export var LogManager = TheLogManager;

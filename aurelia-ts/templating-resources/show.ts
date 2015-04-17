@@ -1,5 +1,5 @@
-import {inject} from '../dependency-injection/index';
-import {customAttribute} from '../templating/index';
+import {inject} from 'aurelia-dependency-injection';
+import {customAttribute} from 'aurelia-templating';
 
 function addStyleString(str) {
   var node = document.createElement('style');

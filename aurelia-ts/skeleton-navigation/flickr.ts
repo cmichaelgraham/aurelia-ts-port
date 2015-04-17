@@ -1,5 +1,5 @@
-import {inject} from '../framework/index'
-import {HttpClient} from '../http-client/index';
+import {inject} from 'aurelia-framework'
+import {HttpClient} from 'aurelia-http-client';
 
 @inject(HttpClient)
 export class Flickr{
