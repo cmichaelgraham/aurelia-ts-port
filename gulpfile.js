@@ -4,6 +4,11 @@ var runSequence = require('run-sequence');
 var ts = require('gulp-typescript');
 var merge = require('merge2');
 var dtsGenerator = require('dts-generator')
+var fs = require('fs');
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
 
 var buildTargets = {
   rings: [
@@ -47,6 +52,62 @@ var buildTargets = {
     ]}
   ]
 }
+
+gulp.task('test', function() {
+  console.log('---------------------------------------');
+  console.log('   __dirname: ' + __dirname);
+  console.log('---------------------------------------');
+  var ringSources = [];
+  buildTargets.rings.forEach(function(ring) {
+    console.log('  ring: ' + ring.name);
+
+    ring.repos.forEach(function(repo) {
+      // console.log('    repo: ' + repo.name);
+      repo.files = [];
+
+      fs.readdirSync(__dirname + "/aurelia-ts/" + repo.name).forEach(function(name) {
+        if (name.toLowerCase().endsWith('.ts') && ! name.toLowerCase().endsWith('.d.ts')) {
+        // console.log('      file: ' + name);
+          repo.files.push(name);
+        }
+      });
+
+      var sources = [];
+      sources.push(__dirname + "/aurelia-ts/" + repo.name);
+      ringSources.forEach(function(ringSource) {
+        sources.push(__dirname + "/aurelia-dts/" + ringSource + "/*.ts");
+      });
+
+      // build here
+      console.log('    build ' + repo.name + " ::: " + JSON.stringify(sources));
+    /*var tsResult = gulp.src(sources,
+        {base: "."})
+    .pipe(ts({
+         typescript: require('typescript'),
+         declarationFiles: false,
+         noExternalResolve: true,
+         target: "es5",
+         module: "amd",
+         emitDecoratorMetadata: true
+    }));
+
+    return merge([
+        tsResult.dts.pipe(gulp.dest('.')),
+        tsResult.js.pipe(gulp.dest('.'))
+    ]); */
+
+      // gen dts here
+      console.log('    gen dts ' + repo.name);
+
+      console.log('');
+
+    });
+
+    ringSources.push(__dirname + "/aurelia-dts/" + ring.name + '/*.ts');
+  });
+
+  console.log('---------------------------------------');
+});
 
 gulp.task('dts-gen', function() {
   debugger;
