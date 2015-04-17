@@ -92,3 +92,23 @@ declare module 'aurelia-templating-resources/show' {
 	    constructor(element: any);
 	    valueChanged(newValue: any): void;
 	}
+
+}
+declare module 'aurelia-templating-resources/sanitize-html' {
+	export class SanitizeHtmlValueConverter {
+	    static defaultSanitizer(untrustedMarkup: any): any;
+	    sanitizer: any;
+	    constructor();
+	    toView(untrustedMarkup: any): any;
+	}
+
+}
+declare module 'aurelia-templating-resources/index' {
+	 function install(aurelia: any): void;
+	export { Compose, If, With, Repeat, Show, SanitizeHtmlValueConverter, GlobalBehavior, install };
+
+}
+declare module 'aurelia-templating-resources' {
+	import main = require('aurelia-templating-resources/index');
+	export = main;
+}

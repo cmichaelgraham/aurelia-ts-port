@@ -15,7 +15,6 @@ var buildTargets = {
     { name: 'ring-0', repos: [
       { name: 'event-aggregator' },
       { name: 'history' },
-      { name: 'html-template-element' },
       { name: 'logging' },
       { name: 'logging-console' },
       { name: 'path' },

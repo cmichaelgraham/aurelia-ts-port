@@ -106,3 +106,163 @@ declare module 'aurelia-http-client/jsonp-request-message' {
 	    constructor(uri?: any, callbackParameterName?: any);
 	}
 	export function createJSONPRequestMessageProcessor(): RequestMessageProcessor;
+
+}
+declare module 'aurelia-http-client/request-builder' {
+	/**
+	* A builder class allowing fluent composition of HTTP requests.
+	*
+	* @class RequestBuilder
+	* @constructor
+	*/
+	export class RequestBuilder {
+	    client: any;
+	    transformers: any;
+	    useJsonp: any;
+	    constructor(client: any);
+	    /**
+	    * Adds a user-defined request transformer to the RequestBuilder.
+	    *
+	    * @method addHelper
+	    * @param {String} name The name of the helper to add.
+	    * @param {Function} fn The helper function.
+	    * @chainable
+	    */
+	    static addHelper(name: any, fn: any): void;
+	    /**
+	    * Sends the request.
+	    *
+	    * @method send
+	    * @return {Promise} A cancellable promise object.
+	    */
+	    send(): any;
+	}
+
+}
+declare module 'aurelia-http-client/http-client' {
+	import { RequestBuilder } from 'aurelia-http-client\request-builder';
+	/**
+	* The main HTTP client object.
+	*
+	* @class HttpClient
+	* @constructor
+	*/
+	export class HttpClient {
+	    requestTransformers: any;
+	    requestProcessorFactories: any;
+	    pendingRequests: any;
+	    isRequesting: any;
+	    constructor();
+	    /**
+	     * Configure this HttpClient with default settings to be used by all requests.
+	     *
+	     * @method configure
+	     * @param {Function} fn A function that takes a RequestBuilder as an argument.
+	     * @chainable
+	     */
+	    configure(fn: any): HttpClient;
+	    /**
+	     * Returns a new RequestBuilder for this HttpClient instance that can be used to build and send HTTP requests.
+	     *
+	     * @method createRequest
+	     * @param uri The target URI.
+	     * @type RequestBuilder
+	     */
+	    createRequest(uri: any): RequestBuilder;
+	    /**
+	     * Sends a message using the underlying networking stack.
+	     *
+	     * @method send
+	     * @param message A configured HttpRequestMessage or JSONPRequestMessage.
+	     * @param {Array} transformers A collection of transformers to apply to the HTTP request.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    send(message: any, transformers: any): any;
+	    /**
+	     * Sends an HTTP DELETE request.
+	     *
+	     * @method delete
+	     * @param {String} uri The target URI.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    delete(uri: any): any;
+	    /**
+	     * Sends an HTTP GET request.
+	     *
+	     * @method get
+	     * @param {String} uri The target URI.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    get(uri: any): any;
+	    /**
+	     * Sends an HTTP HEAD request.
+	     *
+	     * @method head
+	     * @param {String} uri The target URI.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    head(uri: any): any;
+	    /**
+	     * Sends a JSONP request.
+	     *
+	     * @method jsonp
+	     * @param {String} uri The target URI.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    jsonp(uri: any, callbackParameterName?: string): any;
+	    /**
+	     * Sends an HTTP OPTIONS request.
+	     *
+	     * @method options
+	     * @param {String} uri The target URI.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    options(uri: any): any;
+	    /**
+	     * Sends an HTTP PUT request.
+	     *
+	     * @method put
+	     * @param {String} uri The target URI.
+	     * @param {Object} uri The request payload.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    put(uri: any, content: any): any;
+	    /**
+	     * Sends an HTTP PATCH request.
+	     *
+	     * @method patch
+	     * @param {String} uri The target URI.
+	     * @param {Object} uri The request payload.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    patch(uri: any, content: any): any;
+	    /**
+	     * Sends an HTTP POST request.
+	     *
+	     * @method post
+	     * @param {String} uri The target URI.
+	     * @param {Object} uri The request payload.
+	     * @return {Promise} A cancellable promise object.
+	     */
+	    post(uri: any, content: any): any;
+	}
+
+}
+declare module 'aurelia-http-client/index' {
+	/**
+	 * An extensible HTTP client provided by Aurelia.
+	 *
+	 * @module HttpClient
+	 */
+	export { HttpClient } from 'aurelia-http-client\http-client';
+	export { HttpRequestMessage } from 'aurelia-http-client\http-request-message';
+	export { HttpResponseMessage, mimeTypes } from 'aurelia-http-client\http-response-message';
+	export { JSONPRequestMessage } from 'aurelia-http-client\jsonp-request-message';
+	export { Headers } from 'aurelia-http-client\headers';
+	export { RequestBuilder } from 'aurelia-http-client\request-builder';
+
+}
+declare module 'aurelia-http-client' {
+	import main = require('aurelia-http-client/index');
+	export = main;
+}

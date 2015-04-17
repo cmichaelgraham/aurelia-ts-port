@@ -108,3 +108,145 @@ declare module 'aurelia-router/navigation-instruction' {
 	    getWildcardPath(): any;
 	    getBaseUrl(): any;
 	}
+
+}
+declare module 'aurelia-router/router-configuration' {
+	export class RouterConfiguration {
+	    instructions: any;
+	    options: any;
+	    pipelineSteps: any;
+	    title: any;
+	    unknownRouteConfig: any;
+	    constructor();
+	    addPipelineStep(name: any, step: any): void;
+	    map(route: any, config?: any): RouterConfiguration;
+	    mapRoute(config: any): RouterConfiguration;
+	    mapUnknownRoutes(config: any): RouterConfiguration;
+	    exportToRouter(router: any): void;
+	    configureRoute(router: any, config: any, navModel?: any): void;
+	    ensureDefaultsForRouteConfig(config: any): void;
+	    deriveName(config: any): any;
+	    deriveRoute(config: any): any;
+	    deriveTitle(config: any): any;
+	    deriveModuleId(config: any): any;
+	}
+
+}
+declare module 'aurelia-router/router' {
+	import { NavigationContext } from 'aurelia-router\navigation-context';
+	export class Router {
+	    container: any;
+	    history: any;
+	    viewPorts: any;
+	    baseUrl: any;
+	    isConfigured: any;
+	    parent: any;
+	    navigation: any;
+	    recognizer: any;
+	    childRecognizer: any;
+	    catchAllHandler: any;
+	    routes: any;
+	    fallbackOrder: any;
+	    isNavigating: any;
+	    constructor(container: any, history: any);
+	    isRoot: boolean;
+	    registerViewPort(viewPort: any, name: any): void;
+	    refreshBaseUrl(): void;
+	    refreshNavigation(): void;
+	    configure(callbackOrConfig: any): Router;
+	    navigate(fragment: any, options: any): any;
+	    navigateBack(): void;
+	    createChild(container: any): Router;
+	    createNavigationInstruction(url?: string, parentInstruction?: any): any;
+	    createNavigationContext(instruction: any): NavigationContext;
+	    generate(name: any, params: any, options: any): any;
+	    addRoute(config: any, navModel?: any): void;
+	    hasRoute(name: any): boolean;
+	    hasOwnRoute(name: any): any;
+	    handleUnknownRoutes(config: any): void;
+	    reset(): void;
+	}
+
+}
+declare module 'aurelia-router/pipeline' {
+	export var COMPLETED: string;
+	export var CANCELLED: string;
+	export var REJECTED: string;
+	export var RUNNING: string;
+	export class Pipeline {
+	    steps: any;
+	    constructor();
+	    withStep(step: any): Pipeline;
+	    run(ctx: any): any;
+	}
+
+}
+declare module 'aurelia-router/route-loading' {
+	export class RouteLoader {
+	    loadRoute(router: any, config: any): void;
+	}
+	export class LoadRouteStep {
+	    static inject(): typeof RouteLoader[];
+	    routeLoader: any;
+	    constructor(routeLoader: any);
+	    run(navigationContext: any, next: any): Promise<{}>;
+	}
+	export function loadNewRoute(routers: any, routeLoader: any, navigationContext: any): Promise<{}[]>;
+
+}
+declare module 'aurelia-router/pipeline-provider' {
+	import { Pipeline } from 'aurelia-router\pipeline';
+	export class PipelineProvider {
+	    static inject(): any[];
+	    container: any;
+	    steps: any;
+	    constructor(container: any);
+	    createPipeline(navigationContext: any): Pipeline;
+	}
+
+}
+declare module 'aurelia-router/app-router' {
+	import { Router } from 'aurelia-router\router';
+	export class AppRouter extends Router {
+	    static inject(): any[];
+	    pipelineProvider: any;
+	    events: any;
+	    history: any;
+	    queue: any;
+	    isNavigating: any;
+	    isActive: any;
+	    container: any;
+	    options: any;
+	    constructor(container: any, history: any, pipelineProvider: any, events: any);
+	    isRoot: boolean;
+	    loadUrl(url: any): any;
+	    queueInstruction(instruction: any): Promise<{}>;
+	    dequeueInstruction(): void;
+	    registerViewPort(viewPort: any, name: any): any;
+	    activate(options?: any): void;
+	    deactivate(): void;
+	    reset(): void;
+	}
+
+}
+declare module 'aurelia-router/index' {
+	export { Router } from 'aurelia-router\router';
+	export { AppRouter } from 'aurelia-router\app-router';
+	export { PipelineProvider } from 'aurelia-router\pipeline-provider';
+	export { Redirect } from 'aurelia-router\navigation-commands';
+	export { RouteLoader } from 'aurelia-router\route-loading';
+	export { RouterConfiguration } from 'aurelia-router\router-configuration';
+	export { NO_CHANGE, INVOKE_LIFECYCLE, REPLACE } from 'aurelia-router\navigation-plan';
+	export { RouteFilterContainer, createRouteFilterStep } from 'aurelia-router\route-filters';
+
+}
+declare module 'aurelia-router/model-binding' {
+	export class ApplyModelBindersStep {
+	    run(navigationContext: any, next: any): any;
+	}
+
+}
+declare module 'aurelia-router' {
+	import main = require('aurelia-router/index');
+	export = main;
+}

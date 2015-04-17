@@ -1,0 +1,15 @@
+export { EventManager } from './event-manager';
+export { ObserverLocator, ObjectObservationAdapter } from './observer-locator';
+export { ValueConverterResource } from './value-converter';
+export { calcSplices } from './array-change-records';
+export * from './binding-modes';
+export { Parser } from './parser';
+export { BindingExpression } from './binding-expression';
+export { ListenerExpression } from './listener-expression';
+export { NameExpression } from './name-expression';
+export { CallExpression } from './call-expression';
+export { DirtyChecker } from './dirty-checking';
+export { getChangeRecords } from './map-change-records';
+export { ComputedPropertyObserver, declarePropertyDependencies } from './computed-observation';
+export declare function valueConverter(name: any): (target: any) => any;
+export declare function computedFrom(...rest: any[]): (target: any, key: any, descriptor: any) => any;
