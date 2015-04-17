@@ -54,22 +54,3 @@ declare module 'aurelia-app-contacts/contact-list' {
 	    created(): void;
 	    select(contact: any): boolean;
 	}
-
-}
-declare module 'aurelia-app-contacts/loading-indicator' {
-	export class LoadingIndicator {
-	    loadingChanged(newValue: any): void;
-	}
-
-}
-declare module 'aurelia-app-contacts/no-selection' {
-	export class NoSelection {
-	    message: any;
-	    constructor();
-	}
-
-}
-declare module 'aurelia-app-contacts' {
-	import main = require('aurelia-app-contacts/index');
-	export = main;
-}

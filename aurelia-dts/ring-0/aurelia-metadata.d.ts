@@ -162,9 +162,3 @@ declare module 'aurelia-metadata/index' {
 	export { ResourceType } from 'aurelia-metadata\resource-type';
 	export { Metadata } from 'aurelia-metadata\metadata';
 	export { Decorators } from 'aurelia-metadata\decorators';
-
-}
-declare module 'aurelia-metadata' {
-	import main = require('aurelia-metadata/index');
-	export = main;
-}

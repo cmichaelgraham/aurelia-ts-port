@@ -49,5 +49,4 @@ declare module 'aurelia-skeleton-navigation/welcome' {
 }
 declare module 'aurelia-skeleton-navigation' {
 	import main = require('aurelia-skeleton-navigation/index');
-	export = main;
-}
+	
