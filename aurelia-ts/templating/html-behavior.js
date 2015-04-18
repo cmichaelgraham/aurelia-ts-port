@@ -207,6 +207,6 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-binding', 'aurelia-ta
             }
         };
         return HtmlBehaviorResource;
-    })(ResourceType);
+    })(aurelia_metadata_1.ResourceType);
     exports.HtmlBehaviorResource = HtmlBehaviorResource;
 });

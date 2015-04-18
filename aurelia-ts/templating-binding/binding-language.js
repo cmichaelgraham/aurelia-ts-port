@@ -11,7 +11,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-define(["require", "exports", 'aurelia-binding', './syntax-interpreter', 'aurelia-logging'], function (require, exports, aurelia_binding_1, syntax_interpreter_1, LogManager) {
+define(["require", "exports", 'aurelia-templating', 'aurelia-binding', './syntax-interpreter', 'aurelia-logging'], function (require, exports, aurelia_templating_1, aurelia_binding_1, syntax_interpreter_1, LogManager) {
     var info = {}, logger = LogManager.getLogger('templating-binding');
     var TemplatingBindingLanguage = (function (_super) {
         __extends(TemplatingBindingLanguage, _super);
@@ -145,7 +145,7 @@ define(["require", "exports", 'aurelia-binding', './syntax-interpreter', 'aureli
             return new InterpolationBindingExpression(this.observerLocator, this.attributeMap[attrName] || attrName, parts, aurelia_binding_1.ONE_WAY, resources.valueConverterLookupFunction, attrName);
         };
         return TemplatingBindingLanguage;
-    })(BindingLanguage);
+    })(aurelia_templating_1.BindingLanguage);
     exports.TemplatingBindingLanguage = TemplatingBindingLanguage;
     var InterpolationBindingExpression = (function () {
         function InterpolationBindingExpression(observerLocator, targetProperty, parts, mode, valueConverterLookupFunction, attribute) {

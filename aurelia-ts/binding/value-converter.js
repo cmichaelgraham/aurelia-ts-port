@@ -11,7 +11,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", 'aurelia-metadata'], function (require, exports, aurelia_metadata_1) {
     function camelCase(name) {
         return name.charAt(0).toLowerCase() + name.slice(1);
     }
@@ -36,6 +36,6 @@ define(["require", "exports"], function (require, exports) {
             return Promise.resolve(this);
         };
         return ValueConverterResource;
-    })(ResourceType);
+    })(aurelia_metadata_1.ResourceType);
     exports.ValueConverterResource = ValueConverterResource;
 });

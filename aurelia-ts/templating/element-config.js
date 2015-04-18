@@ -11,7 +11,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-define(["require", "exports", 'aurelia-binding'], function (require, exports, aurelia_binding_1) {
+define(["require", "exports", 'aurelia-metadata', 'aurelia-binding'], function (require, exports, aurelia_metadata_1, aurelia_binding_1) {
     var ElementConfigResource = (function (_super) {
         __extends(ElementConfigResource, _super);
         function ElementConfigResource() {
@@ -24,6 +24,6 @@ define(["require", "exports", 'aurelia-binding'], function (require, exports, au
         };
         ElementConfigResource.prototype.register = function () { };
         return ElementConfigResource;
-    })(ResourceType);
+    })(aurelia_metadata_1.ResourceType);
     exports.ElementConfigResource = ElementConfigResource;
 });

@@ -37,6 +37,6 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
             aurelia_dependency_injection_1.inject(aurelia_templating_1.CompositionEngine)
         ], TemplatingRouteLoader);
         return TemplatingRouteLoader;
-    })(RouteLoader);
+    })(aurelia_router_1.RouteLoader);
     exports.TemplatingRouteLoader = TemplatingRouteLoader;
 });

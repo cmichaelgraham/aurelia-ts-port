@@ -74,6 +74,7 @@ buildTargets.rings.forEach(function(ring) {
 
         // gen dts here
         console.log('    gen dts ' + repo.name);
+        console.log('      files ' + repo.files);
         dtsGenerator.generate({
             name: 'aurelia-' + repo.name,
             baseDir: __dirname + '/aurelia-ts/' + repo.name,

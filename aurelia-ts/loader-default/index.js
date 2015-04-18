@@ -11,7 +11,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-define(["require", "exports", 'aurelia-metadata'], function (require, exports, aurelia_metadata_1) {
+define(["require", "exports", 'aurelia-metadata', 'aurelia-loader'], function (require, exports, aurelia_metadata_1, aurelia_loader_1) {
     if (!window.System || !window.System.import) {
         var sys = window.System = window.System || {};
         sys.polyfilled = true;
@@ -110,7 +110,7 @@ define(["require", "exports", 'aurelia-metadata'], function (require, exports, a
             }
         };
         return DefaultLoader;
-    })(Loader);
+    })(aurelia_loader_1.Loader);
     exports.DefaultLoader = DefaultLoader;
     window.AureliaLoader = DefaultLoader;
 });

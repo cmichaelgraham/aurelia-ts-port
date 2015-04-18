@@ -115,6 +115,6 @@ define(["require", "exports", 'aurelia-metadata', './behavior-instance', './beha
             return behaviorInstance;
         };
         return CustomElement;
-    })(ResourceType);
+    })(aurelia_metadata_1.ResourceType);
     exports.CustomElement = CustomElement;
 });

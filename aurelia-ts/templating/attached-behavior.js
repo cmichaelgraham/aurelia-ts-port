@@ -11,7 +11,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-define(["require", "exports", './behavior-instance', './behaviors', './util'], function (require, exports, behavior_instance_1, behaviors_1, util_1) {
+define(["require", "exports", 'aurelia-metadata', './behavior-instance', './behaviors', './util'], function (require, exports, aurelia_metadata_1, behavior_instance_1, behaviors_1, util_1) {
     var AttachedBehavior = (function (_super) {
         __extends(AttachedBehavior, _super);
         function AttachedBehavior(attribute) {
@@ -49,6 +49,6 @@ define(["require", "exports", './behavior-instance', './behaviors', './util'], f
             return behaviorInstance;
         };
         return AttachedBehavior;
-    })(ResourceType);
+    })(aurelia_metadata_1.ResourceType);
     exports.AttachedBehavior = AttachedBehavior;
 });
