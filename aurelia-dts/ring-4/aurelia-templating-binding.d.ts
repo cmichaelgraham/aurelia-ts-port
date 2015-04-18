@@ -1,5 +1,5 @@
 declare module 'aurelia-templating-binding/syntax-interpreter' {
-	import { Parser, ObserverLocator, EventManager, ListenerExpression } from 'binding/index';
+	import { Parser, ObserverLocator, EventManager, ListenerExpression } from 'binding\index';
 	export class SyntaxInterpreter {
 	    static inject(): (typeof Parser | typeof ObserverLocator | typeof EventManager)[];
 	    parser: any;

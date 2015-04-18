@@ -561,7 +561,7 @@ declare module 'aurelia-binding/lexer' {
 
 }
 declare module 'aurelia-binding/parser' {
-	import { AccessScope, LiteralObject } from 'aurelia-binding/ast';
+	import { AccessScope, LiteralObject } from 'aurelia-binding\ast';
 	export class Parser {
 	    cache: any;
 	    lexer: any;
@@ -598,19 +598,19 @@ declare module 'aurelia-binding/parser' {
 
 }
 declare module 'aurelia-binding/index' {
-	export { EventManager } from 'aurelia-binding/event-manager';
-	export { ObserverLocator, ObjectObservationAdapter } from 'aurelia-binding/observer-locator';
-	export { ValueConverterResource } from 'aurelia-binding/value-converter';
-	export { calcSplices } from 'aurelia-binding/array-change-records';
-	export * from 'aurelia-binding/binding-modes';
-	export { Parser } from 'aurelia-binding/parser';
-	export { BindingExpression } from 'aurelia-binding/binding-expression';
-	export { ListenerExpression } from 'aurelia-binding/listener-expression';
-	export { NameExpression } from 'aurelia-binding/name-expression';
-	export { CallExpression } from 'aurelia-binding/call-expression';
-	export { DirtyChecker } from 'aurelia-binding/dirty-checking';
-	export { getChangeRecords } from 'aurelia-binding/map-change-records';
-	export { ComputedPropertyObserver, declarePropertyDependencies } from 'aurelia-binding/computed-observation';
+	export { EventManager } from 'aurelia-binding\event-manager';
+	export { ObserverLocator, ObjectObservationAdapter } from 'aurelia-binding\observer-locator';
+	export { ValueConverterResource } from 'aurelia-binding\value-converter';
+	export { calcSplices } from 'aurelia-binding\array-change-records';
+	export * from 'aurelia-binding\binding-modes';
+	export { Parser } from 'aurelia-binding\parser';
+	export { BindingExpression } from 'aurelia-binding\binding-expression';
+	export { ListenerExpression } from 'aurelia-binding\listener-expression';
+	export { NameExpression } from 'aurelia-binding\name-expression';
+	export { CallExpression } from 'aurelia-binding\call-expression';
+	export { DirtyChecker } from 'aurelia-binding\dirty-checking';
+	export { getChangeRecords } from 'aurelia-binding\map-change-records';
+	export { ComputedPropertyObserver, declarePropertyDependencies } from 'aurelia-binding\computed-observation';
 	export function valueConverter(name: any): (target: any) => any;
 	export function computedFrom(...rest: any[]): (target: any, key: any, descriptor: any) => any;
 

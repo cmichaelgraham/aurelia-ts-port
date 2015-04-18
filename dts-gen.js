@@ -1,4 +1,9 @@
 var dtsGenerator = require('dts-generator')
+var fs = require('fs');
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
 
 var buildTargets = {
   rings: [
