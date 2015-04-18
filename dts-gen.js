@@ -1,52 +1,86 @@
 var dtsGenerator = require('dts-generator')
 
-// animator-css
-dtsGenerator.generate({
-    name: 'aurelia-animator-css',
-    baseDir: '/a/aurelia-ts-port/aurelia-ts/animator-css',
-    files: [ 'index.ts', 'animator.ts' ],
-    out: 'aurelia-dts/animator-css.d.ts',
-    main: 'aurelia-animator-css/index'
+var buildTargets = {
+  rings: [
+    { name: 'ring-0', repos: [
+      { name: 'event-aggregator' },
+      { name: 'history' },
+      { name: 'logging' },
+      { name: 'logging-console' },
+      { name: 'path' },
+      { name: 'metadata' },
+      { name: 'skeleton-plugin' },
+      { name: 'task-queue' },
+      { name: 'route-recognizer'}
+      ]},
+    { name: 'ring-1', repos: [
+      { name: 'dependency-injection' },
+      { name: 'history-browser' },
+      { name: 'loader' },
+      { name: 'http-client' }
+    ]},
+    { name: 'ring-2', repos: [
+      { name: 'binding' },
+      { name: 'router' },
+      { name: 'loader-default' }
+    ]},
+    { name: 'ring-3', repos: [
+      { name: 'templating' }
+    ]},
+    { name: 'ring-4', repos: [
+      { name: 'framework' },
+      { name: 'animator-css' },
+      { name: 'templating-binding' },
+      { name: 'templating-resources' },
+      { name: 'templating-router' }
+    ]},
+    { name: 'ring-5', repos: [
+      { name: 'app-contacts' },
+      { name: 'bootstrapper' },
+      { name: 'skeleton-navigation' }
+    ]}
+  ]
+}
+
+console.log('---------------------------------------');
+console.log('   __dirname: ' + __dirname);
+console.log('---------------------------------------');
+var ringSources = [];
+buildTargets.rings.forEach(function(ring) {
+    console.log('  ring: ' + ring.name);
+
+    ring.repos.forEach(function(repo) {
+        // console.log('    repo: ' + repo.name);
+        repo.files = [];
+
+        fs.readdirSync(__dirname + "/aurelia-ts/" + repo.name).forEach(function(name) {
+            if (name.toLowerCase().endsWith('.ts') && ! name.toLowerCase().endsWith('.d.ts')) {
+                // console.log('      file: ' + name);
+                repo.files.push(name);
+            }
+        });
+
+        var sources = [];
+        sources.push(__dirname + "/aurelia-ts/" + repo.name + "/*.ts");
+        sources.push(__dirname + "/aurelia-ts/*.d.ts");
+        ringSources.forEach(function(ringSource) {
+            sources.push(ringSource);
+        });
+
+        // gen dts here
+        console.log('    gen dts ' + repo.name);
+        dtsGenerator.generate({
+            name: 'aurelia-' + repo.name,
+            baseDir: __dirname + '/aurelia-ts/' + repo.name,
+            files: repo.files,
+            out: 'aurelia-dts/' + ring.name + '/aurelia-' + repo.name + '.d.ts',
+            main: 'aurelia-' + repo.name + '/index'
+        });
+
+        console.log('');
+    });
+
+    ringSources.push(__dirname + "/aurelia-dts/" + ring.name + '/*.ts');
 });
 
-// app-contacts
-dtsGenerator.generate({
-    name: 'aurelia-binding',
-    baseDir: '/a/aurelia-ts-port/aurelia-ts/binding',
-    files: [ 
-    	'index.ts', 
-    	'array-change-records.ts', 
-    	'array-observation.ts', 
-    	'ast.ts', 
-    	'binding-expression.ts', 
-    	'binding-mode.ts', 
-    	'call-expression.ts', 
-    	'collection-observation.ts',
-    	'composite-observer.ts',
-    	'computed-observation.ts',
-    	'dirty-checking.ts',
-    	'element-observation.ts',
-    	'event-manager.ts',
-    	'lexer.ts',
-    	'listener-expression.ts',
-    	'map-change-records.ts',
-    	'map-observation.ts',
-    	'name-expression.ts',
-    	'observer-locator.ts',
-    	'parser.ts',
-    	'path-observer.ts',
-    	'property-observation.ts',
-    	'value-converter.ts'
-    ],
-    out: 'aurelia-dts/binding.d.ts',
-    main: 'aurelia-binding/index'
-});
-
-// logging
-dtsGenerator.generate({
-    name: 'aurelia-logging',
-    baseDir: '/a/aurelia-ts-port/aurelia-ts/logging',
-    files: [ 'index.ts' ],
-    out: 'aurelia-dts/logging.d.ts',
-    main: 'aurelia-logging/index'
-});
+console.log('---------------------------------------');
