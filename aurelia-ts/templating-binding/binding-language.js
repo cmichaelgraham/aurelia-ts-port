@@ -4,13 +4,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-templating', 'aurelia-binding', './syntax-interpreter', 'aurelia-logging'], function (require, exports, aurelia_templating_1, aurelia_binding_1, syntax_interpreter_1, LogManager) {
     var info = {}, logger = LogManager.getLogger('templating-binding');
     var TemplatingBindingLanguage = (function (_super) {
