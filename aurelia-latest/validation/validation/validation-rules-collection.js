@@ -1,22 +1,35 @@
-import {Validation} from '../validation/validation';
+import {Utilities} from '../validation/utilities';
+import {ValidationLocale} from '../validation/validation-locale';
 
 export class ValidationRulesCollection {
   constructor() {
     this.isRequired = false;
     this.validationRules = [];
     this.validationCollections = [];
+    this.isRequiredMessage = null;
   }
 
-  validate(newValue) {
+  /**
+   * Returns a promise that fulfils and resolves to simple result status object.
+   */
+  validate(newValue, locale) {
+    if(locale === undefined)
+    {
+      locale = ValidationLocale.Repository.default;
+    }
+    newValue = Utilities.getValue(newValue);
     let executeRules = true;
 
     //Is required?
-    if (Validation.Utilities.isEmptyValue(newValue)) {
+    if (Utilities.isEmptyValue(newValue)) {
       if (this.isRequired) {
-        return Promise.reject({
+        return Promise.resolve({
           isValid: false,
-          message: Validation.Locale.translate('isRequired'),
-          failingRule: 'isRequired'
+          message: this.isRequiredMessage ?
+            ( (typeof(this.isRequiredMessage) === 'function') ? this.isRequiredMessage(newValue) : this.isRequiredMessage  ) :
+            locale.translate('isRequired'),
+          failingRule: 'isRequired',
+          latestValue: newValue
         });
       }
       else {
@@ -27,56 +40,58 @@ export class ValidationRulesCollection {
     var checks = Promise.resolve({
       isValid: true,
       message: '',
-      failingRule: null
+      failingRule: null,
+      latestValue: newValue
     });
+
     //validate rules
     if (executeRules) {
       for (let i = 0; i < this.validationRules.length; i++) {
         let rule = this.validationRules[i];
-        checks = checks.then(
-          ()=> {
-            return rule.validate(newValue).then(() => {
-            }, ()=> {
-              return Promise.reject({
-                isValid: false,
-                message: rule.explain(),
-                failingRule: rule.ruleName
-              })
-            });
-          },
-          (e)=> {
-            return Promise.reject(e);
+        checks = checks.then( (previousRuleResult) => {
+          //Earlier in the chain, something resolved to an invalid result. Chain it.
+          if(previousRuleResult.isValid  === false)
+          {
+            return previousRuleResult;
           }
-        );
+          else
+          {
+            return rule.validate(newValue, locale).then( (thisRuleResult) => {
+              if(thisRuleResult === false) {
+                return {
+                  isValid: false,
+                  message: rule.explain(),
+                  failingRule: rule.ruleName,
+                  latestValue: newValue
+                };
+              }
+              else
+              {
+                //assertion
+                if(!previousRuleResult.isValid)
+                {
+                  throw Error("ValidationRulesCollection.validate caught an unexpected result while validating it's chain of rules.");
+                }
+                return previousRuleResult;
+              }
+            });
+          }
+        });
       }
     }
+
     //validate collections
     for (let i = 0; i < this.validationCollections.length; i++) {
       let validationCollection = this.validationCollections[i];
-      checks = checks.then(
-        ()=> {
-          return validationCollection.validate(newValue).then(() => {
-          }, (e)=> {
-            return Promise.reject(e);
-          })
-        },
-        (e)=> {
-          return Promise.reject(e);
-        }
-      );
+      checks = checks.then( (previousValidationResult)=> {
+        if(previousValidationResult.isValid)
+          return validationCollection.validate(newValue, locale);
+        else
+          return previousValidationResult;
+      });
     }
-    return checks.then(
-      () => {
-        return Promise.resolve({
-          isValid: true,
-          message: '',
-          failingRule: null
-        });
-      },
-      (e) => {
-        return Promise.reject(e);
-      }
-    );
+
+    return checks;
   }
 
   addValidationRule(validationRule) {
@@ -89,12 +104,15 @@ export class ValidationRulesCollection {
     this.validationCollections.push(validationRulesCollection);
   }
 
-  notEmpty() {
+  isNotEmpty() {
     this.isRequired = true;
   }
 
   withMessage(message) {
-    this.validationRules[this.validationRules.length - 1].withMessage(message);
+    if(this.validationRules.length === 0)
+      this.isRequiredMessage = message;
+    else
+      this.validationRules[this.validationRules.length - 1].withMessage(message);
   }
 }
 
@@ -137,12 +155,12 @@ export class SwitchCaseValidationRulesCollection {
     return null;
   }
 
-  validate(newValue) {
+  validate(newValue, locale) {
     var collection = this.getCurrentCollection(this.conditionExpression(newValue));
     if (collection !== null)
-      return collection.validate(newValue);
+      return collection.validate(newValue, locale);
     else
-      return this.defaultCollection.validate(newValue);
+      return this.defaultCollection.validate(newValue, locale);
   }
 
   addValidationRule(validationRule) {
@@ -155,12 +173,12 @@ export class SwitchCaseValidationRulesCollection {
     currentCollection.addValidationRuleCollection(validationRulesCollection);
   }
 
-  notEmpty() {
+  isNotEmpty() {
     var collection = this.getCurrentCollection(this.caseLabel);
     if (collection !== null)
-      collection.notEmpty();
+      collection.isNotEmpty();
     else
-      this.defaultCollection.notEmpty();
+      this.defaultCollection.isNotEmpty();
   }
 
   withMessage(message) {

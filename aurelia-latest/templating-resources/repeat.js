@@ -174,9 +174,9 @@ export class Repeat {
   }
 
   handleSplices(array, splices) {
-    var viewSlot = this.viewSlot,
-      spliceIndexLow = splices[0].index,
-      view, i, ii, j, jj, row, splice,
+    var viewLookup = new Map(),
+      viewSlot = this.viewSlot,
+      spliceIndexLow, view, i, ii, j, jj, row, splice,
       addIndex, end, itemsLeftToAdd,
       removed, model, children, length;
 
@@ -186,7 +186,7 @@ export class Repeat {
       itemsLeftToAdd = splice.addedCount;
       end = splice.index + splice.addedCount;
       removed = splice.removed;
-      if(spliceIndexLow > splice.index){
+      if(typeof spliceIndexLow === 'undefined' || spliceIndexLow === null || spliceIndexLow > splice.index){
         spliceIndexLow = splice.index;
       }
 
@@ -197,6 +197,9 @@ export class Repeat {
           --itemsLeftToAdd;
         } else {
           view = viewSlot.removeAt(addIndex + splice.addedCount);
+          if(view){
+            viewLookup.set(removed[j], view);
+          }
         }
       }
 
@@ -204,9 +207,15 @@ export class Repeat {
 
       for (; 0 < itemsLeftToAdd; ++addIndex) {
         model = array[addIndex];
-        row = this.createBaseExecutionContext(model);
-        view = this.viewFactory.create(row);
-        viewSlot.insert(addIndex, view);
+        view = viewLookup.get(model);
+        if(view){
+          viewLookup.delete(model);
+          viewSlot.insert(addIndex, view);
+        }else{
+          row = this.createBaseExecutionContext(model);
+          view = this.viewFactory.create(row);
+          viewSlot.insert(addIndex, view);
+        }
         --itemsLeftToAdd;
       }
     }
@@ -221,6 +230,8 @@ export class Repeat {
     for(; spliceIndexLow < length; ++spliceIndexLow){
       this.updateExecutionContext(children[spliceIndexLow].executionContext, spliceIndexLow, length);
     }
+
+    viewLookup.forEach(x => x.unbind());
   }
 
   handleMapChangeRecords(map, records) {
