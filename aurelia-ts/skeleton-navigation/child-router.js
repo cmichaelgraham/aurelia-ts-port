@@ -18,7 +18,6 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-router'], function (
                 ]);
             });
         }
-        ChildRouter.inject = function () { return [aurelia_router_1.Router]; };
         ChildRouter = __decorate([
             aurelia_framework_1.inject(aurelia_router_1.Router)
         ], ChildRouter);

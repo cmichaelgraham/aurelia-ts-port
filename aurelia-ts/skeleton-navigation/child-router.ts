@@ -3,7 +3,6 @@ import {Router} from 'aurelia-router';
 
 @inject(Router)
 export class ChildRouter{
-  static inject() { return [Router]; }
   public heading = 'Child Router';
   public router;
   constructor(router){

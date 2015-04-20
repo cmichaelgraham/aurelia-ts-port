@@ -13,7 +13,6 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-http-client'], funct
             this.url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=rainier&tagmode=any&format=json';
             this.http = http;
         }
-        Flickr.inject = function () { return [aurelia_http_client_1.HttpClient]; };
         Flickr.prototype.activate = function () {
             var _this = this;
             return this.http.jsonp(this.url).then(function (response) {

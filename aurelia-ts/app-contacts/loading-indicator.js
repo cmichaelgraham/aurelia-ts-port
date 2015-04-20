@@ -8,6 +8,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
 define(["require", "exports", 'nprogress', 'aurelia-framework'], function (require, exports, nprogress_1, aurelia_framework_1) {
     var LoadingIndicator = (function () {
         function LoadingIndicator() {
+            this.loading = false;
         }
         LoadingIndicator.prototype.loadingChanged = function (newValue) {
             if (newValue) {
@@ -17,8 +18,10 @@ define(["require", "exports", 'nprogress', 'aurelia-framework'], function (requi
                 nprogress_1.default.done();
             }
         };
+        __decorate([
+            aurelia_framework_1.bindable
+        ], LoadingIndicator.prototype, "loading");
         LoadingIndicator = __decorate([
-            aurelia_framework_1.bindable('loading'),
             aurelia_framework_1.noView
         ], LoadingIndicator);
         return LoadingIndicator;
