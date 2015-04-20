@@ -354,6 +354,5 @@ declare module 'aurelia-dependency-injection/index' {
 
 }
 declare module 'aurelia-dependency-injection' {
-	import main = require('aurelia-dependency-injection/index');
-	export = main;
-}
+	export * from 'aurelia-dependency-injection/index';
+	}

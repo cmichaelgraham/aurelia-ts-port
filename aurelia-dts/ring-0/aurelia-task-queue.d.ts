@@ -15,6 +15,5 @@ declare module 'aurelia-task-queue/index' {
 
 }
 declare module 'aurelia-task-queue' {
-	import main = require('aurelia-task-queue/index');
-	export = main;
-}
+	export * from 'aurelia-task-queue/index';
+	}

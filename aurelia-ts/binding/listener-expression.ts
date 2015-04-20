@@ -14,7 +14,7 @@ export class ListenerExpression {
     this.preventDefault = preventDefault;
   }
 
-  createBinding(target){
+  createBinding(target):any{
     return new Listener(
       this.eventManager,
       this.targetEvent,

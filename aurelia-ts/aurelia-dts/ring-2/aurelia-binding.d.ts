@@ -285,6 +285,31 @@ declare module 'aurelia-binding/binding-modes' {
 	export var ONE_TIME: number;
 
 }
+declare module 'aurelia-binding/binding-expression' {
+	export class BindingExpression {
+	    observerLocator: any;
+	    targetProperty: any;
+	    sourceExpression: any;
+	    mode: any;
+	    valueConverterLookupFunction: any;
+	    attribute: any;
+	    discrete: any;
+	    constructor(observerLocator: any, targetProperty: any, sourceExpression: any, mode: any, valueConverterLookupFunction: any, attribute?: any);
+	    createBinding(target: any): any;
+	}
+
+}
+declare module 'aurelia-binding/call-expression' {
+	export class CallExpression {
+	    observerLocator: any;
+	    targetProperty: any;
+	    sourceExpression: any;
+	    valueConverterLookupFunction: any;
+	    constructor(observerLocator: any, targetProperty: any, sourceExpression: any, valueConverterLookupFunction: any);
+	    createBinding(target: any): any;
+	}
+
+}
 declare module 'aurelia-binding/computed-observation' {
 	export class ComputedPropertyObserver {
 	    obj: any;
@@ -594,6 +619,29 @@ declare module 'aurelia-binding/parser' {
 	    expect(text: any): void;
 	    advance(): void;
 	    error(message: any): void;
+	}
+
+}
+declare module 'aurelia-binding/listener-expression' {
+	export class ListenerExpression {
+	    eventManager: any;
+	    targetEvent: any;
+	    sourceExpression: any;
+	    delegate: any;
+	    discrete: any;
+	    preventDefault: any;
+	    constructor(eventManager: any, targetEvent: any, sourceExpression: any, delegate: any, preventDefault: any);
+	    createBinding(target: any): any;
+	}
+
+}
+declare module 'aurelia-binding/name-expression' {
+	export class NameExpression {
+	    property: any;
+	    discrete: any;
+	    mode: any;
+	    constructor(name: any, mode: any);
+	    createBinding(target: any): any;
 	}
 
 }

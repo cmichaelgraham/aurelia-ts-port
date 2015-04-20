@@ -8,6 +8,5 @@ declare module 'aurelia-skeleton-plugin/index' {
 
 }
 declare module 'aurelia-skeleton-plugin' {
-	import main = require('aurelia-skeleton-plugin/index');
-	export = main;
-}
+	export * from 'aurelia-skeleton-plugin/index';
+	}

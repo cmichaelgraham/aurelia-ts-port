@@ -501,7 +501,7 @@ export class RouteRecognizer {
     return queryParams;
   }
 
-  recognize(path) {
+  recognize(path):any {
     var states = [ this.rootState ],
         pathLen, i, l, queryStart, queryParams = {},
         isSlashDropped = false;

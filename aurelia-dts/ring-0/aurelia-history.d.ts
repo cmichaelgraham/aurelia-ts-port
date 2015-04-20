@@ -8,6 +8,5 @@ declare module 'aurelia-history/index' {
 
 }
 declare module 'aurelia-history' {
-	import main = require('aurelia-history/index');
-	export = main;
-}
+	export * from 'aurelia-history/index';
+	}

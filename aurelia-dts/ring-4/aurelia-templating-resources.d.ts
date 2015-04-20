@@ -109,6 +109,5 @@ declare module 'aurelia-templating-resources/index' {
 
 }
 declare module 'aurelia-templating-resources' {
-	import main = require('aurelia-templating-resources/index');
-	export = main;
-}
+	export * from 'aurelia-templating-resources/index';
+	}

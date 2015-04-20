@@ -48,7 +48,7 @@ export class RouteFilterContainer {
   }
 }
 
-export function createRouteFilterStep(name) {
+export function createRouteFilterStep(name):any {
   function create(routeFilterContainer) {
     return new RouteFilterStep(name, routeFilterContainer);
   };

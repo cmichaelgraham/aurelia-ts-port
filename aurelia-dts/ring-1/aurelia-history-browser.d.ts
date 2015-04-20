@@ -29,6 +29,5 @@ declare module 'aurelia-history-browser/index' {
 
 }
 declare module 'aurelia-history-browser' {
-	import main = require('aurelia-history-browser/index');
-	export = main;
-}
+	export * from 'aurelia-history-browser/index';
+	}

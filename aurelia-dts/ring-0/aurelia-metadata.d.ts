@@ -165,6 +165,5 @@ declare module 'aurelia-metadata/index' {
 
 }
 declare module 'aurelia-metadata' {
-	import main = require('aurelia-metadata/index');
-	export = main;
-}
+	export * from 'aurelia-metadata/index';
+	}

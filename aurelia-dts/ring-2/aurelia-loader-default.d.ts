@@ -10,6 +10,5 @@ declare module 'aurelia-loader-default/index' {
 
 }
 declare module 'aurelia-loader-default' {
-	import main = require('aurelia-loader-default/index');
-	export = main;
-}
+	export * from 'aurelia-loader-default/index';
+	}

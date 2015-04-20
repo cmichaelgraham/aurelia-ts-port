@@ -12,6 +12,5 @@ declare module 'aurelia-event-aggregator/index' {
 
 }
 declare module 'aurelia-event-aggregator' {
-	import main = require('aurelia-event-aggregator/index');
-	export = main;
-}
+	export * from 'aurelia-event-aggregator/index';
+	}

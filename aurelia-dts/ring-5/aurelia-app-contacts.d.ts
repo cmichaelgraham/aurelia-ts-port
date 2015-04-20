@@ -70,6 +70,5 @@ declare module 'aurelia-app-contacts/no-selection' {
 
 }
 declare module 'aurelia-app-contacts' {
-	import main = require('aurelia-app-contacts/index');
-	export = main;
-}
+	export * from 'aurelia-app-contacts/index';
+	}

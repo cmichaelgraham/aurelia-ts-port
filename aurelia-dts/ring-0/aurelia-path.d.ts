@@ -5,6 +5,5 @@ declare module 'aurelia-path/index' {
 
 }
 declare module 'aurelia-path' {
-	import main = require('aurelia-path/index');
-	export = main;
-}
+	export * from 'aurelia-path/index';
+	}

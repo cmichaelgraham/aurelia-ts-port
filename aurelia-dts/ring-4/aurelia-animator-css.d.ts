@@ -19,6 +19,5 @@ declare module 'aurelia-animator-css/index' {
 
 }
 declare module 'aurelia-animator-css' {
-	import main = require('aurelia-animator-css/index');
-	export = main;
-}
+	export * from 'aurelia-animator-css/index';
+	}

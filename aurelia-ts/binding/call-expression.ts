@@ -10,7 +10,7 @@ export class CallExpression {
     this.valueConverterLookupFunction = valueConverterLookupFunction;
   }
 
-  createBinding(target){
+  createBinding(target):any{
     return new Call(
       this.observerLocator,
       this.sourceExpression,

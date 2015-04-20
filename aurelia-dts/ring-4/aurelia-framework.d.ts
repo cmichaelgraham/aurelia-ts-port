@@ -123,6 +123,5 @@ declare module 'aurelia-framework/index' {
 
 }
 declare module 'aurelia-framework' {
-	import main = require('aurelia-framework/index');
-	export = main;
-}
+	export * from 'aurelia-framework/index';
+	}

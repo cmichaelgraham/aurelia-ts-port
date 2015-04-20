@@ -8,7 +8,7 @@ export class NameExpression {
     this.mode = (mode || 'view-model').toLowerCase();
   }
 
-  createBinding(target){
+  createBinding(target):any{
     return new NameBinder(this.property, target, this.mode);
   }
 }

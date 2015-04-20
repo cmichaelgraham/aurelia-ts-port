@@ -9,6 +9,5 @@ declare module 'aurelia-logging-console/index' {
 
 }
 declare module 'aurelia-logging-console' {
-	import main = require('aurelia-logging-console/index');
-	export = main;
-}
+	export * from 'aurelia-logging-console/index';
+	}

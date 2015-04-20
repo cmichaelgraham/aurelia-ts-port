@@ -21,6 +21,10 @@ declare module 'aurelia-templating-router/router-view' {
 
 }
 declare module 'aurelia-templating-router/index' {
+	import {Router, AppRouter, RouteLoader} from 'aurelia-router';
+	import {TemplatingRouteLoader} from 'aurelia-templating-router/route-loader';
+	import {RouterView} from 'aurelia-templating-router/router-view';
+
 	 function install(aurelia: any): void;
 	export { TemplatingRouteLoader, RouterView, install };
 

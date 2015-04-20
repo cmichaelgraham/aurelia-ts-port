@@ -3,6 +3,5 @@ declare module 'aurelia-bootstrapper/index' {
 
 }
 declare module 'aurelia-bootstrapper' {
-	import main = require('aurelia-bootstrapper/index');
-	export = main;
-}
+	export * from 'aurelia-bootstrapper/index';
+	}

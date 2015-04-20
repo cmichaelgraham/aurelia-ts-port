@@ -39,6 +39,5 @@ declare module 'aurelia-loader/index' {
 
 }
 declare module 'aurelia-loader' {
-	import main = require('aurelia-loader/index');
-	export = main;
-}
+	export * from 'aurelia-loader/index';
+	}

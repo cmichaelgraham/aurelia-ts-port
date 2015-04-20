@@ -186,7 +186,7 @@ export class InterpolationBindingExpression {
     this.discrete = false;
   }
 
-  createBinding(target){
+  createBinding(target):any{
     return new InterpolationBinding(
       this.observerLocator,
       this.parts,

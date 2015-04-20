@@ -263,6 +263,5 @@ declare module 'aurelia-http-client/index' {
 
 }
 declare module 'aurelia-http-client' {
-	import main = require('aurelia-http-client/index');
-	export = main;
-}
+	export * from 'aurelia-http-client/index';
+	}

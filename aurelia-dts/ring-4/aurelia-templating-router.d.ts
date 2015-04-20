@@ -26,6 +26,5 @@ declare module 'aurelia-templating-router/index' {
 
 }
 declare module 'aurelia-templating-router' {
-	import main = require('aurelia-templating-router/index');
-	export = main;
-}
+	export * from 'aurelia-templating-router/index';
+	}

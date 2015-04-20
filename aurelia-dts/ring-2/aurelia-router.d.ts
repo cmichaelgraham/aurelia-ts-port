@@ -110,6 +110,19 @@ declare module 'aurelia-router/navigation-instruction' {
 	}
 
 }
+declare module 'aurelia-router/route-filters' {
+	export class RouteFilterContainer {
+	    static inject(): any[];
+	    container: any;
+	    filters: any;
+	    filterCache: any;
+	    constructor(container: any);
+	    addStep(name: any, step: any, index?: number): void;
+	    getFilterSteps(name: any): any;
+	}
+	export function createRouteFilterStep(name: any): any;
+
+}
 declare module 'aurelia-router/router-configuration' {
 	export class RouterConfiguration {
 	    instructions: any;
@@ -247,6 +260,5 @@ declare module 'aurelia-router/model-binding' {
 
 }
 declare module 'aurelia-router' {
-	import main = require('aurelia-router/index');
-	export = main;
-}
+	export * from 'aurelia-router/index';
+	}

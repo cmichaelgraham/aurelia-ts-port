@@ -9,7 +9,7 @@ import {
   ONE_WAY,
   TWO_WAY,
   ONE_TIME
-} from '../binding/index';
+} from 'aurelia-binding';
 
 export class SyntaxInterpreter {
   static inject() { return [Parser,ObserverLocator,EventManager]; }

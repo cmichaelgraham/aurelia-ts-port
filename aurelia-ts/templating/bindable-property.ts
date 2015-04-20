@@ -63,7 +63,7 @@ export class BindableProperty {
     });
   }
 
-  createObserver(executionContext){
+  createObserver(executionContext):any{
     var selfSubscriber = null;
 
     if(this.hasOptions){

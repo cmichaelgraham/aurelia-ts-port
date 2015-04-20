@@ -19,7 +19,7 @@ export class BindingExpression {
     this.discrete = false;
   }
 
-  createBinding(target){
+  createBinding(target):any{
     return new Binding(
       this.observerLocator,
       this.sourceExpression,
