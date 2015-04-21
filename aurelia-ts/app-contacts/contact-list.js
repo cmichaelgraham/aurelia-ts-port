@@ -1,11 +1,4 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
-define(["require", "exports", 'aurelia-framework', 'aurelia-event-aggregator', './web-api', './messages'], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, web_api_1, messages_1) {
+define(["require", "exports", 'aurelia-event-aggregator', './web-api', './messages'], function (require, exports, aurelia_event_aggregator_1, web_api_1, messages_1) {
     var ContactList = (function () {
         function ContactList(api, ea) {
             var _this = this;
@@ -28,9 +21,7 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-event-aggregator', '
             this.selectedId = contact.id;
             return true;
         };
-        ContactList = __decorate([
-            aurelia_framework_1.inject(web_api_1.WebAPI, aurelia_event_aggregator_1.EventAggregator)
-        ], ContactList);
+        ContactList.inject = [web_api_1.WebAPI, aurelia_event_aggregator_1.EventAggregator];
         return ContactList;
     })();
     exports.ContactList = ContactList;

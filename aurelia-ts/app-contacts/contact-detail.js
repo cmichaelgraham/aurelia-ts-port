@@ -1,14 +1,6 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
-define(["require", "exports", 'aurelia-framework', 'aurelia-event-aggregator', './web-api', './app', './messages', './utility'], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, web_api_1, app_1, messages_1, utility_1) {
+define(["require", "exports", 'aurelia-event-aggregator', './web-api', './messages', './utility'], function (require, exports, aurelia_event_aggregator_1, web_api_1, messages_1, utility_1) {
     var ContactDetail = (function () {
-        function ContactDetail(app, api, ea) {
-            this.app = app;
+        function ContactDetail(api, ea) {
             this.api = api;
             this.ea = ea;
         }
@@ -46,9 +38,7 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-event-aggregator', '
             }
             return true;
         };
-        ContactDetail = __decorate([
-            aurelia_framework_1.inject(app_1.App, web_api_1.WebAPI, aurelia_event_aggregator_1.EventAggregator)
-        ], ContactDetail);
+        ContactDetail.inject = [web_api_1.WebAPI, aurelia_event_aggregator_1.EventAggregator];
         return ContactDetail;
     })();
     exports.ContactDetail = ContactDetail;

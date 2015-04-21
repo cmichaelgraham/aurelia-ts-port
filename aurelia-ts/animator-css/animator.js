@@ -20,6 +20,25 @@ define(["require", "exports"], function (require, exports) {
                 this.animationStack.splice(idx, 1);
             }
         };
+        CssAnimator.prototype.getElementAnimationDelay = function (element) {
+            var styl = window.getComputedStyle(element);
+            var prop, delay;
+            if (styl.getPropertyValue('animation-delay')) {
+                prop = 'animation-delay';
+            }
+            else if (styl.getPropertyValue('-webkit-animation-delay')) {
+                prop = '-webkit-animation-delay';
+            }
+            else if (styl.getPropertyValue('-moz-animation-delay')) {
+                prop = '-moz-animation-delay';
+            }
+            else {
+                return 0;
+            }
+            delay = styl.getPropertyValue(prop);
+            delay = Number(delay.replace(/[^\d\.]/g, ''));
+            return (delay * 1000);
+        };
         CssAnimator.prototype.move = function () {
             return Promise.resolve(false);
         };
@@ -63,7 +82,7 @@ define(["require", "exports"], function (require, exports) {
                         classList.remove('au-enter');
                         resolve(false);
                     }
-                }, 50);
+                }, _this.getElementAnimationDelay(element) + 400);
             });
         };
         CssAnimator.prototype.leave = function (element) {
@@ -106,7 +125,7 @@ define(["require", "exports"], function (require, exports) {
                         classList.remove('au-leave');
                         resolve(false);
                     }
-                }, 50);
+                }, _this.getElementAnimationDelay(element) + 400);
             });
         };
         CssAnimator.prototype.removeClass = function (element, className) {
@@ -153,7 +172,7 @@ define(["require", "exports"], function (require, exports) {
                         classList.remove(className);
                         resolve(false);
                     }
-                }, 50);
+                }, _this.getElementAnimationDelay(element) + 400);
             });
         };
         CssAnimator.prototype.addClass = function (element, className) {
@@ -195,7 +214,7 @@ define(["require", "exports"], function (require, exports) {
                         classList.add(className);
                         resolve(false);
                     }
-                }, 50);
+                }, _this.getElementAnimationDelay(element) + 400);
             });
         };
         return CssAnimator;

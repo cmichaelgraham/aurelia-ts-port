@@ -26,6 +26,29 @@ export class CssAnimator {
     }
   }
 
+  getElementAnimationDelay(element) {
+    var styl = window.getComputedStyle(element);
+    var prop,
+        delay;
+
+    if (styl.getPropertyValue('animation-delay')) {
+      prop = 'animation-delay';
+
+    } else if (styl.getPropertyValue('-webkit-animation-delay')) {
+      prop = '-webkit-animation-delay';
+
+    } else if (styl.getPropertyValue('-moz-animation-delay')) {
+      prop = '-moz-animation-delay';
+
+    } else {
+      return 0;
+    }
+    delay = styl.getPropertyValue(prop);
+    delay = Number(delay.replace(/[^\d\.]/g, ''));
+
+    return (delay * 1000);
+  }
+
   move() {
     return Promise.resolve(false);
   }
@@ -82,7 +105,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, 50);
+      }, this.getElementAnimationDelay(element) + 400);
     });
   }
 
@@ -138,7 +161,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, 50);
+      }, this.getElementAnimationDelay(element) + 400);
     });
   }
 
@@ -199,7 +222,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, 50);
+      }, this.getElementAnimationDelay(element) + 400);
     });
   }
 
@@ -254,7 +277,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, 50);
+      }, this.getElementAnimationDelay(element) + 400);
     });
   }
 }
