@@ -125,6 +125,7 @@
         "./router/router-configuration.ts",
         "./router/router.ts",
         "./router/util.ts",
+        "./skeleton-navigation/animation-main.ts",
         "./skeleton-navigation/app.ts",
         "./skeleton-navigation/child-router.ts",
         "./skeleton-navigation/flickr.ts",
