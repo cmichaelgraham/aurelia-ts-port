@@ -71,8 +71,8 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-logging-console'], f
                             return window.System.import(name);
                         }));
                     }
-                    toLoad.push(window.System.normalize('aurelia-depedency-injection', frameworkName).then(function (name) {
-                        window.System.map['aurelia-depedency-injection'] = name;
+                    toLoad.push(window.System.normalize('aurelia-dependency-injection', frameworkName).then(function (name) {
+                        window.System.map['aurelia-dependency-injection'] = name;
                     }));
                     toLoad.push(window.System.normalize('aurelia-router', bootstrapperName).then(function (name) {
                         window.System.map['aurelia-router'] = name;

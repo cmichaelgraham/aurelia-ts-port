@@ -12,8 +12,11 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
             this.container = container;
             this.viewSlot = viewSlot;
             this.router = router;
-            router.registerViewPort(this, element.getAttribute('name'));
+            this.router.registerViewPort(this, this.element.getAttribute('name'));
         }
+        RouterView.prototype.bind = function (executionContext) {
+            this.container.viewModel = executionContext;
+        };
         RouterView.prototype.process = function (viewPortInstruction, waitToSwap) {
             var _this = this;
             var component = viewPortInstruction.component, viewStrategy = component.view, childContainer = component.childContainer, viewModel = component.executionContext, viewModelResource = component.viewModelResource, metadata = viewModelResource.metadata;

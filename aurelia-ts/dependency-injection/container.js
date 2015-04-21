@@ -1,3 +1,10 @@
+var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
+};
 define(["require", "exports", 'aurelia-metadata', 'aurelia-logging', './metadata'], function (require, exports, aurelia_metadata_1, aurelia_logging_1, metadata_1) {
     var emptyParameters = Object.freeze([]), defaultActivator = new metadata_1.ClassActivator();
     // Fix Function#name on browsers that do not support it (IE):

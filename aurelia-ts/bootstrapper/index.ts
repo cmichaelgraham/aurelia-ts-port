@@ -76,8 +76,8 @@ function preparePlatform(){
           }));
         }
 
-        toLoad.push((<any>window).System.normalize('aurelia-depedency-injection', frameworkName).then(function(name){
-          (<any>window).System.map['aurelia-depedency-injection'] = name;
+        toLoad.push((<any>window).System.normalize('aurelia-dependency-injection', frameworkName).then(function(name){
+          (<any>window).System.map['aurelia-dependency-injection'] = name;
         }));
 
         toLoad.push((<any>window).System.normalize('aurelia-router', bootstrapperName).then(function(name){

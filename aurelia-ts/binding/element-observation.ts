@@ -270,7 +270,10 @@ export class SelectValueObserver {
   }
 
   bind() {
-    this.domObserver = new MutationObserver(this.synchronizeOptions.bind(this));
+    this.domObserver = new MutationObserver(() => {
+      this.synchronizeOptions();
+      this.synchronizeValue();
+    });
     this.domObserver.observe(this.element, { childList: true, subtree: true });
   }
 

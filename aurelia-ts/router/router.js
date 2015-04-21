@@ -241,10 +241,10 @@ define(["require", "exports", 'aurelia-route-recognizer', 'aurelia-path', './nav
     exports.Router = Router;
     function validateRouteConfig(config) {
         var isValid = typeof config === 'object'
-            && config.moduleId
+            && (config.moduleId || config.redirect)
             && config.route !== null && config.route !== undefined;
         if (!isValid) {
-            throw new Error('Invalid route config.');
+            throw new Error('Invalid Route Config: You must have at least a route and a moduleId or redirect.');
         }
     }
 });

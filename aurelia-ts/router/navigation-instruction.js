@@ -25,7 +25,7 @@ define(["require", "exports"], function (require, exports) {
                 strategy: strategy,
                 moduleId: moduleId,
                 component: component,
-                childRouter: component.executionContext.router,
+                childRouter: component.childRouter,
                 lifecycleArgs: this.lifecycleArgs.slice()
             };
         };

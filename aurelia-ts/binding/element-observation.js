@@ -218,7 +218,11 @@ define(["require", "exports"], function (require, exports) {
             }
         };
         SelectValueObserver.prototype.bind = function () {
-            this.domObserver = new MutationObserver(this.synchronizeOptions.bind(this));
+            var _this = this;
+            this.domObserver = new MutationObserver(function () {
+                _this.synchronizeOptions();
+                _this.synchronizeValue();
+            });
             this.domObserver.observe(this.element, { childList: true, subtree: true });
         };
         SelectValueObserver.prototype.unbind = function () {

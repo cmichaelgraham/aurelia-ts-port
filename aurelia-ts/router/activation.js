@@ -93,9 +93,9 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
         return list;
     }
     function addPreviousDeactivatable(component, callbackName, list) {
-        var controller = component.executionContext;
-        if (controller.router && controller.router.currentInstruction) {
-            var viewPortInstructions = controller.router.currentInstruction.viewPortInstructions;
+        var controller = component.executionContext, childRouter = component.childRouter;
+        if (childRouter && childRouter.currentInstruction) {
+            var viewPortInstructions = childRouter.currentInstruction.viewPortInstructions;
             for (var viewPortName in viewPortInstructions) {
                 var viewPortInstruction = viewPortInstructions[viewPortName];
                 var prevComponent = viewPortInstruction.component;
@@ -152,7 +152,7 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
                 });
             }
             if (viewPortPlan.childNavigationContext) {
-                findActivatable(viewPortPlan.childNavigationContext, callbackName, list, controller.router || router);
+                findActivatable(viewPortPlan.childNavigationContext, callbackName, list, viewPortInstruction.component.childRouter || router);
             }
             return true;
         });

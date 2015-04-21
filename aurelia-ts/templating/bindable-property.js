@@ -24,6 +24,7 @@ define(["require", "exports", './util', 'aurelia-binding'], function (require, e
             }
             this.attribute = this.attribute || util_1.hyphenate(this.name);
             this.defaultBindingMode = this.defaultBindingMode || aurelia_binding_1.ONE_WAY;
+            this.changeHandler = this.changeHandler || null;
             this.owner = null;
         }
         BindableProperty.prototype.registerWith = function (target, behavior) {
@@ -33,7 +34,7 @@ define(["require", "exports", './util', 'aurelia-binding'], function (require, e
         };
         BindableProperty.prototype.defineOn = function (target, behavior) {
             var name = this.name, handlerName;
-            if (this.changeHandler === undefined) {
+            if (this.changeHandler === null) {
                 handlerName = name + 'Changed';
                 if (handlerName in target.prototype) {
                     this.changeHandler = handlerName;
@@ -56,7 +57,7 @@ define(["require", "exports", './util', 'aurelia-binding'], function (require, e
             if (this.hasOptions) {
                 return;
             }
-            if (this.changeHandler !== undefined) {
+            if (this.changeHandler !== null) {
                 selfSubscriber = function (newValue, oldValue) { return executionContext[_this.changeHandler](newValue, oldValue); };
             }
             return new BehaviorPropertyObserver(this.owner.taskQueue, executionContext, this.name, selfSubscriber);
@@ -83,7 +84,7 @@ define(["require", "exports", './util', 'aurelia-binding'], function (require, e
                     else if (attribute) {
                         boundProperties.push({ observer: observer, binding: attribute.createBinding(executionContext) });
                     }
-                    else if (this.defaultValue) {
+                    else if (this.defaultValue !== undefined) {
                         executionContext[this.name] = this.defaultValue;
                         observer.call();
                     }

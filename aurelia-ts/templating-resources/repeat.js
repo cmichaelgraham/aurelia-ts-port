@@ -136,14 +136,14 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-binding', 'aurelia-t
             return context;
         };
         Repeat.prototype.handleSplices = function (array, splices) {
-            var viewSlot = this.viewSlot, spliceIndexLow = splices[0].index, view, i, ii, j, jj, row, splice, addIndex, end, itemsLeftToAdd, removed, model, children, length;
+            var viewLookup = new Map(), viewSlot = this.viewSlot, spliceIndexLow, view, i, ii, j, jj, row, splice, addIndex, end, itemsLeftToAdd, removed, model, children, length;
             for (i = 0, ii = splices.length; i < ii; ++i) {
                 splice = splices[i];
                 addIndex = splice.index;
                 itemsLeftToAdd = splice.addedCount;
                 end = splice.index + splice.addedCount;
                 removed = splice.removed;
-                if (spliceIndexLow > splice.index) {
+                if (typeof spliceIndexLow === 'undefined' || spliceIndexLow === null || spliceIndexLow > splice.index) {
                     spliceIndexLow = splice.index;
                 }
                 for (j = 0, jj = removed.length; j < jj; ++j) {
@@ -154,14 +154,24 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-binding', 'aurelia-t
                     }
                     else {
                         view = viewSlot.removeAt(addIndex + splice.addedCount);
+                        if (view) {
+                            viewLookup.set(removed[j], view);
+                        }
                     }
                 }
                 addIndex += removed.length;
                 for (; 0 < itemsLeftToAdd; ++addIndex) {
                     model = array[addIndex];
-                    row = this.createBaseExecutionContext(model);
-                    view = this.viewFactory.create(row);
-                    viewSlot.insert(addIndex, view);
+                    view = viewLookup.get(model);
+                    if (view) {
+                        viewLookup.delete(model);
+                        viewSlot.insert(addIndex, view);
+                    }
+                    else {
+                        row = this.createBaseExecutionContext(model);
+                        view = this.viewFactory.create(row);
+                        viewSlot.insert(addIndex, view);
+                    }
                     --itemsLeftToAdd;
                 }
             }
@@ -173,6 +183,7 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-binding', 'aurelia-t
             for (; spliceIndexLow < length; ++spliceIndexLow) {
                 this.updateExecutionContext(children[spliceIndexLow].executionContext, spliceIndexLow, length);
             }
+            viewLookup.forEach(function (x) { return x.unbind(); });
         };
         Repeat.prototype.handleMapChangeRecords = function (map, records) {
             var viewSlot = this.viewSlot, key, i, ii, view, children, length, row, removeIndex, record;

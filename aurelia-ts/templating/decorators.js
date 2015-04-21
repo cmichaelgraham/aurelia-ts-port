@@ -47,19 +47,19 @@ define(["require", "exports", 'aurelia-metadata', './bindable-property', './chil
     aurelia_metadata_1.Decorators.configure.simpleDecorator('templateController', templateController);
     function bindable(nameOrConfigOrTarget, key, descriptor) {
         var deco = function (target, key, descriptor) {
-            var resource = aurelia_metadata_1.Metadata.on(target).firstOrAdd(html_behavior_1.HtmlBehaviorResource), prop;
+            var actualTarget = key ? target.constructor : target, resource = aurelia_metadata_1.Metadata.on(actualTarget).firstOrAdd(html_behavior_1.HtmlBehaviorResource), prop;
             if (key) {
                 nameOrConfigOrTarget = nameOrConfigOrTarget || {};
                 nameOrConfigOrTarget.name = key;
             }
             prop = new bindable_property_1.BindableProperty(nameOrConfigOrTarget);
-            prop.registerWith(target, resource);
+            prop.registerWith(actualTarget, resource);
         };
         if (!nameOrConfigOrTarget) {
             return deco;
         }
         if (key) {
-            var target = nameOrConfigOrTarget.constructor;
+            var target = nameOrConfigOrTarget;
             nameOrConfigOrTarget = null;
             return deco(target, key, descriptor);
         }

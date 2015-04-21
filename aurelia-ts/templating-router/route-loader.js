@@ -23,10 +23,14 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
                 viewModel: aurelia_path_1.relativeToFile(config.moduleId, (aurelia_metadata_1.Origin.get(router.container.viewModel.constructor)).moduleId),
                 childContainer: childContainer,
                 view: config.view || config.viewStrategy
-            }, childRouter;
-            childContainer.registerHandler(aurelia_router_1.Router, function (c) {
-                return childRouter || (childRouter = router.createChild(childContainer));
-            });
+            };
+            childContainer.getChildRouter = function () {
+                var childRouter;
+                childContainer.registerHandler(aurelia_router_1.Router, function (c) {
+                    return childRouter || (childRouter = router.createChild(childContainer));
+                });
+                return childContainer.get(aurelia_router_1.Router);
+            };
             return this.compositionEngine.createViewModel(instruction).then(function (instruction) {
                 instruction.executionContext = instruction.viewModel;
                 instruction.router = router;
