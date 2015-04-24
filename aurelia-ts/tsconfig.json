@@ -52,6 +52,7 @@
         "./aurelia-dts/ring-5/aurelia-app-contacts.d.ts",
         "./aurelia-dts/ring-5/aurelia-bootstrapper.d.ts",
         "./aurelia-dts/ring-5/aurelia-skeleton-navigation.d.ts",
+        "./binding/access-keyed-observer.ts",
         "./binding/array-change-records.ts",
         "./binding/array-observation.ts",
         "./binding/ast.ts",

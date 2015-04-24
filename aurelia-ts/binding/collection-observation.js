@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", './array-change-records', './map-change-records'], function (require, exports, array_change_records_1, map_change_records_1) {
     var ModifyCollectionObserver = (function () {
         function ModifyCollectionObserver(taskQueue, collection) {
@@ -24,7 +17,7 @@ define(["require", "exports", './array-change-records', './map-change-records'],
             };
         };
         ModifyCollectionObserver.prototype.addChangeRecord = function (changeRecord) {
-            if (this.callbacks.length === 0) {
+            if (this.callbacks.length === 0 && !this.lengthObserver) {
                 return;
             }
             this.changeRecords.push(changeRecord);
@@ -43,13 +36,8 @@ define(["require", "exports", './array-change-records', './map-change-records'],
                 this.taskQueue.queueMicroTask(this);
             }
         };
-        ModifyCollectionObserver.prototype.getObserver = function (propertyName) {
-            if (propertyName == this.lengthPropertyName) {
-                return this.lengthObserver || (this.lengthObserver = new CollectionLengthObserver(this.collection));
-            }
-            else {
-                throw new Error("You cannot observe the " + propertyName + " property of an array.");
-            }
+        ModifyCollectionObserver.prototype.getLengthObserver = function () {
+            return this.lengthObserver || (this.lengthObserver = new CollectionLengthObserver(this.collection));
         };
         ModifyCollectionObserver.prototype.call = function () {
             var callbacks = this.callbacks, i = callbacks.length, changeRecords = this.changeRecords, oldCollection = this.oldCollection, records;
@@ -80,7 +68,7 @@ define(["require", "exports", './array-change-records', './map-change-records'],
                 }
             }
             if (this.lengthObserver) {
-                this.lengthObserver(this.array.length);
+                this.lengthObserver.call(this.collection[this.lengthPropertyName]);
             }
         };
         return ModifyCollectionObserver;

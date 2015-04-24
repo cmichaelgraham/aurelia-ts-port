@@ -4,13 +4,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", './array-change-records', './collection-observation'], function (require, exports, array_change_records_1, collection_observation_1) {
     var arrayProto = Array.prototype, hasArrayObserve = (function detectArrayObserve() {
         if (typeof Array.observe !== 'function') {
@@ -137,22 +130,16 @@ define(["require", "exports", './array-change-records', './collection-observatio
                 callbacks.splice(callbacks.indexOf(callback), 1);
             };
         };
-        ArrayObserveObserver.prototype.getObserver = function (propertyName) {
-            if (propertyName == 'length') {
-                return this.lengthObserver || (this.lengthObserver = new collection_observation_1.CollectionLengthObserver(this.array));
-            }
-            else {
-                throw new Error("You cannot observe the " + propertyName + " property of an array.");
-            }
+        ArrayObserveObserver.prototype.getLengthObserver = function () {
+            return this.lengthObserver || (this.lengthObserver = new collection_observation_1.CollectionLengthObserver(this.array));
         };
         ArrayObserveObserver.prototype.handleChanges = function (changeRecords) {
             var callbacks = this.callbacks, i = callbacks.length, splices;
-            if (!i) {
-                return;
-            }
-            splices = array_change_records_1.projectArraySplices(this.array, changeRecords);
-            while (i--) {
-                callbacks[i](splices);
+            if (i) {
+                splices = array_change_records_1.projectArraySplices(this.array, changeRecords);
+                while (i--) {
+                    callbacks[i](splices);
+                }
             }
             if (this.lengthObserver) {
                 this.lengthObserver.call(this.array.length);

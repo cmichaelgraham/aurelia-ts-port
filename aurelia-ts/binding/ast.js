@@ -4,14 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
-define(["require", "exports", './path-observer', './composite-observer'], function (require, exports, path_observer_1, composite_observer_1) {
+define(["require", "exports", './path-observer', './composite-observer', './access-keyed-observer'], function (require, exports, path_observer_1, composite_observer_1, access_keyed_observer_1) {
     var Expression = (function () {
         function Expression() {
             this.isChain = false;
@@ -261,18 +254,7 @@ define(["require", "exports", './path-observer', './composite-observer'], functi
         };
         AccessKeyed.prototype.connect = function (binding, scope) {
             var _this = this;
-            var objectInfo = this.object.connect(binding, scope), keyInfo = this.key.connect(binding, scope), childObservers = [], observer;
-            if (objectInfo.observer) {
-                childObservers.push(objectInfo.observer);
-            }
-            if (keyInfo.observer) {
-                childObservers.push(keyInfo.observer);
-            }
-            if (childObservers.length) {
-                observer = new composite_observer_1.CompositeObserver(childObservers, function () {
-                    return _this.evaluate(scope, binding.valueConverterLookupFunction);
-                });
-            }
+            var objectInfo = this.object.connect(binding, scope), keyInfo = this.key.connect(binding, scope), observer = new access_keyed_observer_1.AccessKeyedObserver(objectInfo, keyInfo, binding.observerLocator, function () { return _this.evaluate(scope, binding.valueConverterLookupFunction); });
             return {
                 value: this.evaluate(scope, binding.valueConverterLookupFunction),
                 observer: observer

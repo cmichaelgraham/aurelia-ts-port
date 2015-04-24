@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports"], function (require, exports) {
     var SetterObserver = (function () {
         function SetterObserver(taskQueue, obj, propertyName) {
@@ -26,7 +19,7 @@ define(["require", "exports"], function (require, exports) {
         };
         SetterObserver.prototype.setterValue = function (newValue) {
             var oldValue = this.currentValue;
-            if (oldValue != newValue) {
+            if (oldValue !== newValue) {
                 if (!this.queued) {
                     this.oldValue = oldValue;
                     this.queued = true;

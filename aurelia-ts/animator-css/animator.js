@@ -73,8 +73,18 @@ define(["require", "exports"], function (require, exports) {
                     // Step 3.3 remove animationstart listener
                     evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
                 }, false);
-                // Step 4: Add active class to kick off animation
-                classList.add('au-enter-active');
+                // Step 4: check if parent element is defined to stagger animations otherwise trigger active immediately
+                var parent = element.parentElement, delay = 0;
+                if (parent.classList.contains('au-stagger')) {
+                    var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
+                    delay = _this.getElementAnimationDelay(parent) * elemPos;
+                    setTimeout(function () {
+                        classList.add('au-enter-active');
+                    }, delay);
+                }
+                else {
+                    classList.add('au-enter-active');
+                }
                 // Step 5: if no animations happened cleanup animation classes
                 setTimeout(function () {
                     if (_this.animationStack.indexOf(animId) < 0) {
@@ -82,7 +92,7 @@ define(["require", "exports"], function (require, exports) {
                         classList.remove('au-enter');
                         resolve(false);
                     }
-                }, _this.getElementAnimationDelay(element) + 400);
+                }, _this.getElementAnimationDelay(element) + 400 + delay);
             });
         };
         CssAnimator.prototype.leave = function (element) {
@@ -116,8 +126,18 @@ define(["require", "exports"], function (require, exports) {
                     // Step 3.3 remove animationstart listener
                     evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
                 }, false);
-                // Step 4: Add active class to kick off animation
-                classList.add('au-leave-active');
+                // Step 4: check if parent element is defined to stagger animations otherwise trigger leave immediately
+                var parent = element.parentElement, delay = 0;
+                if (parent.classList.contains('au-stagger')) {
+                    var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
+                    delay = _this.getElementAnimationDelay(parent) * elemPos;
+                    setTimeout(function () {
+                        classList.add('au-leave-active');
+                    }, delay);
+                }
+                else {
+                    classList.add('au-leave-active');
+                }
                 // Step 5: if no animations happened cleanup animation classes
                 setTimeout(function () {
                     if (_this.animationStack.indexOf(animId) < 0) {
@@ -125,7 +145,7 @@ define(["require", "exports"], function (require, exports) {
                         classList.remove('au-leave');
                         resolve(false);
                     }
-                }, _this.getElementAnimationDelay(element) + 400);
+                }, _this.getElementAnimationDelay(element) + 400 + delay);
             });
         };
         CssAnimator.prototype.removeClass = function (element, className) {
