@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", './navigation-plan', './router-configuration'], function (require, exports, navigation_plan_1, router_configuration_1) {
     var RouteLoader = (function () {
         function RouteLoader() {
@@ -88,7 +81,7 @@ define(["require", "exports", './navigation-plan', './router-configuration'], fu
             if ('configureRouter' in component.executionContext) {
                 component.childRouter = component.childContainer.getChildRouter();
                 var config = new router_configuration_1.RouterConfiguration();
-                var result = (_a = component.executionContext).configureRouter.apply(_a, [config, component.childRouter].concat(lifecycleArgs)) || Promise.resolve();
+                var result = Promise.resolve((_a = component.executionContext).configureRouter.apply(_a, [config, component.childRouter].concat(lifecycleArgs)));
                 return result.then(function () {
                     component.childRouter.configure(config);
                     return component;

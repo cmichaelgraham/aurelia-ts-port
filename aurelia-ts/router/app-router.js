@@ -4,13 +4,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-history', './router', './pipeline-provider', './navigation-commands', 'aurelia-event-aggregator', './router-configuration'], function (require, exports, aurelia_dependency_injection_1, aurelia_history_1, router_1, pipeline_provider_1, navigation_commands_1, aurelia_event_aggregator_1, router_configuration_1) {
     var AppRouter = (function (_super) {
         __extends(AppRouter, _super);
@@ -94,7 +87,7 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-history',
             if (!this.isActive) {
                 if ('configureRouter' in this.container.viewModel) {
                     var config = new router_configuration_1.RouterConfiguration();
-                    var result = this.container.viewModel.configureRouter(config, this) || Promise.resolve();
+                    var result = Promise.resolve(this.container.viewModel.configureRouter(config, this));
                     return result.then(function () {
                         _this.configure(config);
                         _this.activate();

@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-logging', 'aurelia-dependency-injection', 'aurelia-loader', 'aurelia-path', './plugins', '../templating/index'], function (require, exports, LogManager, aurelia_dependency_injection_1, aurelia_loader_1, aurelia_path_1, plugins_1, index_1) {
     var logger = LogManager.getLogger('aurelia'), slice = Array.prototype.slice;
     if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
@@ -89,11 +82,15 @@ define(["require", "exports", 'aurelia-logging', 'aurelia-dependency-injection',
          * @return {Aurelia} Returns the current Aurelia instance.
          */
         Aurelia.prototype.globalizeResources = function (resources) {
-            var toAdd = Array.isArray(resources) ? resources : arguments, i, ii, pluginPath = this.currentPluginId || '', path, internalPlugin = pluginPath.startsWith('./');
+            var toAdd = Array.isArray(resources) ? resources : arguments, i, ii, resource, pluginPath = this.currentPluginId || '', path, internalPlugin = pluginPath.startsWith('./');
             for (i = 0, ii = toAdd.length; i < ii; ++i) {
+                resource = toAdd[i];
+                if (typeof resource != 'string') {
+                    throw new Error("Invalid resource path [" + resource + "]. Resources must be specified as relative module IDs.");
+                }
                 path = internalPlugin
-                    ? aurelia_path_1.relativeToFile(toAdd[i], pluginPath)
-                    : aurelia_path_1.join(pluginPath, toAdd[i]);
+                    ? aurelia_path_1.relativeToFile(resource, pluginPath)
+                    : aurelia_path_1.join(pluginPath, resource);
                 this.resourcesToLoad[path] = this.resourcesToLoad[path];
             }
             return this;

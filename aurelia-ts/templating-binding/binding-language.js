@@ -4,13 +4,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-templating', 'aurelia-binding', './syntax-interpreter', 'aurelia-logging'], function (require, exports, aurelia_templating_1, aurelia_binding_1, syntax_interpreter_1, LogManager) {
     var info = {}, logger = LogManager.getLogger('templating-binding');
     var TemplatingBindingLanguage = (function (_super) {
@@ -196,18 +189,48 @@ define(["require", "exports", 'aurelia-templating', 'aurelia-binding', './syntax
             var value = this.interpolate();
             this.targetProperty.setValue(value);
         };
-        InterpolationBinding.prototype.connect = function () {
+        InterpolationBinding.prototype.partChanged = function (newValue, oldValue, connecting) {
             var _this = this;
-            var info, parts = this.parts, source = this.source, toDispose = this.toDispose = [], i, ii;
+            var map, info;
+            if (!connecting) {
+                this.setValue();
+            }
+            if (oldValue instanceof Array) {
+                map = this.arrayPartMap;
+                info = map ? map.get(oldValue) : null;
+                if (info) {
+                    info.refs--;
+                    if (info.refs === 0) {
+                        info.dispose();
+                        map.delete(oldValue);
+                    }
+                }
+            }
+            if (newValue instanceof Array) {
+                map = this.arrayPartMap || (this.arrayPartMap = new Map());
+                info = map.get(newValue);
+                if (!info) {
+                    info = {
+                        refs: 0,
+                        dispose: this.observerLocator.getArrayObserver(newValue).subscribe(function () { return _this.setValue(); })
+                    };
+                    map.set(newValue, info);
+                }
+                info.refs++;
+            }
+        };
+        InterpolationBinding.prototype.connect = function () {
+            var info, parts = this.parts, source = this.source, toDispose = this.toDispose = [], partChanged = this.partChanged.bind(this), i, ii;
             for (i = 0, ii = parts.length; i < ii; ++i) {
                 if (i % 2 === 0) {
                 }
                 else {
                     info = parts[i].connect(this, source);
                     if (info.observer) {
-                        toDispose.push(info.observer.subscribe(function (newValue) {
-                            _this.setValue();
-                        }));
+                        toDispose.push(info.observer.subscribe(partChanged));
+                    }
+                    if (info.value instanceof Array) {
+                        partChanged(info.value, undefined, true);
                     }
                 }
             }
@@ -226,13 +249,21 @@ define(["require", "exports", 'aurelia-templating', 'aurelia-binding', './syntax
             return value;
         };
         InterpolationBinding.prototype.unbind = function () {
-            var i, ii, toDispose = this.toDispose;
+            var i, ii, toDispose = this.toDispose, map = this.arrayPartMap;
             if (toDispose) {
                 for (i = 0, ii = toDispose.length; i < ii; ++i) {
                     toDispose[i]();
                 }
             }
             this.toDispose = null;
+            if (map) {
+                for (var _i = 0, _a = map.values(); _i < _a.length; _i++) {
+                    toDispose = _a[_i];
+                    toDispose.dispose();
+                }
+                map.clear();
+            }
+            this.arrayPartMap = null;
         };
         return InterpolationBinding;
     })();

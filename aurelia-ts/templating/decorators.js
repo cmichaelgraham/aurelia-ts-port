@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-metadata', './bindable-property', './children', './element-config', './view-strategy', './html-behavior'], function (require, exports, aurelia_metadata_1, bindable_property_1, children_1, element_config_1, view_strategy_1, html_behavior_1) {
     function behavior(override) {
         return function (target) {
@@ -87,7 +80,7 @@ define(["require", "exports", 'aurelia-metadata', './bindable-property', './chil
     function useShadowDOM(target) {
         var deco = function (target) {
             var resource = aurelia_metadata_1.Metadata.on(target).firstOrAdd(html_behavior_1.HtmlBehaviorResource);
-            resource.useShadowDOM = true;
+            resource.targetShadowDOM = true;
         };
         return target ? deco(target) : deco;
     }

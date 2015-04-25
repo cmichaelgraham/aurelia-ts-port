@@ -147,6 +147,7 @@
         "./templating-resources/show.ts",
         "./templating-resources/with.ts",
         "./templating-router/index.ts",
+        "./templating-router/route-href.ts",
         "./templating-router/route-loader.ts",
         "./templating-router/router-view.ts",
         "./templating/animator.ts",

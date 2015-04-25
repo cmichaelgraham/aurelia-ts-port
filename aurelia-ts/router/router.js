@@ -1,11 +1,5 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
-define(["require", "exports", 'aurelia-route-recognizer', 'aurelia-path', './navigation-context', './navigation-instruction', './router-configuration', './util'], function (require, exports, aurelia_route_recognizer_1, aurelia_path_1, navigation_context_1, navigation_instruction_1, router_configuration_1, util_1) {
+define(["require", "exports", 'aurelia-route-recognizer', './navigation-context', './navigation-instruction', './router-configuration', './util'], function (require, exports, aurelia_route_recognizer_1, navigation_context_1, navigation_instruction_1, router_configuration_1, util_1) {
+    var isRooted = /^#?\//;
     var Router = (function () {
         function Router(container, history) {
             this.container = container;
@@ -36,21 +30,7 @@ define(["require", "exports", 'aurelia-route-recognizer', 'aurelia-path', './nav
             var nav = this.navigation;
             for (var i = 0, length = nav.length; i < length; i++) {
                 var current = nav[i];
-                if (!this.history._hasPushState) {
-                    if (this.baseUrl[0] == '/') {
-                        current.href = '#' + this.baseUrl;
-                    }
-                    else {
-                        current.href = '#/' + this.baseUrl;
-                    }
-                }
-                else {
-                    current.href = '/' + this.baseUrl;
-                }
-                if (current.href[current.href.length - 1] != '/') {
-                    current.href += '/';
-                }
-                current.href += current.relativeHref;
+                current.href = this.createRootedPath(current.relativeHref);
             }
         };
         Router.prototype.configure = function (callbackOrConfig) {
@@ -65,14 +45,35 @@ define(["require", "exports", 'aurelia-route-recognizer', 'aurelia-path', './nav
             }
             return this;
         };
+        Router.prototype.createRootedPath = function (fragment) {
+            var path = '';
+            if (this.baseUrl.length && this.baseUrl[0] !== '/') {
+                path += '/';
+            }
+            path += this.baseUrl;
+            if (path[path.length - 1] != '/' && fragment[0] != '/') {
+                path += '/';
+            }
+            return normalizeAbsolutePath(path + fragment, this.history._hasPushState);
+        };
         Router.prototype.navigate = function (fragment, options) {
             if (!this.isConfigured && this.parent) {
                 return this.parent.navigate(fragment, options);
             }
-            fragment = aurelia_path_1.join(this.baseUrl, fragment);
-            if (fragment === '')
+            if (fragment === '') {
                 fragment = '/';
+            }
+            if (isRooted.test(fragment)) {
+                fragment = normalizeAbsolutePath(fragment, this.history._hasPushState);
+            }
+            else {
+                fragment = this.createRootedPath(fragment);
+            }
             return this.history.navigate(fragment, options);
+        };
+        Router.prototype.navigateToRoute = function (route, params, options) {
+            var path = this.generate(route, params);
+            return this.navigate(path, options);
         };
         Router.prototype.navigateBack = function () {
             this.history.navigateBack();
@@ -85,16 +86,16 @@ define(["require", "exports", 'aurelia-route-recognizer', 'aurelia-path', './nav
         Router.prototype.createNavigationInstruction = function (url, parentInstruction) {
             if (url === void 0) { url = ''; }
             if (parentInstruction === void 0) { parentInstruction = null; }
-            var results = this.recognizer.recognize(url);
-            var fragment, queryIndex, queryString;
-            if (!results || !results.length) {
-                results = this.childRecognizer.recognize(url);
-            }
-            fragment = url;
-            queryIndex = fragment.indexOf("?");
+            var fragment = url;
+            var queryString = '';
+            var queryIndex = url.indexOf('?');
             if (queryIndex != -1) {
                 fragment = url.substr(0, queryIndex);
                 queryString = url.substr(queryIndex + 1);
+            }
+            var results = this.recognizer.recognize(url);
+            if (!results || !results.length) {
+                results = this.childRecognizer.recognize(url);
             }
             if ((!results || !results.length) && this.catchAllHandler) {
                 results = [{
@@ -108,44 +109,27 @@ define(["require", "exports", 'aurelia-route-recognizer', 'aurelia-path', './nav
                     }];
             }
             if (results && results.length) {
-                var first = results[0], fragment = url, queryIndex = fragment.indexOf('?'), queryString;
-                if (queryIndex != -1) {
-                    fragment = url.substr(0, queryIndex);
-                    queryString = url.substr(queryIndex + 1);
-                }
+                var first = results[0];
                 var instruction = new navigation_instruction_1.NavigationInstruction(fragment, queryString, first.params, first.queryParams || results.queryParams, first.config || first.handler, parentInstruction);
-                if (typeof first.handler == "function") {
-                    return first.handler(instruction).then(function (instruction) {
-                        if (!("viewPorts" in instruction.config)) {
-                            instruction.config.viewPorts = {
-                                "default": {
-                                    moduleId: instruction.config.moduleId
-                                }
-                            };
-                        }
-                        return instruction;
-                    });
+                if (typeof first.handler === 'function') {
+                    return evaluateNavigationStrategy(instruction, first.handler, first);
+                }
+                else if (first.config && 'navigationStrategy' in first.config) {
+                    return evaluateNavigationStrategy(instruction, first.config.navigationStrategy, first.config);
                 }
                 return Promise.resolve(instruction);
             }
-            else {
-                return Promise.reject(new Error("Route Not Found: " + url));
-            }
+            return Promise.reject(new Error("Route not found: " + url));
         };
         Router.prototype.createNavigationContext = function (instruction) {
             return new navigation_context_1.NavigationContext(this, instruction);
         };
-        Router.prototype.generate = function (name, params, options) {
-            options = options || {};
+        Router.prototype.generate = function (name, params) {
             if ((!this.isConfigured || !this.recognizer.hasRoute(name)) && this.parent) {
-                return this.parent.generate(name, params, options);
+                return this.parent.generate(name, params);
             }
-            var root = '';
             var path = this.recognizer.generate(name, params);
-            if (options.absolute) {
-                root = (this.history.root || '') + this.baseUrl;
-            }
-            return root + path;
+            return this.createRootedPath(path);
         };
         Router.prototype.addRoute = function (config, navModel) {
             if (navModel === void 0) { navModel = {}; }
@@ -167,7 +151,7 @@ define(["require", "exports", 'aurelia-route-recognizer', 'aurelia-path', './nav
                 delete config.settings;
                 withChild = JSON.parse(JSON.stringify(config));
                 config.settings = settings;
-                withChild.route += "/*childRoute";
+                withChild.route += '/*childRoute';
                 withChild.hasChildRouter = true;
                 this.childRecognizer.add({
                     path: withChild.route,
@@ -246,5 +230,23 @@ define(["require", "exports", 'aurelia-route-recognizer', 'aurelia-path', './nav
         if (!isValid) {
             throw new Error('Invalid Route Config: You must have at least a route and a moduleId or redirect.');
         }
+    }
+    function normalizeAbsolutePath(path, hasPushState) {
+        if (!hasPushState && path[0] !== '#') {
+            path = '#' + path;
+        }
+        return path;
+    }
+    function evaluateNavigationStrategy(instruction, evaluator, context) {
+        return Promise.resolve(evaluator.call(context, instruction)).then(function () {
+            if (!('viewPorts' in instruction.config)) {
+                instruction.config.viewPorts = {
+                    'default': {
+                        moduleId: instruction.config.moduleId
+                    }
+                };
+            }
+            return instruction;
+        });
     }
 });

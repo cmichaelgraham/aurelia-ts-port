@@ -7,6 +7,7 @@ import {BoundViewFactory, ViewSlot, customAttribute, bindable, templateControlle
 @bindable('items')
 @bindable('local')
 @bindable('key')
+@bindable('value')
 @templateController
 @inject(BoundViewFactory, ViewSlot, ObserverLocator)export class Repeat {
   public viewFactory;

@@ -234,6 +234,7 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-binding', 'aurelia-t
             aurelia_templating_1.bindable('items'),
             aurelia_templating_1.bindable('local'),
             aurelia_templating_1.bindable('key'),
+            aurelia_templating_1.bindable('value'),
             aurelia_templating_1.templateController,
             aurelia_framework_1.inject(aurelia_templating_1.BoundViewFactory, aurelia_templating_1.ViewSlot, aurelia_binding_1.ObserverLocator)
         ], Repeat);
