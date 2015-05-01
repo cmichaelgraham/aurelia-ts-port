@@ -146,7 +146,7 @@ declare module 'aurelia-router/router-configuration' {
 
 }
 declare module 'aurelia-router/router' {
-	import { NavigationContext } from 'aurelia-router\navigation-context';
+	import { NavigationContext } from 'aurelia-router/navigation-context';
 	export class Router {
 	    container: any;
 	    history: any;
@@ -167,12 +167,14 @@ declare module 'aurelia-router/router' {
 	    refreshBaseUrl(): void;
 	    refreshNavigation(): void;
 	    configure(callbackOrConfig: any): Router;
+	    createRootedPath(fragment: any): any;
 	    navigate(fragment: any, options: any): any;
+	    navigateToRoute(route: any, params: any, options: any): any;
 	    navigateBack(): void;
 	    createChild(container: any): Router;
-	    createNavigationInstruction(url?: string, parentInstruction?: any): any;
+	    createNavigationInstruction(url?: string, parentInstruction?: any): Promise<any>;
 	    createNavigationContext(instruction: any): NavigationContext;
-	    generate(name: any, params: any, options: any): any;
+	    generate(name: any, params: any): any;
 	    addRoute(config: any, navModel?: any): void;
 	    hasRoute(name: any): boolean;
 	    hasOwnRoute(name: any): any;
@@ -204,11 +206,11 @@ declare module 'aurelia-router/route-loading' {
 	    constructor(routeLoader: any);
 	    run(navigationContext: any, next: any): Promise<{}>;
 	}
-	export function loadNewRoute(routers: any, routeLoader: any, navigationContext: any): Promise<{}[]>;
+	export function loadNewRoute(routeLoader: any, navigationContext: any): Promise<{}[]>;
 
 }
 declare module 'aurelia-router/pipeline-provider' {
-	import { Pipeline } from 'aurelia-router\pipeline';
+	import { Pipeline } from 'aurelia-router/pipeline';
 	export class PipelineProvider {
 	    static inject(): any[];
 	    container: any;
@@ -219,7 +221,7 @@ declare module 'aurelia-router/pipeline-provider' {
 
 }
 declare module 'aurelia-router/app-router' {
-	import { Router } from 'aurelia-router\router';
+	import { Router } from 'aurelia-router/router';
 	export class AppRouter extends Router {
 	    static inject(): any[];
 	    pipelineProvider: any;
@@ -235,7 +237,7 @@ declare module 'aurelia-router/app-router' {
 	    loadUrl(url: any): any;
 	    queueInstruction(instruction: any): Promise<{}>;
 	    dequeueInstruction(): void;
-	    registerViewPort(viewPort: any, name: any): any;
+	    registerViewPort(viewPort: any, name: any): Promise<void>;
 	    activate(options?: any): void;
 	    deactivate(): void;
 	    reset(): void;
@@ -243,14 +245,14 @@ declare module 'aurelia-router/app-router' {
 
 }
 declare module 'aurelia-router/index' {
-	export { Router } from 'aurelia-router\router';
-	export { AppRouter } from 'aurelia-router\app-router';
-	export { PipelineProvider } from 'aurelia-router\pipeline-provider';
-	export { Redirect } from 'aurelia-router\navigation-commands';
-	export { RouteLoader } from 'aurelia-router\route-loading';
-	export { RouterConfiguration } from 'aurelia-router\router-configuration';
-	export { NO_CHANGE, INVOKE_LIFECYCLE, REPLACE } from 'aurelia-router\navigation-plan';
-	export { RouteFilterContainer, createRouteFilterStep } from 'aurelia-router\route-filters';
+	export { Router } from 'aurelia-router/router';
+	export { AppRouter } from 'aurelia-router/app-router';
+	export { PipelineProvider } from 'aurelia-router/pipeline-provider';
+	export { Redirect } from 'aurelia-router/navigation-commands';
+	export { RouteLoader } from 'aurelia-router/route-loading';
+	export { RouterConfiguration } from 'aurelia-router/router-configuration';
+	export { NO_CHANGE, INVOKE_LIFECYCLE, REPLACE } from 'aurelia-router/navigation-plan';
+	export { RouteFilterContainer, createRouteFilterStep } from 'aurelia-router/route-filters';
 
 }
 declare module 'aurelia-router/model-binding' {
@@ -261,4 +263,4 @@ declare module 'aurelia-router/model-binding' {
 }
 declare module 'aurelia-router' {
 	export * from 'aurelia-router/index';
-	}
+}

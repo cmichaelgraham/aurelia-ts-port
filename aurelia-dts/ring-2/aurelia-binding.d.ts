@@ -1,3 +1,22 @@
+declare module 'aurelia-binding/access-keyed-observer' {
+	export class AccessKeyedObserver {
+	    objectInfo: any;
+	    keyInfo: any;
+	    evaluate: any;
+	    observerLocator: any;
+	    disposeKey: any;
+	    disposeObject: any;
+	    disposeProperty: any;
+	    callback: any;
+	    constructor(objectInfo: any, keyInfo: any, observerLocator: any, evaluate: any);
+	    updatePropertySubscription(object: any, key: any): void;
+	    objectOrKeyChanged(object: any, key?: any): void;
+	    subscribe(callback: any): () => void;
+	    notify(): void;
+	    dispose(): void;
+	}
+
+}
 declare module 'aurelia-binding/array-change-records' {
 	export function calcSplices(current: any, currentStart: any, currentEnd: any, old: any, oldStart: any, oldEnd: any): any;
 	export function projectArraySplices(array: any, changeRecords: any): any[];
@@ -22,7 +41,7 @@ declare module 'aurelia-binding/collection-observation' {
 	    subscribe(callback: any): () => void;
 	    addChangeRecord(changeRecord: any): void;
 	    reset(oldCollection: any): void;
-	    getObserver(propertyName: any): any;
+	    getLengthObserver(): any;
 	    call(): void;
 	}
 	export class CollectionLengthObserver {
@@ -70,6 +89,7 @@ declare module 'aurelia-binding/composite-observer' {
 
 }
 declare module 'aurelia-binding/ast' {
+	import { AccessKeyedObserver } from 'aurelia-binding/access-keyed-observer';
 	export class Expression {
 	    isChain: any;
 	    isAssignable: any;
@@ -155,7 +175,7 @@ declare module 'aurelia-binding/ast' {
 	    accept(visitor: any): void;
 	    connect(binding: any, scope: any): {
 	        value: any;
-	        observer: any;
+	        observer: AccessKeyedObserver;
 	    };
 	}
 	export class CallScope extends Expression {
@@ -586,7 +606,7 @@ declare module 'aurelia-binding/lexer' {
 
 }
 declare module 'aurelia-binding/parser' {
-	import { AccessScope, LiteralObject } from 'aurelia-binding\ast';
+	import { AccessScope, LiteralObject } from 'aurelia-binding/ast';
 	export class Parser {
 	    cache: any;
 	    lexer: any;
@@ -646,23 +666,23 @@ declare module 'aurelia-binding/name-expression' {
 
 }
 declare module 'aurelia-binding/index' {
-	export { EventManager } from 'aurelia-binding\event-manager';
-	export { ObserverLocator, ObjectObservationAdapter } from 'aurelia-binding\observer-locator';
-	export { ValueConverterResource } from 'aurelia-binding\value-converter';
-	export { calcSplices } from 'aurelia-binding\array-change-records';
-	export * from 'aurelia-binding\binding-modes';
-	export { Parser } from 'aurelia-binding\parser';
-	export { BindingExpression } from 'aurelia-binding\binding-expression';
-	export { ListenerExpression } from 'aurelia-binding\listener-expression';
-	export { NameExpression } from 'aurelia-binding\name-expression';
-	export { CallExpression } from 'aurelia-binding\call-expression';
-	export { DirtyChecker } from 'aurelia-binding\dirty-checking';
-	export { getChangeRecords } from 'aurelia-binding\map-change-records';
-	export { ComputedPropertyObserver, declarePropertyDependencies } from 'aurelia-binding\computed-observation';
+	export { EventManager } from 'aurelia-binding/event-manager';
+	export { ObserverLocator, ObjectObservationAdapter } from 'aurelia-binding/observer-locator';
+	export { ValueConverterResource } from 'aurelia-binding/value-converter';
+	export { calcSplices } from 'aurelia-binding/array-change-records';
+	export * from 'aurelia-binding/binding-modes';
+	export { Parser } from 'aurelia-binding/parser';
+	export { BindingExpression } from 'aurelia-binding/binding-expression';
+	export { ListenerExpression } from 'aurelia-binding/listener-expression';
+	export { NameExpression } from 'aurelia-binding/name-expression';
+	export { CallExpression } from 'aurelia-binding/call-expression';
+	export { DirtyChecker } from 'aurelia-binding/dirty-checking';
+	export { getChangeRecords } from 'aurelia-binding/map-change-records';
+	export { ComputedPropertyObserver, declarePropertyDependencies } from 'aurelia-binding/computed-observation';
 	export function valueConverter(name: any): (target: any) => any;
 	export function computedFrom(...rest: any[]): (target: any, key: any, descriptor: any) => any;
 
 }
 declare module 'aurelia-binding' {
 	export * from 'aurelia-binding/index';
-	}
+}

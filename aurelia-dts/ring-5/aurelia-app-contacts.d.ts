@@ -8,10 +8,14 @@ declare module 'aurelia-app-contacts/web-api' {
 
 }
 declare module 'aurelia-app-contacts/app' {
+	import { Router } from 'aurelia-router';
+	import { WebAPI } from 'aurelia-app-contacts/web-api';
 	export class App {
-	    router: any;
+	    static inject: typeof WebAPI[];
+	    router: Router;
 	    api: any;
-	    constructor(router: any, api: any);
+	    constructor(api: any);
+	    configureRouter(config: any, router: any): void;
 	}
 
 }
@@ -32,12 +36,12 @@ declare module 'aurelia-app-contacts/utility' {
 }
 declare module 'aurelia-app-contacts/contact-detail' {
 	export class ContactDetail {
-	    app: any;
+	    static inject: any[];
 	    api: any;
 	    ea: any;
 	    contact: any;
 	    originalContact: any;
-	    constructor(app: any, api: any, ea: any);
+	    constructor(api: any, ea: any);
 	    activate(params: any, qs: any, config: any): any;
 	    canSave: boolean;
 	    save(): void;
@@ -47,6 +51,7 @@ declare module 'aurelia-app-contacts/contact-detail' {
 }
 declare module 'aurelia-app-contacts/contact-list' {
 	export class ContactList {
+	    static inject: any[];
 	    api: any;
 	    contacts: any;
 	    selectedId: any;
@@ -58,6 +63,7 @@ declare module 'aurelia-app-contacts/contact-list' {
 }
 declare module 'aurelia-app-contacts/loading-indicator' {
 	export class LoadingIndicator {
+	    loading: boolean;
 	    loadingChanged(newValue: any): void;
 	}
 
@@ -71,4 +77,4 @@ declare module 'aurelia-app-contacts/no-selection' {
 }
 declare module 'aurelia-app-contacts' {
 	export * from 'aurelia-app-contacts/index';
-	}
+}
