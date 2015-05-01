@@ -4,11 +4,11 @@ define(["require", "exports", 'aurelia-event-aggregator', './web-api', './messag
             this.api = api;
             this.ea = ea;
         }
-        ContactDetail.prototype.activate = function (params, qs, config) {
+        ContactDetail.prototype.activate = function (params, config) {
             var _this = this;
             return this.api.getContactDetails(params.id).then(function (contact) {
                 _this.contact = contact;
-                config.navModel.title = contact.firstName;
+                config.navModel.setTitle(contact.firstName);
                 _this.originalContact = JSON.parse(JSON.stringify(contact));
                 _this.ea.publish(new messages_1.ContactViewed(contact));
             });
