@@ -17,7 +17,12 @@ export class ValidationProperty {
     this.debouncer = new Debouncer(config.getDebounceTimeout());
 
     this.observer.subscribe(() => {
-      this.debouncer.debounce( () => { this.validateCurrentValue(true); });
+      this.debouncer.debounce( () => {
+        var newValue =   this.observer.getValue();
+        if(newValue !== this.latestValue) {
+          this.validate(newValue, true);
+        }
+      });
     });
 
     this.dependencyObservers = [];
@@ -26,7 +31,9 @@ export class ValidationProperty {
       let dependencyObserver = new PathObserver(observerLocator, validationGroup.subject, dependencies[i])
         .getObserver();
       dependencyObserver.subscribe(() => {
-        this.debouncer.debounce( () => { this.validateCurrentValue(true); });
+        this.debouncer.debounce( () => {
+          this.validateCurrentValue(true);
+        });
       });
       this.dependencyObservers.push(dependencyObserver);
     }
@@ -39,30 +46,37 @@ export class ValidationProperty {
     this.validateCurrentValue(false);
   }
 
-  validateCurrentValue(forceDirty) {
-    return this.validate(this.observer.getValue(), forceDirty);
+  validateCurrentValue(forceDirty, forceExecution) {
+    return this.validate(this.observer.getValue(), forceDirty, forceExecution);
+  }
+
+  clear(){
+    this.latestValue = this.observer.getValue();
+    this.propertyResult.clear();
   }
 
   /**
    * returns a promise that fulfils and resolves to true/false
    */
-  validate(newValue, shouldBeDirty) {
-    this.latestValue = newValue;
-    return this.config.locale().then( (locale) => {
-      return this.collectionOfValidationRules.validate(newValue, locale)
-        .then( (validationResponse) => {
-          if(this.latestValue === validationResponse.latestValue)
-            this.propertyResult.setValidity(validationResponse, shouldBeDirty);
-          return validationResponse.isValid;
-      })
-      .catch( (err) => {
-        console.log("Unexpected behavior: a validation-rules-collection should always fulfil", err);
-        debugger;
-        throw Error("Unexpected behavior: a validation-rules-collection should always fulfil");
-      });
-    },
-    () => {
-      throw Error("An exception occurred while trying to load the locale");
-    });
+  validate(newValue, shouldBeDirty, forceExecution) {
+    if( (!this.propertyResult.isDirty && shouldBeDirty) || this.latestValue !== newValue || forceExecution) {
+      this.latestValue = newValue;
+      return this.config.locale().then((locale) => {
+          return this.collectionOfValidationRules.validate(newValue, locale)
+            .then((validationResponse) => {
+              if (this.latestValue === validationResponse.latestValue)
+                this.propertyResult.setValidity(validationResponse, shouldBeDirty);
+              return validationResponse.isValid;
+            })
+            .catch((err) => {
+              console.log("Unexpected behavior: a validation-rules-collection should always fulfil", err);
+              debugger;
+              throw Error("Unexpected behavior: a validation-rules-collection should always fulfil");
+            });
+        },
+        () => {
+          throw Error("An exception occurred while trying to load the locale");
+        });
+    }
   }
 }
