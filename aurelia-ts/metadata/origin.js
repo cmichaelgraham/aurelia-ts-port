@@ -1,12 +1,5 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports"], function (require, exports) {
-    var originStorage = new Map();
+    var originStorage = new Map(), unknownOrigin = Object.freeze({ moduleId: undefined, moduleMember: undefined });
     function ensureType(value) {
         if (value instanceof Origin) {
             return value;
@@ -45,7 +38,7 @@ define(["require", "exports"], function (require, exports) {
             else if (fn.origin !== undefined) {
                 originStorage.set(fn, origin = ensureType(fn.origin));
             }
-            return origin;
+            return origin || unknownOrigin;
         };
         /**
         * Set the Origin annotation for the specified function.
@@ -57,7 +50,7 @@ define(["require", "exports"], function (require, exports) {
         * @return {Origin} Returns the Origin metadata.
         */
         Origin.set = function (fn, origin) {
-            if (Origin.get(fn) === undefined) {
+            if (Origin.get(fn) === unknownOrigin) {
                 originStorage.set(fn, origin);
             }
         };
