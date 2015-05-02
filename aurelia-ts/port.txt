@@ -12,7 +12,7 @@ x    { name: 'route-recognizer'}
     ]},
   { name: 'ring-1', repos: [
 x    { name: 'dependency-injection' },
-    { name: 'history-browser' },
+x    { name: 'history-browser' },
 o    { name: 'loader' },
 o    { name: 'http-client' }
   ]},
