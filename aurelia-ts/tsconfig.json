@@ -109,6 +109,7 @@
         "./metadata/index.ts",
         "./metadata/metadata.ts",
         "./metadata/origin.ts",
+        "./metadata/reflect-meta.ts",
         "./metadata/resource-type.ts",
         "./path/index.ts",
         "./route-recognizer/dsl.ts",
