@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports"], function (require, exports) {
     function trimDots(ary) {
         var i, part;
@@ -48,7 +41,7 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.relativeToFile = relativeToFile;
     function join(path1, path2) {
-        var url1, url2, url3, i, ii, urlPrefix;
+        var url1, url2, url3, i, ii, urlPrefix, trailingSlash;
         if (!path1) {
             return path2;
         }
@@ -57,6 +50,7 @@ define(["require", "exports"], function (require, exports) {
         }
         urlPrefix = path1.indexOf('//') === 0 ? '//' :
             path1.indexOf('/') === 0 ? '/' : '';
+        trailingSlash = path2.slice(-1) == '/' ? '/' : '';
         url1 = path1.split('/');
         url2 = path2.split('/');
         url3 = [];
@@ -82,8 +76,7 @@ define(["require", "exports"], function (require, exports) {
                 url3.push(url2[i]);
             }
         }
-        return urlPrefix + url3.join('/').replace(/\:\//g, '://');
-        ;
+        return urlPrefix + url3.join('/').replace(/\:\//g, '://') + trailingSlash;
     }
     exports.join = join;
     var r20 = /%20/g, rbracket = /\[\]$/, class2type = {};

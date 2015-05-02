@@ -1,0 +1,36 @@
+rings: [
+  { name: 'ring-0', repos: [
+o    { name: 'logging' },
+    { name: 'path' },
+    { name: 'metadata' },
+    { name: 'skeleton-plugin' },
+    { name: 'task-queue' },
+    { name: 'route-recognizer'}
+    ]},
+  { name: 'ring-1', repos: [
+    { name: 'dependency-injection' },
+    { name: 'history-browser' },
+o    { name: 'loader' },
+o    { name: 'http-client' }
+  ]},
+  { name: 'ring-2', repos: [
+o    { name: 'binding' },
+    { name: 'router' },
+o    { name: 'loader-default' }
+  ]},
+  { name: 'ring-3', repos: [
+    { name: 'templating' }
+  ]},
+  { name: 'ring-4', repos: [
+    { name: 'framework' },
+o    { name: 'animator-css' },
+    { name: 'templating-binding' },
+    { name: 'templating-resources' },
+    { name: 'templating-router' }
+  ]},
+  { name: 'ring-5', repos: [
+o    { name: 'app-contacts' },
+o    { name: 'bootstrapper' },
+    { name: 'skeleton-navigation' }
+  ]}
+

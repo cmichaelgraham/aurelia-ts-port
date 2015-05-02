@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports"], function (require, exports) {
     var Handler = (function () {
         function Handler(messageType, callback) {
@@ -49,7 +42,10 @@ define(["require", "exports"], function (require, exports) {
                 subscribers = this.eventLookup[event] || (this.eventLookup[event] = []);
                 subscribers.push(callback);
                 return function () {
-                    subscribers.splice(subscribers.indexOf(callback), 1);
+                    var idx = subscribers.indexOf(callback);
+                    if (idx != -1) {
+                        subscribers.splice(idx, 1);
+                    }
                 };
             }
             else {
@@ -57,7 +53,10 @@ define(["require", "exports"], function (require, exports) {
                 subscribers = this.messageHandlers;
                 subscribers.push(handler);
                 return function () {
-                    subscribers.splice(subscribers.indexOf(handler), 1);
+                    var idx = subscribers.indexOf(handler);
+                    if (idx != -1) {
+                        subscribers.splice(idx, 1);
+                    }
                 };
             }
         };
@@ -73,6 +72,9 @@ define(["require", "exports"], function (require, exports) {
     exports.EventAggregator = EventAggregator;
     function includeEventsIn(obj) {
         var ea = new EventAggregator();
+        obj.subscribeOnce = function (event, callback) {
+            return ea.subscribeOnce(event, callback);
+        };
         obj.subscribe = function (event, callback) {
             return ea.subscribe(event, callback);
         };
@@ -82,8 +84,8 @@ define(["require", "exports"], function (require, exports) {
         return ea;
     }
     exports.includeEventsIn = includeEventsIn;
-    function install(aurelia) {
+    function configure(aurelia) {
         aurelia.withInstance(EventAggregator, includeEventsIn(aurelia));
     }
-    exports.install = install;
+    exports.configure = configure;
 });
