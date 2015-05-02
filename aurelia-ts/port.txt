@@ -1,7 +1,10 @@
 rings: [
   { name: 'ring-0', repos: [
+o    { name: 'event-aggregator' },
+x    { name: 'history' },
 o    { name: 'logging' },
-    { name: 'path' },
+x    { name: 'logging-console' },
+o    { name: 'path' },
     { name: 'metadata' },
     { name: 'skeleton-plugin' },
     { name: 'task-queue' },
@@ -33,4 +36,3 @@ o    { name: 'app-contacts' },
 o    { name: 'bootstrapper' },
     { name: 'skeleton-navigation' }
   ]}
-
