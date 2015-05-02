@@ -5,10 +5,10 @@ x    { name: 'history' },
 o    { name: 'logging' },
 x    { name: 'logging-console' },
 o    { name: 'path' },
-    { name: 'metadata' },
-    { name: 'skeleton-plugin' },
-    { name: 'task-queue' },
-    { name: 'route-recognizer'}
+x    { name: 'metadata' },
+x    { name: 'skeleton-plugin' },
+o    { name: 'task-queue' },
+x    { name: 'route-recognizer'}
     ]},
   { name: 'ring-1', repos: [
     { name: 'dependency-injection' },

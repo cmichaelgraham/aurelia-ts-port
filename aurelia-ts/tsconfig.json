@@ -114,6 +114,8 @@
         "./path/index.ts",
         "./route-recognizer/dsl.ts",
         "./route-recognizer/index.ts",
+        "./route-recognizer/segments.ts",
+        "./route-recognizer/state.ts",
         "./router/activation.ts",
         "./router/app-router.ts",
         "./router/index.ts",
