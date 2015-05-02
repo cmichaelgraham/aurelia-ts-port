@@ -5,6 +5,7 @@
 * @constructor
 */
 export class ResourceType {
+  constructor() {}
   /**
   * Implemented by resource metadata to allow it to self-configure and load dependencies.
   *

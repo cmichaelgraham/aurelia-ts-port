@@ -439,4 +439,4 @@ declare module 'aurelia-templating/template-controller' {
 }
 declare module 'aurelia-templating' {
 	export * from 'aurelia-templating/index';
-}
+	}

@@ -4,31 +4,10 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", './array-change-records', './collection-observation'], function (require, exports, array_change_records_1, collection_observation_1) {
-    var arrayProto = Array.prototype, hasArrayObserve = (function detectArrayObserve() {
-        if (typeof Array.observe !== 'function') {
-            return false;
-        }
-        var records = [];
-        function callback(recs) {
-            records = recs;
-        }
-        var arr = [];
-        Array.observe(arr, callback);
-        arr.push(1, 2);
-        arr.length = 0;
-        Object.deliverChangeRecords(callback);
-        if (records.length !== 2)
-            return false;
-        if (records[0].type != 'splice' ||
-            records[1].type != 'splice') {
-            return false;
-        }
-        Array.unobserve(arr, callback);
-        return true;
-    })();
+define(["require", "exports", './environment', './array-change-records', './collection-observation'], function (require, exports, environment_1, array_change_records_1, collection_observation_1) {
+    var arrayProto = Array.prototype;
     function getArrayObserver(taskQueue, array) {
-        if (hasArrayObserve) {
+        if (environment_1.hasArrayObserve) {
             return new ArrayObserveObserver(array);
         }
         else {

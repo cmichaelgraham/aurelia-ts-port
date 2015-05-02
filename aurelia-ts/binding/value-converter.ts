@@ -1,15 +1,13 @@
 import core from 'core-js'
-import {ResourceType} from 'aurelia-metadata';
 
 function camelCase(name){
   return name.charAt(0).toLowerCase() + name.slice(1);
 }
 
-export class ValueConverterResource extends ResourceType {
+export class ValueConverterResource {
   public name;
   public instance;
-  constructor(name){
-    super();
+  constructor(name?){
     this.name = name;
   }
 

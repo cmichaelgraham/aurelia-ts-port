@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports"], function (require, exports) {
     var DefaultEventStrategy = (function () {
         function DefaultEventStrategy() {
@@ -89,6 +82,12 @@ define(["require", "exports"], function (require, exports) {
                     value: ['change']
                 }
             });
+            this.registerElementConfig({
+                tagName: 'content editable',
+                properties: {
+                    value: ['change', 'input', 'blur', 'keyup', 'paste'],
+                }
+            });
             this.defaultEventStrategy = new DefaultEventStrategy();
         }
         EventManager.prototype.registerElementConfig = function (config) {
@@ -128,7 +127,7 @@ define(["require", "exports"], function (require, exports) {
                     return lookup[tagName][propertyName];
                 }
                 if (propertyName === 'textContent' || propertyName === 'innerHTML') {
-                    return lookup['input']['value'];
+                    return lookup['content editable']['value'];
                 }
             }
             return null;

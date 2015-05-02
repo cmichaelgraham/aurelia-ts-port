@@ -12,6 +12,7 @@
     "gulp-changed": "^1.1.0",
     "gulp-typescript": "*",
     "merge2": "*",
+    "reflect-metadata": "^0.1.0",
     "run-sequence": "^1.0.2",
     "typescript": "Microsoft/TypeScript"
   },

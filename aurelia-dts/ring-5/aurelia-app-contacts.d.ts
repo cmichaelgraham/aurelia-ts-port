@@ -42,7 +42,7 @@ declare module 'aurelia-app-contacts/contact-detail' {
 	    contact: any;
 	    originalContact: any;
 	    constructor(api: any, ea: any);
-	    activate(params: any, qs: any, config: any): any;
+	    activate(params: any, config: any): any;
 	    canSave: boolean;
 	    save(): void;
 	    canDeactivate(): boolean;
@@ -77,4 +77,4 @@ declare module 'aurelia-app-contacts/no-selection' {
 }
 declare module 'aurelia-app-contacts' {
 	export * from 'aurelia-app-contacts/index';
-}
+	}

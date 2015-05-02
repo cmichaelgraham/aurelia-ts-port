@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", './binding-modes'], function (require, exports, binding_modes_1) {
     var BindingExpression = (function () {
         function BindingExpression(observerLocator, targetProperty, sourceExpression, mode, valueConverterLookupFunction, attribute) {
@@ -39,7 +32,7 @@ define(["require", "exports", './binding-modes'], function (require, exports, bi
             if ('bind' in targetProperty) {
                 targetProperty.bind();
             }
-            if (this.mode == binding_modes_1.ONE_WAY || this.mode == binding_modes_1.TWO_WAY) {
+            if (this.mode == binding_modes_1.bindingMode.oneWay || this.mode == binding_modes_1.bindingMode.twoWay) {
                 if (this._disposeObserver) {
                     if (this.source === source) {
                         return;
@@ -58,7 +51,7 @@ define(["require", "exports", './binding-modes'], function (require, exports, bi
                 if (info.value !== undefined) {
                     targetProperty.setValue(info.value);
                 }
-                if (this.mode == binding_modes_1.TWO_WAY) {
+                if (this.mode == binding_modes_1.bindingMode.twoWay) {
                     this._disposeListener = targetProperty.subscribe(function (newValue) {
                         _this.sourceExpression.assign(source, newValue, _this.valueConverterLookupFunction);
                     });

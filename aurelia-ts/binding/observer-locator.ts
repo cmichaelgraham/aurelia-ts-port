@@ -1,4 +1,5 @@
 import {TaskQueue} from 'aurelia-task-queue';
+import {hasObjectObserve} from './environment';
 import {getArrayObserver} from './array-observation';
 import {getMapObserver} from './map-observation';
 import {EventManager} from './event-manager';
@@ -33,38 +34,6 @@ if(typeof (<any>Object).getPropertyDescriptor !== 'function'){
     return pd;
   };
 }
-
-var hasObjectObserve = (function detectObjectObserve() {
-      if (typeof (<any>Object).observe !== 'function') {
-        return false;
-      }
-
-      var records = [];
-
-      function callback(recs) {
-        records = recs;
-      }
-
-      var test:any = {};
-      (<any>Object).observe(test, callback);
-      test.id = 1;
-      test.id = 2;
-      delete test.id;
-
-      (<any>Object).deliverChangeRecords(callback);
-      if (records.length !== 3)
-        return false;
-
-      if (records[0].type != 'add' ||
-          records[1].type != 'update' ||
-          records[2].type != 'delete') {
-        return false;
-      }
-
-      (<any>Object).unobserve(test, callback);
-
-      return true;
-    })();
 
 function createObserversLookup(obj) {
   var value = {};

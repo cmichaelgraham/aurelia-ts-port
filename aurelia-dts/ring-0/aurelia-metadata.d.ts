@@ -132,6 +132,7 @@ declare module 'aurelia-metadata/resource-type' {
 	* @constructor
 	*/
 	export class ResourceType {
+	    constructor();
 	    /**
 	    * Implemented by resource metadata to allow it to self-configure and load dependencies.
 	    *
@@ -166,4 +167,4 @@ declare module 'aurelia-metadata/index' {
 }
 declare module 'aurelia-metadata' {
 	export * from 'aurelia-metadata/index';
-}
+	}

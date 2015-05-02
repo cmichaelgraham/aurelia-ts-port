@@ -355,4 +355,4 @@ declare module 'aurelia-dependency-injection/index' {
 }
 declare module 'aurelia-dependency-injection' {
 	export * from 'aurelia-dependency-injection/index';
-}
+	}

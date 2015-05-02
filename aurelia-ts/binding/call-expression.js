@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports"], function (require, exports) {
     var CallExpression = (function () {
         function CallExpression(observerLocator, targetProperty, sourceExpression, valueConverterLookupFunction) {
@@ -35,12 +28,12 @@ define(["require", "exports"], function (require, exports) {
                 this.unbind();
             }
             this.source = source;
-            this.targetProperty.setValue(function () {
-                var rest = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    rest[_i - 0] = arguments[_i];
-                }
-                return _this.sourceExpression.evaluate(source, _this.valueConverterLookupFunction, rest);
+            this.targetProperty.setValue(function ($event) {
+                var result, temp = source.$event;
+                source.$event = $event;
+                result = _this.sourceExpression.evaluate(source, _this.valueConverterLookupFunction);
+                source.$event = temp;
+                return result;
             });
         };
         Call.prototype.unbind = function () {

@@ -16,9 +16,9 @@ declare module 'aurelia-animator-css/animator' {
 }
 declare module 'aurelia-animator-css/index' {
 	export { CssAnimator } from 'aurelia-animator-css/animator';
-	export function install(aurelia: any): void;
+	export function configure(aurelia: any): void;
 
 }
 declare module 'aurelia-animator-css' {
 	export * from 'aurelia-animator-css/index';
-}
+	}

@@ -1,11 +1,4 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
-define(["require", "exports", 'aurelia-task-queue', './array-observation', './map-observation', './event-manager', './dirty-checking', './property-observation', './element-observation', '../dependency-injection/index', './computed-observation'], function (require, exports, aurelia_task_queue_1, array_observation_1, map_observation_1, event_manager_1, dirty_checking_1, property_observation_1, element_observation_1, index_1, computed_observation_1) {
+define(["require", "exports", 'aurelia-task-queue', './environment', './array-observation', './map-observation', './event-manager', './dirty-checking', './property-observation', './element-observation', '../dependency-injection/index', './computed-observation'], function (require, exports, aurelia_task_queue_1, environment_1, array_observation_1, map_observation_1, event_manager_1, dirty_checking_1, property_observation_1, element_observation_1, index_1, computed_observation_1) {
     if (typeof Object.getPropertyDescriptor !== 'function') {
         Object.getPropertyDescriptor = function (subject, name) {
             var pd = Object.getOwnPropertyDescriptor(subject, name);
@@ -17,30 +10,6 @@ define(["require", "exports", 'aurelia-task-queue', './array-observation', './ma
             return pd;
         };
     }
-    var hasObjectObserve = (function detectObjectObserve() {
-        if (typeof Object.observe !== 'function') {
-            return false;
-        }
-        var records = [];
-        function callback(recs) {
-            records = recs;
-        }
-        var test = {};
-        Object.observe(test, callback);
-        test.id = 1;
-        test.id = 2;
-        delete test.id;
-        Object.deliverChangeRecords(callback);
-        if (records.length !== 3)
-            return false;
-        if (records[0].type != 'add' ||
-            records[1].type != 'update' ||
-            records[2].type != 'delete') {
-            return false;
-        }
-        Object.unobserve(test, callback);
-        return true;
-    })();
     function createObserversLookup(obj) {
         var value = {};
         try {
@@ -129,7 +98,7 @@ define(["require", "exports", 'aurelia-task-queue', './array-observation', './ma
                     return observationAdapter.getObserver(obj, propertyName, descriptor);
                 return new dirty_checking_1.DirtyCheckProperty(this.dirtyChecker, obj, propertyName);
             }
-            if (hasObjectObserve) {
+            if (environment_1.hasObjectObserve) {
                 observerLookup = obj.__observer__ || createObserverLookup(obj, this);
                 return observerLookup.getObserver(propertyName, descriptor);
             }

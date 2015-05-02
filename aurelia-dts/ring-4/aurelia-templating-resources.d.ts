@@ -110,4 +110,4 @@ declare module 'aurelia-templating-resources/index' {
 }
 declare module 'aurelia-templating-resources' {
 	export * from 'aurelia-templating-resources/index';
-}
+	}

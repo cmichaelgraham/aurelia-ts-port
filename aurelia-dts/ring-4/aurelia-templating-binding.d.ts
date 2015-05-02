@@ -53,4 +53,4 @@ declare module 'aurelia-templating-binding/index' {
 }
 declare module 'aurelia-templating-binding' {
 	export * from 'aurelia-templating-binding/index';
-}
+	}

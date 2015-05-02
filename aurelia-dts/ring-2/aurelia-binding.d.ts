@@ -22,6 +22,11 @@ declare module 'aurelia-binding/array-change-records' {
 	export function projectArraySplices(array: any, changeRecords: any): any[];
 
 }
+declare module 'aurelia-binding/environment' {
+	export var hasObjectObserve: boolean;
+	export var hasArrayObserve: boolean;
+
+}
 declare module 'aurelia-binding/map-change-records' {
 	export function getChangeRecords(map: any): any[];
 
@@ -300,9 +305,11 @@ declare module 'aurelia-binding/ast' {
 
 }
 declare module 'aurelia-binding/binding-modes' {
-	export var ONE_WAY: number;
-	export var TWO_WAY: number;
-	export var ONE_TIME: number;
+	export const bindingMode: {
+	    oneTime: number;
+	    oneWay: number;
+	    twoWay: number;
+	};
 
 }
 declare module 'aurelia-binding/binding-expression' {
@@ -485,7 +492,7 @@ declare module 'aurelia-binding/value-converter' {
 	export class ValueConverterResource extends ResourceType {
 	    name: any;
 	    instance: any;
-	    constructor(name: any);
+	    constructor(name?: any);
 	    static convention(name: any): ValueConverterResource;
 	    analyze(container: any, target: any): void;
 	    register(registry: any, name: any): void;
@@ -679,10 +686,10 @@ declare module 'aurelia-binding/index' {
 	export { DirtyChecker } from 'aurelia-binding/dirty-checking';
 	export { getChangeRecords } from 'aurelia-binding/map-change-records';
 	export { ComputedPropertyObserver, declarePropertyDependencies } from 'aurelia-binding/computed-observation';
-	export function valueConverter(name: any): (target: any) => any;
+	export function valueConverter(nameOrTarget: any): (target: any) => void;
 	export function computedFrom(...rest: any[]): (target: any, key: any, descriptor: any) => any;
 
 }
 declare module 'aurelia-binding' {
 	export * from 'aurelia-binding/index';
-}
+	}

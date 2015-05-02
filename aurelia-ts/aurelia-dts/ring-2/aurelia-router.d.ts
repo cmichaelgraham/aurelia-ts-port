@@ -167,12 +167,14 @@ declare module 'aurelia-router/router' {
 	    refreshBaseUrl(): void;
 	    refreshNavigation(): void;
 	    configure(callbackOrConfig: any): Router;
+	    createRootedPath(fragment: any): any;
 	    navigate(fragment: any, options: any): any;
+	    navigateToRoute(route: any, params: any, options: any): any;
 	    navigateBack(): void;
 	    createChild(container: any): Router;
-	    createNavigationInstruction(url?: string, parentInstruction?: any): any;
+	    createNavigationInstruction(url?: string, parentInstruction?: any): Promise<any>;
 	    createNavigationContext(instruction: any): NavigationContext;
-	    generate(name: any, params: any, options: any): any;
+	    generate(name: any, params: any): any;
 	    addRoute(config: any, navModel?: any): void;
 	    hasRoute(name: any): boolean;
 	    hasOwnRoute(name: any): any;
@@ -204,7 +206,7 @@ declare module 'aurelia-router/route-loading' {
 	    constructor(routeLoader: any);
 	    run(navigationContext: any, next: any): Promise<{}>;
 	}
-	export function loadNewRoute(routers: any, routeLoader: any, navigationContext: any): Promise<{}[]>;
+	export function loadNewRoute(routeLoader: any, navigationContext: any): Promise<{}[]>;
 
 }
 declare module 'aurelia-router/pipeline-provider' {
@@ -235,7 +237,7 @@ declare module 'aurelia-router/app-router' {
 	    loadUrl(url: any): any;
 	    queueInstruction(instruction: any): Promise<{}>;
 	    dequeueInstruction(): void;
-	    registerViewPort(viewPort: any, name: any): any;
+	    registerViewPort(viewPort: any, name: any): Promise<void>;
 	    activate(options?: any): void;
 	    deactivate(): void;
 	    reset(): void;
@@ -261,4 +263,4 @@ declare module 'aurelia-router/model-binding' {
 }
 declare module 'aurelia-router' {
 	export * from 'aurelia-router/index';
-}
+	}
