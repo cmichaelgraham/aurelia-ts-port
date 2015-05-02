@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", './navigation-plan', './navigation-commands', './util'], function (require, exports, navigation_plan_1, navigation_commands_1, util_1) {
     exports.affirmations = ['yes', 'ok', 'true'];
     var CanDeactivatePreviousStep = (function () {
@@ -75,8 +68,8 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
         for (var viewPortName in plan) {
             var viewPortPlan = plan[viewPortName];
             var prevComponent = viewPortPlan.prevComponent;
-            if ((viewPortPlan.strategy == navigation_plan_1.INVOKE_LIFECYCLE ||
-                viewPortPlan.strategy == navigation_plan_1.REPLACE) &&
+            if ((viewPortPlan.strategy == navigation_plan_1.activationStrategy.invokeLifecycle ||
+                viewPortPlan.strategy == navigation_plan_1.activationStrategy.replace) &&
                 prevComponent) {
                 var controller = prevComponent.executionContext;
                 if (callbackName in controller) {
@@ -144,7 +137,7 @@ define(["require", "exports", './navigation-plan', './navigation-commands', './u
             var viewPortPlan = plan[viewPortName];
             var viewPortInstruction = next.viewPortInstructions[viewPortName];
             var controller = viewPortInstruction.component.executionContext;
-            if ((viewPortPlan.strategy === navigation_plan_1.INVOKE_LIFECYCLE || viewPortPlan.strategy === navigation_plan_1.REPLACE) && callbackName in controller) {
+            if ((viewPortPlan.strategy === navigation_plan_1.activationStrategy.invokeLifecycle || viewPortPlan.strategy === navigation_plan_1.activationStrategy.replace) && callbackName in controller) {
                 list.push({
                     controller: controller,
                     lifecycleArgs: viewPortInstruction.lifecycleArgs,

@@ -5,6 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __metadata = this.__metadata || (typeof Reflect === "object" && Reflect.metadata) || function () { };
 define(["require", "exports", 'aurelia-binding'], function (require, exports, aurelia_binding_1) {
     var SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
     var SanitizeHtmlValueConverter = (function () {
@@ -21,7 +22,8 @@ define(["require", "exports", 'aurelia-binding'], function (require, exports, au
             return this.sanitizer(untrustedMarkup);
         };
         SanitizeHtmlValueConverter = __decorate([
-            aurelia_binding_1.valueConverter('sanitizeHtml')
+            aurelia_binding_1.valueConverter('sanitizeHtml'), 
+            __metadata('design:paramtypes', [])
         ], SanitizeHtmlValueConverter);
         return SanitizeHtmlValueConverter;
     })();

@@ -4,13 +4,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-history'], function (require, exports, aurelia_history_1) {
     // Cached regex for stripping a leading hash/slash and trailing space.
     var routeStripper = /^[#\/]|\s+$/g;
@@ -89,7 +82,7 @@ define(["require", "exports", 'aurelia-history'], function (require, exports, au
                 window.addEventListener('hashchange', this._checkUrlCallback);
             }
             else if (this._wantsHashChange) {
-                this._checkUrlInterval = setInterval(this._checkUrlCallback, this.interval);
+                this._checkUrlTimer = setTimeout(this._checkUrlCallback, this.interval);
             }
             // Determine if we need to change the base url, for a pushState link
             // opened by a non-pushState browser.
@@ -118,11 +111,15 @@ define(["require", "exports", 'aurelia-history'], function (require, exports, au
         BrowserHistory.prototype.deactivate = function () {
             window.onpopstate = null;
             window.removeEventListener('hashchange', this._checkUrlCallback);
-            clearInterval(this._checkUrlInterval);
+            clearTimeout(this._checkUrlTimer);
             this.active = false;
         };
         BrowserHistory.prototype.checkUrl = function () {
             var current = this.getFragment();
+            if (this._checkUrlTimer) {
+                clearTimeout(this._checkUrlTimer);
+                this._checkUrlTimer = setTimeout(this._checkUrlCallback, this.interval);
+            }
             if (current === this.fragment && this.iframe) {
                 current = this.getFragment(this.getHash(this.iframe));
             }
@@ -200,8 +197,8 @@ define(["require", "exports", 'aurelia-history'], function (require, exports, au
         return BrowserHistory;
     })(aurelia_history_1.History);
     exports.BrowserHistory = BrowserHistory;
-    function install(aurelia) {
+    function configure(aurelia) {
         aurelia.withSingleton(aurelia_history_1.History, BrowserHistory);
     }
-    exports.install = install;
+    exports.configure = configure;
 });

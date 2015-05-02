@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-logging', 'aurelia-metadata', 'aurelia-loader', 'aurelia-dependency-injection', './view-compiler', './resource-registry', './module-analyzer'], function (require, exports, LogManager, aurelia_metadata_1, aurelia_loader_1, aurelia_dependency_injection_1, view_compiler_1, resource_registry_1, module_analyzer_1) {
     var logger = LogManager.getLogger('templating');
     function ensureRegistryEntry(loader, urlOrRegistryEntry) {

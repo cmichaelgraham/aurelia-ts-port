@@ -5,6 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __metadata = this.__metadata || (typeof Reflect === "object" && Reflect.metadata) || function () { };
 define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templating'], function (require, exports, aurelia_dependency_injection_1, aurelia_templating_1) {
     var Compose = (function () {
         function Compose(container, compositionEngine, viewSlot, viewResources) {
@@ -35,7 +36,8 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
             aurelia_templating_1.bindable('view'),
             aurelia_templating_1.bindable('viewModel'),
             aurelia_templating_1.noView,
-            aurelia_dependency_injection_1.inject(aurelia_dependency_injection_1.Container, aurelia_templating_1.CompositionEngine, aurelia_templating_1.ViewSlot, aurelia_templating_1.ViewResources)
+            aurelia_dependency_injection_1.inject(aurelia_dependency_injection_1.Container, aurelia_templating_1.CompositionEngine, aurelia_templating_1.ViewSlot, aurelia_templating_1.ViewResources), 
+            __metadata('design:paramtypes', [Object, Object, Object, Object])
         ], Compose);
         return Compose;
     })();

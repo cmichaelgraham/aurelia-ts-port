@@ -143,6 +143,9 @@ define(["require", "exports", 'aurelia-route-recognizer', './navigation-context'
                 };
             }
             navModel.title = navModel.title || config.title;
+            navModel.setTitle = function (newTitle) {
+                navModel.title = newTitle;
+            };
             navModel.settings = config.settings || (config.settings = {});
             this.routes.push(config);
             var state = this.recognizer.add({ path: config.route, handler: config });
@@ -225,10 +228,10 @@ define(["require", "exports", 'aurelia-route-recognizer', './navigation-context'
     exports.Router = Router;
     function validateRouteConfig(config) {
         var isValid = typeof config === 'object'
-            && (config.moduleId || config.redirect)
+            && (config.moduleId || config.redirect || config.viewPorts)
             && config.route !== null && config.route !== undefined;
         if (!isValid) {
-            throw new Error('Invalid Route Config: You must have at least a route and a moduleId or redirect.');
+            throw new Error('Invalid Route Config: You must have at least a route and a moduleId, redirect, or viewPorts.');
         }
     }
     function normalizeAbsolutePath(path, hasPushState) {

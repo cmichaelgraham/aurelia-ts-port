@@ -33,7 +33,7 @@ define(["require", "exports", './navigation-plan', './router-configuration'], fu
         toLoad = toLoad || [];
         for (var viewPortName in plan) {
             var viewPortPlan = plan[viewPortName];
-            if (viewPortPlan.strategy == navigation_plan_1.REPLACE) {
+            if (viewPortPlan.strategy == navigation_plan_1.activationStrategy.replace) {
                 toLoad.push({
                     viewPortPlan: viewPortPlan,
                     navigationContext: navigationContext

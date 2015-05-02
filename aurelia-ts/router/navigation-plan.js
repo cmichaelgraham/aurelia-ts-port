@@ -1,14 +1,9 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", './navigation-commands'], function (require, exports, navigation_commands_1) {
-    exports.NO_CHANGE = 'no-change';
-    exports.INVOKE_LIFECYCLE = 'invoke-lifecycle';
-    exports.REPLACE = 'replace';
+    exports.activationStrategy = {
+        noChange: 'no-change',
+        invokeLifecycle: 'invoke-lifecycle',
+        replace: 'replace'
+    };
     function buildNavigationPlan(navigationContext, forceLifecycleMinimum) {
         var prev = navigationContext.prevInstruction;
         var next = navigationContext.nextInstruction;
@@ -26,25 +21,25 @@ define(["require", "exports", './navigation-commands'], function (require, expor
                     prevModuleId: prevViewPortInstruction.moduleId
                 };
                 if (prevViewPortInstruction.moduleId != nextViewPortConfig.moduleId) {
-                    viewPortPlan.strategy = exports.REPLACE;
+                    viewPortPlan.strategy = exports.activationStrategy.replace;
                 }
                 else if ('determineActivationStrategy' in prevViewPortInstruction.component.executionContext) {
                     //TODO: should we tell them if the parent had a lifecycle min change?
                     viewPortPlan.strategy = (_a = prevViewPortInstruction.component.executionContext).determineActivationStrategy.apply(_a, next.lifecycleArgs);
                 }
                 else if (newParams || forceLifecycleMinimum) {
-                    viewPortPlan.strategy = exports.INVOKE_LIFECYCLE;
+                    viewPortPlan.strategy = exports.activationStrategy.invokeLifecycle;
                 }
                 else {
-                    viewPortPlan.strategy = exports.NO_CHANGE;
+                    viewPortPlan.strategy = exports.activationStrategy.noChange;
                 }
-                if (viewPortPlan.strategy !== exports.REPLACE && prevViewPortInstruction.childRouter) {
+                if (viewPortPlan.strategy !== exports.activationStrategy.replace && prevViewPortInstruction.childRouter) {
                     var path = next.getWildcardPath();
                     var task = prevViewPortInstruction.childRouter
                         .createNavigationInstruction(path, next).then(function (childInstruction) {
                         viewPortPlan.childNavigationContext = prevViewPortInstruction.childRouter
                             .createNavigationContext(childInstruction);
-                        return buildNavigationPlan(viewPortPlan.childNavigationContext, viewPortPlan.strategy == exports.INVOKE_LIFECYCLE)
+                        return buildNavigationPlan(viewPortPlan.childNavigationContext, viewPortPlan.strategy == exports.activationStrategy.invokeLifecycle)
                             .then(function (childPlan) {
                             viewPortPlan.childNavigationContext.plan = childPlan;
                         });
@@ -58,7 +53,7 @@ define(["require", "exports", './navigation-commands'], function (require, expor
             for (viewPortName in next.config.viewPorts) {
                 plan[viewPortName] = {
                     name: viewPortName,
-                    strategy: exports.REPLACE,
+                    strategy: exports.activationStrategy.replace,
                     config: next.config.viewPorts[viewPortName]
                 };
             }

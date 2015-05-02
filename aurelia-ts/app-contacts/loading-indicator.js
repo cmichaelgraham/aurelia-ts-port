@@ -5,6 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __metadata = this.__metadata || (typeof Reflect === "object" && Reflect.metadata) || function () { };
 define(["require", "exports", 'nprogress', 'aurelia-framework'], function (require, exports, nprogress_1, aurelia_framework_1) {
     var LoadingIndicator = (function () {
         function LoadingIndicator() {
@@ -19,10 +20,12 @@ define(["require", "exports", 'nprogress', 'aurelia-framework'], function (requi
             }
         };
         __decorate([
-            aurelia_framework_1.bindable
+            aurelia_framework_1.bindable, 
+            __metadata('design:type', Object)
         ], LoadingIndicator.prototype, "loading");
         LoadingIndicator = __decorate([
-            aurelia_framework_1.noView
+            aurelia_framework_1.noView, 
+            __metadata('design:paramtypes', [])
         ], LoadingIndicator);
         return LoadingIndicator;
     })();

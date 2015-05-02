@@ -5,6 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __metadata = this.__metadata || (typeof Reflect === "object" && Reflect.metadata) || function () { };
 define(["require", "exports", 'aurelia-templating', 'aurelia-dependency-injection', 'aurelia-router'], function (require, exports, aurelia_templating_1, aurelia_dependency_injection_1, aurelia_router_1) {
     var RouteHref = (function () {
         function RouteHref(router, element) {
@@ -29,7 +30,8 @@ define(["require", "exports", 'aurelia-templating', 'aurelia-dependency-injectio
             aurelia_templating_1.bindable({ name: 'route', changeHandler: 'processChange' }),
             aurelia_templating_1.bindable({ name: 'params', changeHandler: 'processChange' }),
             aurelia_templating_1.bindable({ name: 'attribute', defaultValue: 'href' }),
-            aurelia_dependency_injection_1.inject(aurelia_router_1.Router, Element)
+            aurelia_dependency_injection_1.inject(aurelia_router_1.Router, Element), 
+            __metadata('design:paramtypes', [Object, Object])
         ], RouteHref);
         return RouteHref;
     })();

@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", './navigation-plan'], function (require, exports, navigation_plan_1) {
     var NavigationContext = (function () {
         function NavigationContext(router, nextInstruction) {
@@ -59,7 +52,7 @@ define(["require", "exports", './navigation-plan'], function (require, exports, 
                 if (!viewPort) {
                     throw new Error("There was no router-view found in the view for " + viewPortInstruction.moduleId + ".");
                 }
-                if (viewPortInstruction.strategy === navigation_plan_1.REPLACE) {
+                if (viewPortInstruction.strategy === navigation_plan_1.activationStrategy.replace) {
                     if (waitToSwap) {
                         delaySwaps.push({ viewPort: viewPort, viewPortInstruction: viewPortInstruction });
                     }

@@ -4,13 +4,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-metadata', './behavior-instance', './behaviors', './content-selector', './view-engine', './view-strategy', './util'], function (require, exports, aurelia_metadata_1, behavior_instance_1, behaviors_1, content_selector_1, view_engine_1, view_strategy_1, util_1) {
     var defaultInstruction = { suppressBind: false }, contentSelectorFactoryOptions = { suppressBind: true }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot, valuePropertyName = 'value';
     var UseShadowDOM = (function () {
@@ -115,6 +108,6 @@ define(["require", "exports", 'aurelia-metadata', './behavior-instance', './beha
             return behaviorInstance;
         };
         return CustomElement;
-    })(aurelia_metadata_1.ResourceType);
+    })(ResourceType);
     exports.CustomElement = CustomElement;
 });

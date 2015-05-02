@@ -5,6 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __metadata = this.__metadata || (typeof Reflect === "object" && Reflect.metadata) || function () { };
 define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templating', 'aurelia-router', 'aurelia-metadata'], function (require, exports, aurelia_dependency_injection_1, aurelia_templating_1, aurelia_router_1, aurelia_metadata_1) {
     var RouterView = (function () {
         function RouterView(element, container, viewSlot, router) {
@@ -50,7 +51,8 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
         RouterView = __decorate([
             aurelia_templating_1.customElement('router-view'),
             aurelia_templating_1.noView,
-            aurelia_dependency_injection_1.inject(Element, aurelia_dependency_injection_1.Container, aurelia_templating_1.ViewSlot, aurelia_router_1.Router)
+            aurelia_dependency_injection_1.inject(Element, aurelia_dependency_injection_1.Container, aurelia_templating_1.ViewSlot, aurelia_router_1.Router), 
+            __metadata('design:paramtypes', [Object, Object, Object, Object])
         ], RouterView);
         return RouterView;
     })();

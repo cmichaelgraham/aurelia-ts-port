@@ -1,10 +1,3 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-metadata', 'aurelia-task-queue', 'aurelia-binding', './children', './property', './util'], function (require, exports, aurelia_metadata_1, aurelia_task_queue_1, aurelia_binding_1, children_1, property_1, util_1) {
     function configureBehavior(container, behavior, target, valuePropertyName) {
         var proto = target.prototype, taskQueue = container.get(aurelia_task_queue_1.TaskQueue), meta = aurelia_metadata_1.Metadata.on(target), observerLocator = container.get(aurelia_binding_1.ObserverLocator), i, ii, properties;

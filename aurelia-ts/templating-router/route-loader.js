@@ -11,6 +11,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __metadata = this.__metadata || (typeof Reflect === "object" && Reflect.metadata) || function () { };
 define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templating', 'aurelia-router', 'aurelia-path', 'aurelia-metadata'], function (require, exports, aurelia_dependency_injection_1, aurelia_templating_1, aurelia_router_1, aurelia_path_1, aurelia_metadata_1) {
     var TemplatingRouteLoader = (function (_super) {
         __extends(TemplatingRouteLoader, _super);
@@ -38,7 +39,8 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
             });
         };
         TemplatingRouteLoader = __decorate([
-            aurelia_dependency_injection_1.inject(aurelia_templating_1.CompositionEngine)
+            aurelia_dependency_injection_1.inject(aurelia_templating_1.CompositionEngine), 
+            __metadata('design:paramtypes', [Object])
         ], TemplatingRouteLoader);
         return TemplatingRouteLoader;
     })(aurelia_router_1.RouteLoader);

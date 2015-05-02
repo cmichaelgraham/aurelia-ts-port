@@ -1,4 +1,4 @@
-import {REPLACE} from './navigation-plan';
+import {activationStrategy} from './navigation-plan';
 
 export class NavigationContext {
   public router;
@@ -62,7 +62,7 @@ export class NavigationContext {
         throw new Error(`There was no router-view found in the view for ${viewPortInstruction.moduleId}.`);
       }
 
-      if (viewPortInstruction.strategy === REPLACE) {
+      if (viewPortInstruction.strategy === activationStrategy.replace) {
         if(waitToSwap){
           delaySwaps.push({viewPort, viewPortInstruction});
         }

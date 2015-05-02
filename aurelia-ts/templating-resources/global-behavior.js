@@ -5,6 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __metadata = this.__metadata || (typeof Reflect === "object" && Reflect.metadata) || function () { };
 define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templating', 'aurelia-logging', 'aurelia-logging'], function (require, exports, aurelia_dependency_injection_1, aurelia_templating_1, aurelia_logging_1, LogManager) {
     var GlobalBehavior = (function () {
         function GlobalBehavior(element) {
@@ -41,7 +42,8 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
         GlobalBehavior = __decorate([
             aurelia_templating_1.customAttribute('global-behavior'),
             aurelia_templating_1.dynamicOptions,
-            aurelia_dependency_injection_1.inject(Element)
+            aurelia_dependency_injection_1.inject(Element), 
+            __metadata('design:paramtypes', [Object])
         ], GlobalBehavior);
         return GlobalBehavior;
     })();

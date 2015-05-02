@@ -5,6 +5,7 @@ var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.deco
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __metadata = this.__metadata || (typeof Reflect === "object" && Reflect.metadata) || function () { };
 define(["require", "exports", 'aurelia-templating', 'aurelia-dependency-injection'], function (require, exports, aurelia_templating_1, aurelia_dependency_injection_1) {
     var If = (function () {
         function If(viewFactory, viewSlot) {
@@ -35,7 +36,8 @@ define(["require", "exports", 'aurelia-templating', 'aurelia-dependency-injectio
         If = __decorate([
             aurelia_templating_1.customAttribute('if'),
             aurelia_templating_1.templateController,
-            aurelia_dependency_injection_1.inject(aurelia_templating_1.BoundViewFactory, aurelia_templating_1.ViewSlot)
+            aurelia_dependency_injection_1.inject(aurelia_templating_1.BoundViewFactory, aurelia_templating_1.ViewSlot), 
+            __metadata('design:paramtypes', [Object, Object])
         ], If);
         return If;
     })();

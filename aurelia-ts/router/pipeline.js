@@ -1,23 +1,18 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports"], function (require, exports) {
     function createResult(ctx, next) {
         return {
             status: next.status,
             context: ctx,
             output: next.output,
-            completed: next.status == exports.COMPLETED
+            completed: next.status == exports.pipelineStatus.completed
         };
     }
-    exports.COMPLETED = 'completed';
-    exports.CANCELLED = 'cancelled';
-    exports.REJECTED = 'rejected';
-    exports.RUNNING = 'running';
+    exports.pipelineStatus = {
+        completed: 'completed',
+        cancelled: 'cancelled',
+        rejected: 'rejected',
+        running: 'running'
+    };
     var Pipeline = (function () {
         function Pipeline() {
             this.steps = [];
@@ -58,21 +53,21 @@ define(["require", "exports"], function (require, exports) {
                 }
             };
             next.complete = function (output) {
-                next.status = exports.COMPLETED;
+                next.status = exports.pipelineStatus.completed;
                 next.output = output;
                 return Promise.resolve(createResult(ctx, next));
             };
             next.cancel = function (reason) {
-                next.status = exports.CANCELLED;
+                next.status = exports.pipelineStatus.cancelled;
                 next.output = reason;
                 return Promise.resolve(createResult(ctx, next));
             };
             next.reject = function (error) {
-                next.status = exports.REJECTED;
+                next.status = exports.pipelineStatus.rejected;
                 next.output = error;
                 return Promise.reject(createResult(ctx, next));
             };
-            next.status = exports.RUNNING;
+            next.status = exports.pipelineStatus.running;
             return next();
         };
         return Pipeline;

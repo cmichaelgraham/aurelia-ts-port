@@ -1,4 +1,4 @@
-define(["require", "exports", 'bootstrap', 'bootstrap/css/bootstrap.css!'], function (require, exports, , ) {
+define(["require", "exports", 'bootstrap', 'bootstrap/css/bootstrap.css!'], function (require, exports) {
     var App = (function () {
         function App() {
         }

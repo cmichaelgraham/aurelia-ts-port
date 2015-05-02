@@ -37,9 +37,11 @@ declare module 'aurelia-router/navigation-commands' {
 
 }
 declare module 'aurelia-router/navigation-plan' {
-	export var NO_CHANGE: string;
-	export var INVOKE_LIFECYCLE: string;
-	export var REPLACE: string;
+	export const activationStrategy: {
+	    noChange: string;
+	    invokeLifecycle: string;
+	    replace: string;
+	};
 	export function buildNavigationPlan(navigationContext: any, forceLifecycleMinimum?: any): Promise<{}>;
 	export class BuildNavigationPlanStep {
 	    run(navigationContext: any, next: any): any;
@@ -184,10 +186,12 @@ declare module 'aurelia-router/router' {
 
 }
 declare module 'aurelia-router/pipeline' {
-	export var COMPLETED: string;
-	export var CANCELLED: string;
-	export var REJECTED: string;
-	export var RUNNING: string;
+	export const pipelineStatus: {
+	    completed: string;
+	    cancelled: string;
+	    rejected: string;
+	    running: string;
+	};
 	export class Pipeline {
 	    steps: any;
 	    constructor();
@@ -251,7 +255,7 @@ declare module 'aurelia-router/index' {
 	export { Redirect } from 'aurelia-router/navigation-commands';
 	export { RouteLoader } from 'aurelia-router/route-loading';
 	export { RouterConfiguration } from 'aurelia-router/router-configuration';
-	export { NO_CHANGE, INVOKE_LIFECYCLE, REPLACE } from 'aurelia-router/navigation-plan';
+	export { activationStrategy } from 'aurelia-router/navigation-plan';
 	export { RouteFilterContainer, createRouteFilterStep } from 'aurelia-router/route-filters';
 
 }
