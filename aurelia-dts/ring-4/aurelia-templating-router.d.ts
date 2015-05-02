@@ -42,4 +42,4 @@ declare module 'aurelia-templating-router/index' {
 }
 declare module 'aurelia-templating-router' {
 	export * from 'aurelia-templating-router/index';
-	}
+}

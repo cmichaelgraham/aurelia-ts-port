@@ -488,8 +488,7 @@ declare module 'aurelia-binding/event-manager' {
 
 }
 declare module 'aurelia-binding/value-converter' {
-	import { ResourceType } from 'aurelia-metadata';
-	export class ValueConverterResource extends ResourceType {
+	export class ValueConverterResource {
 	    name: any;
 	    instance: any;
 	    constructor(name?: any);
@@ -692,4 +691,4 @@ declare module 'aurelia-binding/index' {
 }
 declare module 'aurelia-binding' {
 	export * from 'aurelia-binding/index';
-	}
+}

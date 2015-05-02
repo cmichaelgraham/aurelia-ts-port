@@ -2,22 +2,46 @@ declare module 'aurelia-route-recognizer/dsl' {
 	export function map(callback: any, addRouteCallback: any): void;
 
 }
-declare module 'aurelia-route-recognizer/index' {
-	export class RouteRecognizer {
-	    map: any;
-	    rootState: any;
-	    names: any;
-	    constructor();
-	    add(route: any): any;
-	    handlersFor(name: any): any[];
-	    hasRoute(name: any): boolean;
-	    generate(name: any, params: any): string;
-	    generateQueryString(params: any): string;
-	    parseQueryString(queryString: any): {};
-	    recognize(path: any): any;
+declare module 'aurelia-route-recognizer/state' {
+	export class State {
+	    charSpec: any;
+	    nextStates: any;
+	    constructor(charSpec?: any);
+	    get(charSpec: any): any;
+	    put(charSpec: any): any;
+	    match(ch: any): any[];
+	}
+
+}
+declare module 'aurelia-route-recognizer/segments' {
+	export class StaticSegment {
+	    string: any;
+	    constructor(string: any);
+	    eachChar(callback: any): void;
+	    regex(): any;
+	    generate(): any;
+	}
+	export class DynamicSegment {
+	    name: any;
+	    constructor(name: any);
+	    eachChar(callback: any): void;
+	    regex(): string;
+	    generate(params: any, consumed: any): any;
+	}
+	export class StarSegment {
+	    name: any;
+	    constructor(name: any);
+	    eachChar(callback: any): void;
+	    regex(): string;
+	    generate(params: any, consumed: any): any;
+	}
+	export class EpsilonSegment {
+	    eachChar(): void;
+	    regex(): string;
+	    generate(): string;
 	}
 
 }
 declare module 'aurelia-route-recognizer' {
 	export * from 'aurelia-route-recognizer/index';
-	}
+}

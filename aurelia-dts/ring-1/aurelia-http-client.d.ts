@@ -264,4 +264,4 @@ declare module 'aurelia-http-client/index' {
 }
 declare module 'aurelia-http-client' {
 	export * from 'aurelia-http-client/index';
-	}
+}

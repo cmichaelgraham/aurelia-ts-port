@@ -4,9 +4,9 @@ declare module 'aurelia-skeleton-plugin/hello-world' {
 
 }
 declare module 'aurelia-skeleton-plugin/index' {
-	export function install(aurelia: any): void;
+	export function configure(aurelia: any): void;
 
 }
 declare module 'aurelia-skeleton-plugin' {
 	export * from 'aurelia-skeleton-plugin/index';
-	}
+}

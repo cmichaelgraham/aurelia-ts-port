@@ -263,4 +263,4 @@ declare module 'aurelia-router/model-binding' {
 }
 declare module 'aurelia-router' {
 	export * from 'aurelia-router/index';
-	}
+}

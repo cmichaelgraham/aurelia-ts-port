@@ -124,4 +124,4 @@ declare module 'aurelia-framework/index' {
 }
 declare module 'aurelia-framework' {
 	export * from 'aurelia-framework/index';
-	}
+}

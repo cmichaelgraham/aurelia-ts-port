@@ -40,4 +40,4 @@ declare module 'aurelia-loader/index' {
 }
 declare module 'aurelia-loader' {
 	export * from 'aurelia-loader/index';
-	}
+}

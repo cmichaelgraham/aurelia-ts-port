@@ -21,4 +21,4 @@ declare module 'aurelia-animator-css/index' {
 }
 declare module 'aurelia-animator-css' {
 	export * from 'aurelia-animator-css/index';
-	}
+}
