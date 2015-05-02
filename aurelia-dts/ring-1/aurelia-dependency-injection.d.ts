@@ -1,30 +1,12 @@
 declare module 'aurelia-dependency-injection/metadata' {
 	/**
-	* Used to allow functions/classes to indicate how they should be registered with the container.
-	*
-	* @class Registration
-	* @constructor
-	*/
-	export class Registration {
-	    /**
-	    * Called by the container to allow custom registration logic for the annotated function/class.
-	    *
-	    * @method register
-	    * @param {Container} container The container to register with.
-	    * @param {Object} key The key to register as.
-	    * @param {Object} fn The function to register (target of the annotation).
-	    */
-	    register(container: any, key: any, fn: any): void;
-	}
-	/**
 	* Used to allow functions/classes to indicate that they should be registered as transients with the container.
 	*
 	* @class TransientRegistration
 	* @constructor
-	* @extends Registration
 	* @param {Object} [key] The key to register as.
 	*/
-	export class TransientRegistration extends Registration {
+	export class TransientRegistration {
 	    key: any;
 	    constructor(key: any);
 	    /**
@@ -42,10 +24,9 @@ declare module 'aurelia-dependency-injection/metadata' {
 	*
 	* @class SingletonRegistration
 	* @constructor
-	* @extends Registration
 	* @param {Object} [key] The key to register as.
 	*/
-	export class SingletonRegistration extends Registration {
+	export class SingletonRegistration {
 	    key: any;
 	    registerInChild: any;
 	    constructor(keyOrRegisterInChild: any, registerInChild?: boolean);
@@ -195,21 +176,13 @@ declare module 'aurelia-dependency-injection/metadata' {
 	    static of(key: any): Parent;
 	}
 	/**
-	* Used to construct instances.
-	*
-	* @class InstanceActivator
-	* @constructor
-	*/
-	export class InstanceActivator {
-	    invoke(fn: any, args: any): void;
-	}
-	/**
 	* Used to instantiate a class.
 	*
 	* @class ClassActivator
 	* @constructor
 	*/
-	export class ClassActivator extends InstanceActivator {
+	export class ClassActivator {
+	    static instance: ClassActivator;
 	    invoke(fn: any, args: any): any;
 	}
 	/**
@@ -218,12 +191,14 @@ declare module 'aurelia-dependency-injection/metadata' {
 	* @class FactoryActivator
 	* @constructor
 	*/
-	export class FactoryActivator extends InstanceActivator {
+	export class FactoryActivator {
+	    static instance: FactoryActivator;
 	    invoke(fn: any, args: any): any;
 	}
 
 }
 declare module 'aurelia-dependency-injection/container' {
+	export var emptyParameters: any[];
 	/**
 	* A lightweight, extensible dependency injection container.
 	*

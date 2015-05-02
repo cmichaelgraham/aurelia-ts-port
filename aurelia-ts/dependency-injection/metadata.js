@@ -4,49 +4,16 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports"], function (require, exports) {
-    /**
-    * Used to allow functions/classes to indicate how they should be registered with the container.
-    *
-    * @class Registration
-    * @constructor
-    */
-    var Registration = (function () {
-        function Registration() {
-        }
-        /**
-        * Called by the container to allow custom registration logic for the annotated function/class.
-        *
-        * @method register
-        * @param {Container} container The container to register with.
-        * @param {Object} key The key to register as.
-        * @param {Object} fn The function to register (target of the annotation).
-        */
-        Registration.prototype.register = function (container, key, fn) {
-            throw new Error('A custom Registration must implement register(container, key, fn).');
-        };
-        return Registration;
-    })();
-    exports.Registration = Registration;
     /**
     * Used to allow functions/classes to indicate that they should be registered as transients with the container.
     *
     * @class TransientRegistration
     * @constructor
-    * @extends Registration
     * @param {Object} [key] The key to register as.
     */
-    var TransientRegistration = (function (_super) {
-        __extends(TransientRegistration, _super);
+    var TransientRegistration = (function () {
         function TransientRegistration(key) {
-            _super.call(this);
             this.key = key;
         }
         /**
@@ -61,21 +28,18 @@ define(["require", "exports"], function (require, exports) {
             container.registerTransient(this.key || key, fn);
         };
         return TransientRegistration;
-    })(Registration);
+    })();
     exports.TransientRegistration = TransientRegistration;
     /**
     * Used to allow functions/classes to indicate that they should be registered as singletons with the container.
     *
     * @class SingletonRegistration
     * @constructor
-    * @extends Registration
     * @param {Object} [key] The key to register as.
     */
-    var SingletonRegistration = (function (_super) {
-        __extends(SingletonRegistration, _super);
+    var SingletonRegistration = (function () {
         function SingletonRegistration(keyOrRegisterInChild, registerInChild) {
             if (registerInChild === void 0) { registerInChild = false; }
-            _super.call(this);
             if (typeof keyOrRegisterInChild === 'boolean') {
                 this.registerInChild = keyOrRegisterInChild;
             }
@@ -97,7 +61,7 @@ define(["require", "exports"], function (require, exports) {
             destination.registerSingleton(this.key || key, fn);
         };
         return SingletonRegistration;
-    })(Registration);
+    })();
     exports.SingletonRegistration = SingletonRegistration;
     /**
     * An abstract resolver used to allow functions/classes to specify custom dependency resolution logic.
@@ -287,36 +251,20 @@ define(["require", "exports"], function (require, exports) {
     })(Resolver);
     exports.Parent = Parent;
     /**
-    * Used to construct instances.
-    *
-    * @class InstanceActivator
-    * @constructor
-    */
-    var InstanceActivator = (function () {
-        function InstanceActivator() {
-        }
-        InstanceActivator.prototype.invoke = function (fn, args) {
-            throw new Error('A custom Activator must implement invoke(fn, args).');
-        };
-        return InstanceActivator;
-    })();
-    exports.InstanceActivator = InstanceActivator;
-    /**
     * Used to instantiate a class.
     *
     * @class ClassActivator
     * @constructor
     */
-    var ClassActivator = (function (_super) {
-        __extends(ClassActivator, _super);
+    var ClassActivator = (function () {
         function ClassActivator() {
-            _super.apply(this, arguments);
         }
         ClassActivator.prototype.invoke = function (fn, args) {
             return Reflect.construct(fn, args);
         };
+        ClassActivator.instance = new ClassActivator();
         return ClassActivator;
-    })(InstanceActivator);
+    })();
     exports.ClassActivator = ClassActivator;
     /**
     * Used to invoke a factory method.
@@ -324,15 +272,14 @@ define(["require", "exports"], function (require, exports) {
     * @class FactoryActivator
     * @constructor
     */
-    var FactoryActivator = (function (_super) {
-        __extends(FactoryActivator, _super);
+    var FactoryActivator = (function () {
         function FactoryActivator() {
-            _super.apply(this, arguments);
         }
         FactoryActivator.prototype.invoke = function (fn, args) {
             return fn.apply(undefined, args);
         };
+        FactoryActivator.instance = new FactoryActivator();
         return FactoryActivator;
-    })(InstanceActivator);
+    })();
     exports.FactoryActivator = FactoryActivator;
 });

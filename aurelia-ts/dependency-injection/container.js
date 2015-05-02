@@ -1,12 +1,6 @@
-var __decorate = this.__decorate || (typeof Reflect === "object" && Reflect.decorate) || function (decorators, target, key, desc) {
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
-};
 define(["require", "exports", 'aurelia-metadata', 'aurelia-logging', './metadata'], function (require, exports, aurelia_metadata_1, aurelia_logging_1, metadata_1) {
-    var emptyParameters = Object.freeze([]), defaultActivator = new metadata_1.ClassActivator();
+    aurelia_metadata_1.Metadata.registration = 'aurelia:registration';
+    aurelia_metadata_1.Metadata.instanceActivator = 'aurelia:instance-activator';
     // Fix Function#name on browsers that do not support it (IE):
     function test() { }
     if (!test.name) {
@@ -20,6 +14,7 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-logging', './metadata
             }
         });
     }
+    exports.emptyParameters = Object.freeze([]);
     /**
     * A lightweight, extensible dependency injection container.
     *
@@ -91,8 +86,8 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-logging', './metadata
             if (fn === null || fn === undefined) {
                 throw new Error('fn cannot be null or undefined.');
             }
-            registration = aurelia_metadata_1.Metadata.on(fn).first(metadata_1.Registration, true);
-            if (registration) {
+            registration = aurelia_metadata_1.Metadata.get(aurelia_metadata_1.Metadata.registration, fn);
+            if (registration !== undefined) {
                 registration.register(this, key || fn, fn);
             }
             else {
@@ -142,11 +137,11 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-logging', './metadata
             if (key === null || key === undefined) {
                 throw new Error('key cannot be null or undefined.');
             }
-            if (key instanceof metadata_1.Resolver) {
-                return key.get(this);
-            }
             if (key === Container) {
                 return this;
+            }
+            if (key instanceof metadata_1.Resolver) {
+                return key.get(this);
             }
             entry = this.entries.get(key);
             if (entry !== undefined) {
@@ -250,7 +245,7 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-logging', './metadata
             return info;
         };
         Container.prototype.createConstructionInfo = function (fn) {
-            var info = { activator: aurelia_metadata_1.Metadata.on(fn).first(metadata_1.InstanceActivator) || defaultActivator };
+            var info = { activator: aurelia_metadata_1.Metadata.getOwn(aurelia_metadata_1.Metadata.instanceActivator, fn) || metadata_1.ClassActivator.instance };
             if (fn.inject !== undefined) {
                 if (typeof fn.inject === 'function') {
                     info.keys = fn.inject();
@@ -261,10 +256,10 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-logging', './metadata
                 return info;
             }
             if (this.locateParameterInfoElsewhere !== undefined) {
-                info.keys = this.locateParameterInfoElsewhere(fn) || emptyParameters;
+                info.keys = this.locateParameterInfoElsewhere(fn) || Reflect.getOwnMetadata(aurelia_metadata_1.Metadata.paramTypes, fn) || exports.emptyParameters;
             }
             else {
-                info.keys = emptyParameters;
+                info.keys = Reflect.getOwnMetadata(aurelia_metadata_1.Metadata.paramTypes, fn) || exports.emptyParameters;
             }
             return info;
         };

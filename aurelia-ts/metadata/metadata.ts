@@ -27,7 +27,7 @@ export var Metadata = {
   resource:'aurelia:resource',
   paramTypes:'design:paramtypes',
   properties:'design:properties',
-  get(metadataKey, target, propertyKey){
+  get(metadataKey, target, propertyKey?){
     if(!target){
       return undefined;
     }
@@ -35,7 +35,7 @@ export var Metadata = {
     let result = Metadata.getOwn(metadataKey, target, propertyKey);
     return result === undefined ? Metadata.get(metadataKey, Object.getPrototypeOf(target), propertyKey) : result;
   },
-  getOwn(metadataKey, target, propertyKey){
+  getOwn(metadataKey, target, propertyKey?){
     if(!target){
       return undefined;
     }

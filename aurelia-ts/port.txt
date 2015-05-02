@@ -11,7 +11,7 @@ o    { name: 'task-queue' },
 x    { name: 'route-recognizer'}
     ]},
   { name: 'ring-1', repos: [
-    { name: 'dependency-injection' },
+x    { name: 'dependency-injection' },
     { name: 'history-browser' },
 o    { name: 'loader' },
 o    { name: 'http-client' }
