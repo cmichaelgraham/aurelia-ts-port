@@ -105,8 +105,8 @@ declare module 'aurelia-templating/binding-language' {
 }
 declare module 'aurelia-templating/view-strategy' {
 	export class ViewStrategy {
+	    static metadataKey: string;
 	    makeRelativeTo(baseUrl: any): void;
-	    loadViewFactory(viewEngine: any, options: any): void;
 	    static normalize(value: any): any;
 	    static getDefault(target: any): any;
 	}
@@ -273,8 +273,7 @@ declare module 'aurelia-templating/view-compiler' {
 
 }
 declare module 'aurelia-templating/html-behavior' {
-	import { ResourceType } from 'aurelia-metadata';
-	export class HtmlBehaviorResource extends ResourceType {
+	export class HtmlBehaviorResource {
 	    elementName: any;
 	    attributeName: any;
 	    liftsContent: any;
@@ -378,8 +377,7 @@ declare module 'aurelia-templating/custom-element' {
 
 }
 declare module 'aurelia-templating/element-config' {
-	import { ResourceType } from 'aurelia-metadata';
-	export class ElementConfigResource extends ResourceType {
+	export class ElementConfigResource {
 	    load(container: any, target: any): Promise<ElementConfigResource>;
 	    register(): void;
 	}
@@ -395,6 +393,7 @@ declare module 'aurelia-templating/decorators' {
 	export function syncChildren(property: any, changeHandler: any, selector: any): (target: any) => void;
 	export function useShadowDOM(target: any): void | ((target: any) => void);
 	export function skipContentProcessing(target: any): void | ((target: any) => void);
+	export function viewStrategy(strategy: any): (target: any) => void;
 	export function useView(path: any): (target: any) => void;
 	export function noView(target?: any): any;
 	export function elementConfig(target: any): void | ((target: any) => void);

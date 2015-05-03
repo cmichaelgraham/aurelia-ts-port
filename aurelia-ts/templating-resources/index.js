@@ -6,8 +6,8 @@ define(["require", "exports", './compose', './if', './with', './repeat', './show
     exports.Show = show_1.Show;
     exports.GlobalBehavior = global_behavior_1.GlobalBehavior;
     exports.SanitizeHtmlValueConverter = sanitize_html_1.SanitizeHtmlValueConverter;
-    function install(aurelia) {
+    function configure(aurelia) {
         aurelia.globalizeResources('./compose', './if', './with', './repeat', './show', './global-behavior', './sanitize-html');
     }
-    exports.install = install;
+    exports.configure = configure;
 });

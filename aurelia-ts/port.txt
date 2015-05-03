@@ -28,7 +28,7 @@ x    { name: 'templating' }
 x    { name: 'framework' },
 o    { name: 'animator-css' },
 x    { name: 'templating-binding' },
-    { name: 'templating-resources' },
+x    { name: 'templating-resources' },
     { name: 'templating-router' }
   ]},
   { name: 'ring-5', repos: [

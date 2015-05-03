@@ -47,8 +47,8 @@ declare module 'aurelia-templating-binding/binding-language' {
 
 }
 declare module 'aurelia-templating-binding/index' {
-	 function install(aurelia: any): void;
-	export { TemplatingBindingLanguage, SyntaxInterpreter, install };
+	 function configure(aurelia: any): void;
+	export { TemplatingBindingLanguage, SyntaxInterpreter, configure };
 
 }
 declare module 'aurelia-templating-binding' {

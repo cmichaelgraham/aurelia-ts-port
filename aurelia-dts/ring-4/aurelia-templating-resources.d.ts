@@ -104,8 +104,8 @@ declare module 'aurelia-templating-resources/sanitize-html' {
 
 }
 declare module 'aurelia-templating-resources/index' {
-	 function install(aurelia: any): void;
-	export { Compose, If, With, Repeat, Show, SanitizeHtmlValueConverter, GlobalBehavior, install };
+	 function configure(aurelia: any): void;
+	export { Compose, If, With, Repeat, Show, SanitizeHtmlValueConverter, GlobalBehavior, configure };
 
 }
 declare module 'aurelia-templating-resources' {

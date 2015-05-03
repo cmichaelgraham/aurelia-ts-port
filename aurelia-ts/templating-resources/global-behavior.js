@@ -17,7 +17,7 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
         GlobalBehavior.prototype.bind = function () {
             var handler = GlobalBehavior.handlers[this.aureliaAttrName];
             if (!handler) {
-                throw new Error("Conventional binding handler not found for " + this.aureliaAttrName + ".");
+                throw new Error("Binding handler not found for '" + this.aureliaAttrName + "." + this.aureliaCommand + "'. Element:\n" + this.element.outerHTML + "\n");
             }
             try {
                 this.handler = handler.bind(this, this.element, this.aureliaCommand) || handler;
