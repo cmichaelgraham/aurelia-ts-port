@@ -259,12 +259,6 @@ declare module 'aurelia-router/index' {
 	export { RouteFilterContainer, createRouteFilterStep } from 'aurelia-router/route-filters';
 
 }
-declare module 'aurelia-router/model-binding' {
-	export class ApplyModelBindersStep {
-	    run(navigationContext: any, next: any): any;
-	}
-
-}
 declare module 'aurelia-router' {
 	export * from 'aurelia-router/index';
 }
