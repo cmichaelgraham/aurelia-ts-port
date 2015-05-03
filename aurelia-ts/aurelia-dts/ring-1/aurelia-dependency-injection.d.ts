@@ -27,8 +27,8 @@ declare module 'aurelia-dependency-injection/metadata' {
 	* @param {Object} [key] The key to register as.
 	*/
 	export class SingletonRegistration {
-	    key: any;
 	    registerInChild: any;
+	    key: any;
 	    constructor(keyOrRegisterInChild: any, registerInChild?: boolean);
 	    /**
 	    * Called by the container to register the annotated function/class as a singleton.
@@ -320,12 +320,15 @@ declare module 'aurelia-dependency-injection/container' {
 
 }
 declare module 'aurelia-dependency-injection/index' {
-	export { Registration, TransientRegistration, SingletonRegistration, Resolver, Lazy, All, Optional, Parent, InstanceActivator, FactoryActivator } from 'aurelia-dependency-injection/metadata';
+	export { TransientRegistration, SingletonRegistration, Resolver, Lazy, All, Optional, Parent, ClassActivator, FactoryActivator } from 'aurelia-dependency-injection/metadata';
 	export { Container } from 'aurelia-dependency-injection/container';
+	export function autoinject(target: any): void | ((target: any) => void);
 	export function inject(...rest: any[]): (target: any) => void;
+	export function registration(value: any): (target: any) => void;
 	export function transient(key: any): (target: any) => void;
 	export function singleton(keyOrRegisterInChild: any, registerInChild?: boolean): (target: any) => void;
-	export function factory(target: any): void;
+	export function instanceActivator(value: any): (target: any) => void;
+	export function factory(): (target: any) => void;
 
 }
 declare module 'aurelia-dependency-injection' {

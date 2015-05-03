@@ -1,4 +1,4 @@
-import core from 'core-js'
+import core from 'core-js';
 
 /**
 * Used to allow functions/classes to indicate that they should be registered as transients with the container.
@@ -8,7 +8,7 @@ import core from 'core-js'
 * @param {Object} [key] The key to register as.
 */
 export class TransientRegistration {
-  public key;
+  key;
   constructor(key){
     this.key = key;
   }
@@ -34,8 +34,8 @@ export class TransientRegistration {
 * @param {Object} [key] The key to register as.
 */
 export class SingletonRegistration {
-  public key;
-  public registerInChild;
+  registerInChild;
+  key;
   constructor(keyOrRegisterInChild, registerInChild=false){
     if(typeof keyOrRegisterInChild === 'boolean'){
       this.registerInChild = keyOrRegisterInChild;
@@ -87,7 +87,7 @@ export class Resolver {
 * @param {Object} key The key to lazily resolve.
 */
 export class Lazy extends Resolver {
-  public key;
+  key;
   constructor(key){
     super();
     this.key = key;
@@ -128,7 +128,7 @@ export class Lazy extends Resolver {
 * @param {Object} key The key to lazily resolve all matches for.
 */
 export class All extends Resolver {
-  public key;
+  key;
   constructor(key){
     super();
     this.key = key;
@@ -168,8 +168,8 @@ export class All extends Resolver {
 * @param {Boolean} [checkParent=false] Indicates whether or not the parent container hierarchy should be checked.
 */
 export class Optional extends Resolver {
-  public key;
-  public checkParent;
+  key;
+  checkParent;
   constructor(key, checkParent=false){
     super();
     this.key = key;
@@ -215,7 +215,7 @@ export class Optional extends Resolver {
 * @param {Object} key The key to resolve from the parent container.
 */
 export class Parent extends Resolver {
-  public key;
+  key;
   constructor(key){
     super();
     this.key = key;

@@ -740,7 +740,6 @@ interface ArrayBuffer {
 }
 
 interface ArrayBufferConstructor {
-    prototype: ArrayBuffer;
     new (byteLength: number): ArrayBuffer;
     isView(arg: any): boolean;
 }
@@ -893,17 +892,14 @@ interface Int8Array {
     /**
       * The ArrayBuffer instance referenced by the array.
       */
-    buffer: ArrayBuffer;
 
     /**
       * The length in bytes of the array.
       */
-    byteLength: number;
 
     /**
       * The offset in bytes of the array.
       */
-    byteOffset: number;
 
     /**
       * Returns the this object after copying a section of the array identified by start and end
@@ -1142,7 +1138,6 @@ interface Int8Array {
 }
 
 interface Int8ArrayConstructor {
-    prototype: Int8Array;
     new (length: number): Int8Array;
     new (array: Int8Array): Int8Array;
     new (array: number[]): Int8Array;
@@ -1151,7 +1146,6 @@ interface Int8ArrayConstructor {
     /**
       * The size in bytes of each element in the array.
       */
-    BYTES_PER_ELEMENT: number;
 
     /**
       * Returns a new array from a set of elements.
@@ -1181,17 +1175,14 @@ interface Uint8Array {
     /**
       * The ArrayBuffer instance referenced by the array.
       */
-    buffer: ArrayBuffer;
 
     /**
       * The length in bytes of the array.
       */
-    byteLength: number;
 
     /**
       * The offset in bytes of the array.
       */
-    byteOffset: number;
 
     /**
       * Returns the this object after copying a section of the array identified by start and end
@@ -1430,7 +1421,6 @@ interface Uint8Array {
 }
 
 interface Uint8ArrayConstructor {
-    prototype: Uint8Array;
     new (length: number): Uint8Array;
     new (array: Uint8Array): Uint8Array;
     new (array: number[]): Uint8Array;
@@ -1439,7 +1429,6 @@ interface Uint8ArrayConstructor {
     /**
       * The size in bytes of each element in the array.
       */
-    BYTES_PER_ELEMENT: number;
 
     /**
       * Returns a new array from a set of elements.
@@ -1759,17 +1748,14 @@ interface Int16Array {
     /**
       * The ArrayBuffer instance referenced by the array.
       */
-    buffer: ArrayBuffer;
 
     /**
       * The length in bytes of the array.
       */
-    byteLength: number;
 
     /**
       * The offset in bytes of the array.
       */
-    byteOffset: number;
 
     /**
       * Returns the this object after copying a section of the array identified by start and end
@@ -2008,7 +1994,6 @@ interface Int16Array {
 }
 
 interface Int16ArrayConstructor {
-    prototype: Int16Array;
     new (length: number): Int16Array;
     new (array: Int16Array): Int16Array;
     new (array: number[]): Int16Array;
@@ -2017,7 +2002,6 @@ interface Int16ArrayConstructor {
     /**
       * The size in bytes of each element in the array.
       */
-    BYTES_PER_ELEMENT: number;
 
     /**
       * Returns a new array from a set of elements.
@@ -2047,17 +2031,14 @@ interface Uint16Array {
     /**
       * The ArrayBuffer instance referenced by the array.
       */
-    buffer: ArrayBuffer;
 
     /**
       * The length in bytes of the array.
       */
-    byteLength: number;
 
     /**
       * The offset in bytes of the array.
       */
-    byteOffset: number;
 
     /**
       * Returns the this object after copying a section of the array identified by start and end
@@ -2296,7 +2277,6 @@ interface Uint16Array {
 }
 
 interface Uint16ArrayConstructor {
-    prototype: Uint16Array;
     new (length: number): Uint16Array;
     new (array: Uint16Array): Uint16Array;
     new (array: number[]): Uint16Array;
@@ -2305,7 +2285,6 @@ interface Uint16ArrayConstructor {
     /**
       * The size in bytes of each element in the array.
       */
-    BYTES_PER_ELEMENT: number;
 
     /**
       * Returns a new array from a set of elements.
@@ -2335,17 +2314,14 @@ interface Int32Array {
     /**
       * The ArrayBuffer instance referenced by the array.
       */
-    buffer: ArrayBuffer;
 
     /**
       * The length in bytes of the array.
       */
-    byteLength: number;
 
     /**
       * The offset in bytes of the array.
       */
-    byteOffset: number;
 
     /**
       * Returns the this object after copying a section of the array identified by start and end
@@ -2584,7 +2560,6 @@ interface Int32Array {
 }
 
 interface Int32ArrayConstructor {
-    prototype: Int32Array;
     new (length: number): Int32Array;
     new (array: Int32Array): Int32Array;
     new (array: number[]): Int32Array;
@@ -2593,7 +2568,6 @@ interface Int32ArrayConstructor {
     /**
       * The size in bytes of each element in the array.
       */
-    BYTES_PER_ELEMENT: number;
 
     /**
       * Returns a new array from a set of elements.
@@ -2623,17 +2597,14 @@ interface Uint32Array {
     /**
       * The ArrayBuffer instance referenced by the array.
       */
-    buffer: ArrayBuffer;
 
     /**
       * The length in bytes of the array.
       */
-    byteLength: number;
 
     /**
       * The offset in bytes of the array.
       */
-    byteOffset: number;
 
     /**
       * Returns the this object after copying a section of the array identified by start and end
@@ -2872,7 +2843,6 @@ interface Uint32Array {
 }
 
 interface Uint32ArrayConstructor {
-    prototype: Uint32Array;
     new (length: number): Uint32Array;
     new (array: Uint32Array): Uint32Array;
     new (array: number[]): Uint32Array;
@@ -2881,7 +2851,6 @@ interface Uint32ArrayConstructor {
     /**
       * The size in bytes of each element in the array.
       */
-    BYTES_PER_ELEMENT: number;
 
     /**
       * Returns a new array from a set of elements.
@@ -2911,17 +2880,14 @@ interface Float32Array {
     /**
       * The ArrayBuffer instance referenced by the array.
       */
-    buffer: ArrayBuffer;
 
     /**
       * The length in bytes of the array.
       */
-    byteLength: number;
 
     /**
       * The offset in bytes of the array.
       */
-    byteOffset: number;
 
     /**
       * Returns the this object after copying a section of the array identified by start and end
@@ -3160,7 +3126,6 @@ interface Float32Array {
 }
 
 interface Float32ArrayConstructor {
-    prototype: Float32Array;
     new (length: number): Float32Array;
     new (array: Float32Array): Float32Array;
     new (array: number[]): Float32Array;
@@ -3169,7 +3134,6 @@ interface Float32ArrayConstructor {
     /**
       * The size in bytes of each element in the array.
       */
-    BYTES_PER_ELEMENT: number;
 
     /**
       * Returns a new array from a set of elements.
@@ -3199,17 +3163,14 @@ interface Float64Array {
     /**
       * The ArrayBuffer instance referenced by the array.
       */
-    buffer: ArrayBuffer;
 
     /**
       * The length in bytes of the array.
       */
-    byteLength: number;
 
     /**
       * The offset in bytes of the array.
       */
-    byteOffset: number;
 
     /**
       * Returns the this object after copying a section of the array identified by start and end
@@ -3448,7 +3409,6 @@ interface Float64Array {
 }
 
 interface Float64ArrayConstructor {
-    prototype: Float64Array;
     new (length: number): Float64Array;
     new (array: Float64Array): Float64Array;
     new (array: number[]): Float64Array;
@@ -3457,7 +3417,6 @@ interface Float64ArrayConstructor {
     /**
       * The size in bytes of each element in the array.
       */
-    BYTES_PER_ELEMENT: number;
 
     /**
       * Returns a new array from a set of elements.
