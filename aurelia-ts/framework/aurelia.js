@@ -151,6 +151,7 @@ define(["require", "exports", 'aurelia-logging', 'aurelia-dependency-injection',
             if (root === void 0) { root = 'app'; }
             if (applicationHost === void 0) { applicationHost = null; }
             var compositionEngine, instruction = {};
+            applicationHost = applicationHost || this.host;
             if (!applicationHost || typeof applicationHost == 'string') {
                 this.host = document.getElementById(applicationHost || 'applicationHost') || document.body;
             }

@@ -25,7 +25,7 @@ o    { name: 'loader-default' }
 x    { name: 'templating' }
   ]},
   { name: 'ring-4', repos: [
-    { name: 'framework' },
+x    { name: 'framework' },
 o    { name: 'animator-css' },
     { name: 'templating-binding' },
     { name: 'templating-resources' },

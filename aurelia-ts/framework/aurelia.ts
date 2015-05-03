@@ -25,7 +25,7 @@ if (!(<any>window).CustomEvent || typeof (<any>window).CustomEvent !== 'function
     };
 
     var evt = document.createEvent("CustomEvent");
-    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    (<any>evt).initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
     return evt;
   };
 
@@ -201,6 +201,8 @@ export class Aurelia {
    */
   setRoot(root='app', applicationHost=null){
     var compositionEngine, instruction:any = {};
+
+    applicationHost = applicationHost || this.host;
 
     if (!applicationHost || typeof applicationHost == 'string') {
       this.host = document.getElementById(applicationHost || 'applicationHost') || document.body;

@@ -3,27 +3,21 @@ define(["require", "exports", 'aurelia-logging'], function (require, exports, Lo
     function loadPlugin(aurelia, loader, info) {
         logger.debug("Loading plugin " + info.moduleId + ".");
         aurelia.currentPluginId = info.moduleId;
-        return loader.loadModule(info.moduleId).then(function (exportedValue) {
-            if ('install' in exportedValue) {
-                var result = exportedValue.install(aurelia, info.config || {});
-                if (result) {
-                    return result.then(function () {
-                        aurelia.currentPluginId = null;
-                        logger.debug("Installed plugin " + info.moduleId + ".");
-                    });
-                }
-                else {
-                    logger.debug("Installed plugin " + info.moduleId + ".");
-                }
+        return loader.loadModule(info.moduleId).then(function (m) {
+            if ('configure' in m) {
+                return Promise.resolve(m.configure(aurelia, info.config || {})).then(function () {
+                    aurelia.currentPluginId = null;
+                    logger.debug("Configured plugin " + info.moduleId + ".");
+                });
             }
             else {
+                aurelia.currentPluginId = null;
                 logger.debug("Loaded plugin " + info.moduleId + ".");
             }
-            aurelia.currentPluginId = null;
         });
     }
     /**
-     * Manages loading and installing plugins.
+     * Manages loading and configuring plugins.
      *
      * @class Plugins
      * @constructor
@@ -36,10 +30,10 @@ define(["require", "exports", 'aurelia-logging'], function (require, exports, Lo
             this.processed = false;
         }
         /**
-         * Installs a plugin before Aurelia starts.
+         * Configures a plugin before Aurelia starts.
          *
          * @method plugin
-         * @param {moduleId} moduleId The ID of the module to install.
+         * @param {moduleId} moduleId The ID of the module to configure.
          * @param {config} config The configuration for the specified module.
          * @return {Plugins} Returns the current Plugins instance.
        */
@@ -51,22 +45,6 @@ define(["require", "exports", 'aurelia-logging'], function (require, exports, Lo
             else {
                 this.info.push(plugin);
             }
-            return this;
-        };
-        /**
-         * Installs special support for ES5 authoring.
-         *
-         * @method es5
-         * @return {Plugins} Returns the current Plugins instance.
-       */
-        Plugins.prototype.es5 = function () {
-            Function.prototype.computed = function (computedProperties) {
-                for (var key in computedProperties) {
-                    if (computedProperties.hasOwnProperty(key)) {
-                        Object.defineProperty(this.prototype, key, { get: computedProperties[key], enumerable: true });
-                    }
-                }
-            };
             return this;
         };
         Plugins.prototype._process = function () {
