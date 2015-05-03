@@ -40,6 +40,7 @@ export class BrowserHistory extends History {
   private _wantsHashChange;
   private _wantsPushState;
   private _checkUrlInterval;
+  private _checkUrlTimer;
   constructor(){
     super();
     this.interval = 50;

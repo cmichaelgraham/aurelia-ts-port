@@ -31,12 +31,13 @@ export class AppRouter extends Router {
   loadUrl(url) {
     return this.createNavigationInstruction(url)
       .then(instruction => this.queueInstruction(instruction))
-      .catch(error => {
+      .catch((error:any) => {
         console.error(error);
 
         if (this.history.previousFragment) {
           this.navigate(this.history.previousFragment, false);
         }
+        return {};
       });
   }
 

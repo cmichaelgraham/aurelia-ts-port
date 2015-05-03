@@ -1,12 +1,4 @@
-import {Compose} from './compose';
-import {If} from './if';
-import {With} from './with';
-import {Repeat} from './repeat';
-import {Show} from './show';
-import {GlobalBehavior} from './global-behavior';
-import {SanitizeHtmlValueConverter} from './sanitize-html';
-
-function configure(aurelia){
+export function configure(aurelia){
   aurelia.globalizeResources(
     './compose',
     './if',
@@ -18,13 +10,10 @@ function configure(aurelia){
   );
 }
 
-export {
-  Compose,
-  If,
-  With,
-  Repeat,
-  Show,
-  SanitizeHtmlValueConverter,
-  GlobalBehavior,
-  configure
-};
+export {Compose} from './compose';
+export {If} from './if';
+export {With} from './with';
+export {Repeat} from './repeat';
+export {Show} from './show';
+export {GlobalBehavior} from './global-behavior';
+export {SanitizeHtmlValueConverter} from './sanitize-html';

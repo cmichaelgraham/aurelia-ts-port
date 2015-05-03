@@ -49,6 +49,3 @@ declare module 'aurelia-skeleton-navigation/welcome' {
 	}
 
 }
-declare module 'aurelia-skeleton-navigation' {
-	export * from 'aurelia-skeleton-navigation/index';
-}

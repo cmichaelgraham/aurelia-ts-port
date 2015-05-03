@@ -30,6 +30,7 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-history',
                 if (_this.history.previousFragment) {
                     _this.navigate(_this.history.previousFragment, false);
                 }
+                return {};
             });
         };
         AppRouter.prototype.queueInstruction = function (instruction) {

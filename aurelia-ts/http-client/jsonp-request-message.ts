@@ -25,7 +25,7 @@ export class JSONPRequestMessage {
 class JSONPXHR {
   public method;
   public uri;
-  public callbackName;
+  public callbackName:string;
   public callbackParameterName;
   public status;
   public statusText;

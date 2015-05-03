@@ -104,8 +104,14 @@ declare module 'aurelia-templating-resources/sanitize-html' {
 
 }
 declare module 'aurelia-templating-resources/index' {
-	 function configure(aurelia: any): void;
-	export { Compose, If, With, Repeat, Show, SanitizeHtmlValueConverter, GlobalBehavior, configure };
+	export function configure(aurelia: any): void;
+	export { Compose } from 'aurelia-templating-resources/compose';
+	export { If } from 'aurelia-templating-resources/if';
+	export { With } from 'aurelia-templating-resources/with';
+	export { Repeat } from 'aurelia-templating-resources/repeat';
+	export { Show } from 'aurelia-templating-resources/show';
+	export { GlobalBehavior } from 'aurelia-templating-resources/global-behavior';
+	export { SanitizeHtmlValueConverter } from 'aurelia-templating-resources/sanitize-html';
 
 }
 declare module 'aurelia-templating-resources' {

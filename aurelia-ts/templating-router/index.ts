@@ -1,17 +1,12 @@
 import {Router, AppRouter, RouteLoader} from 'aurelia-router';
 import {TemplatingRouteLoader} from './route-loader';
-import {RouterView} from './router-view';
-import {RouteHref} from './route-href';
 
-function configure(aurelia){
+export function configure(aurelia){
   aurelia.withSingleton(RouteLoader, TemplatingRouteLoader)
          .withSingleton(Router, AppRouter)
          .globalizeResources('./router-view', './route-href');
 }
 
-export {
-  TemplatingRouteLoader,
-  RouterView,
-  RouteHref,
-  configure
-};
+export {TemplatingRouteLoader} from './route-loader';
+export {RouterView} from './router-view';
+export {RouteHref} from './route-href';
