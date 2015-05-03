@@ -36,8 +36,8 @@ declare module 'aurelia-templating-router/route-href' {
 
 }
 declare module 'aurelia-templating-router/index' {
-	 function install(aurelia: any): void;
-	export { TemplatingRouteLoader, RouterView, RouteHref, install };
+	 function configure(aurelia: any): void;
+	export { TemplatingRouteLoader, RouterView, RouteHref, configure };
 
 }
 declare module 'aurelia-templating-router' {

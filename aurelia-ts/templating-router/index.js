@@ -2,10 +2,10 @@ define(["require", "exports", 'aurelia-router', './route-loader', './router-view
     exports.TemplatingRouteLoader = route_loader_1.TemplatingRouteLoader;
     exports.RouterView = router_view_1.RouterView;
     exports.RouteHref = route_href_1.RouteHref;
-    function install(aurelia) {
+    function configure(aurelia) {
         aurelia.withSingleton(aurelia_router_1.RouteLoader, route_loader_1.TemplatingRouteLoader)
             .withSingleton(aurelia_router_1.Router, aurelia_router_1.AppRouter)
             .globalizeResources('./router-view', './route-href');
     }
-    exports.install = install;
+    exports.configure = configure;
 });

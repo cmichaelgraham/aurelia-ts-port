@@ -29,7 +29,7 @@ x    { name: 'framework' },
 o    { name: 'animator-css' },
 x    { name: 'templating-binding' },
 x    { name: 'templating-resources' },
-    { name: 'templating-router' }
+x    { name: 'templating-router' }
   ]},
   { name: 'ring-5', repos: [
 o    { name: 'app-contacts' },
