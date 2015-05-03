@@ -1,3 +1,5 @@
+rm -fR aurelia-latest
+
 mkdir aurelia-latest-repos
 
 cd aurelia-latest-repos
