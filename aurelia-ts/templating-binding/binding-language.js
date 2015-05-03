@@ -17,6 +17,7 @@ define(["require", "exports", 'aurelia-templating', 'aurelia-binding', './syntax
             syntaxInterpreter.language = this;
             this.attributeMap = syntaxInterpreter.attributeMap = {
                 'class': 'className',
+                'contenteditable': 'contentEditable',
                 'for': 'htmlFor',
                 'tabindex': 'tabIndex',
                 'textcontent': 'textContent',
@@ -135,7 +136,7 @@ define(["require", "exports", 'aurelia-templating', 'aurelia-binding', './syntax
             }
             // literal.
             parts[partIndex] = attrValue.substr(pos);
-            return new InterpolationBindingExpression(this.observerLocator, this.attributeMap[attrName] || attrName, parts, aurelia_binding_1.ONE_WAY, resources.valueConverterLookupFunction, attrName);
+            return new InterpolationBindingExpression(this.observerLocator, this.attributeMap[attrName] || attrName, parts, aurelia_binding_1.bindingMode.oneWay, resources.valueConverterLookupFunction, attrName);
         };
         return TemplatingBindingLanguage;
     })(aurelia_templating_1.BindingLanguage);
@@ -176,7 +177,7 @@ define(["require", "exports", 'aurelia-templating', 'aurelia-binding', './syntax
         };
         InterpolationBinding.prototype.bind = function (source) {
             this.source = source;
-            if (this.mode == aurelia_binding_1.ONE_WAY) {
+            if (this.mode == aurelia_binding_1.bindingMode.oneWay) {
                 this.unbind();
                 this.connect();
                 this.setValue();

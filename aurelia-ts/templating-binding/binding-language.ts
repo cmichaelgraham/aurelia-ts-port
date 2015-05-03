@@ -1,5 +1,5 @@
 import {BindingLanguage} from 'aurelia-templating';
-import {Parser, ObserverLocator, BindingExpression, NameExpression, ONE_WAY} from 'aurelia-binding';
+import {Parser, ObserverLocator, BindingExpression, NameExpression, bindingMode} from 'aurelia-binding';
 import {SyntaxInterpreter} from './syntax-interpreter';
 import * as LogManager from 'aurelia-logging';
 
@@ -22,6 +22,7 @@ export class TemplatingBindingLanguage extends BindingLanguage {
     syntaxInterpreter.language = this;
     this.attributeMap = syntaxInterpreter.attributeMap = {
       'class':'className',
+      'contenteditable':'contentEditable',
       'for':'htmlFor',
       'tabindex':'tabIndex',
       'textcontent': 'textContent',
@@ -160,7 +161,7 @@ export class TemplatingBindingLanguage extends BindingLanguage {
       this.observerLocator,
       this.attributeMap[attrName] || attrName,
       parts,
-      ONE_WAY,
+      bindingMode.oneWay,
       resources.valueConverterLookupFunction,
       attrName
     );
@@ -228,7 +229,7 @@ class InterpolationBinding {
   bind(source){
     this.source = source;
 
-    if(this.mode == ONE_WAY){
+    if(this.mode == bindingMode.oneWay){
       this.unbind();
       this.connect();
       this.setValue();
