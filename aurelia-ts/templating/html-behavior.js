@@ -1,15 +1,7 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 define(["require", "exports", 'aurelia-metadata', 'aurelia-binding', 'aurelia-task-queue', './view-strategy', './view-engine', './content-selector', './util', './bindable-property', './behavior-instance'], function (require, exports, aurelia_metadata_1, aurelia_binding_1, aurelia_task_queue_1, view_strategy_1, view_engine_1, content_selector_1, util_1, bindable_property_1, behavior_instance_1) {
     var defaultInstruction = { suppressBind: false }, contentSelectorFactoryOptions = { suppressBind: true }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot;
-    var HtmlBehaviorResource = (function (_super) {
-        __extends(HtmlBehaviorResource, _super);
+    var HtmlBehaviorResource = (function () {
         function HtmlBehaviorResource() {
-            _super.call(this);
             this.elementName = null;
             this.attributeName = null;
             this.liftsContent = false;
@@ -200,6 +192,6 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-binding', 'aurelia-ta
             }
         };
         return HtmlBehaviorResource;
-    })(ResourceType);
+    })();
     exports.HtmlBehaviorResource = HtmlBehaviorResource;
 });

@@ -46,7 +46,7 @@ export var Metadata = {
 
     return Reflect.getOwnMetadata(metadataKey, target, propertyKey);
   },
-  getOrCreateOwn(metadataKey, Type, target, propertyKey){
+  getOrCreateOwn(metadataKey, Type, target, propertyKey?){
     let result = Metadata.getOwn(metadataKey, target, propertyKey);
 
     if(result === undefined){

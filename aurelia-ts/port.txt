@@ -18,11 +18,11 @@ o    { name: 'http-client' }
   ]},
   { name: 'ring-2', repos: [
 o    { name: 'binding' },
-    { name: 'router' },
+x    { name: 'router' },
 o    { name: 'loader-default' }
   ]},
   { name: 'ring-3', repos: [
-    { name: 'templating' }
+x    { name: 'templating' }
   ]},
   { name: 'ring-4', repos: [
     { name: 'framework' },

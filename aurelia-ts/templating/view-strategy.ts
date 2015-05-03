@@ -3,11 +3,9 @@ import {relativeToFile} from 'aurelia-path';
 import {AggregateError} from 'aurelia-logging';
 
 export class ViewStrategy {
-  makeRelativeTo(baseUrl){}
+  static metadataKey = 'aurelia:view-strategy';
 
-  loadViewFactory(viewEngine, options){
-    throw new Error('A ViewStrategy must implement loadViewFactory(viewEngine, options).');
-  }
+  makeRelativeTo(baseUrl){}
 
   static normalize(value){
     if(typeof value === 'string'){
@@ -29,7 +27,7 @@ export class ViewStrategy {
     }
 
     annotation = Origin.get(target);
-    strategy = Metadata.on(target).first(ViewStrategy);
+    strategy = Metadata.get(ViewStrategy.metadataKey, target);
 
     if(!strategy){
       if(!annotation){

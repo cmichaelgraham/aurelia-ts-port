@@ -11,7 +11,7 @@ declare module 'aurelia-metadata/metadata' {
 	    properties: string;
 	    get(metadataKey: any, target: any, propertyKey?: any): any;
 	    getOwn(metadataKey: any, target: any, propertyKey?: any): any;
-	    getOrCreateOwn(metadataKey: any, Type: any, target: any, propertyKey: any): any;
+	    getOrCreateOwn(metadataKey: any, Type: any, target: any, propertyKey?: any): any;
 	};
 
 }

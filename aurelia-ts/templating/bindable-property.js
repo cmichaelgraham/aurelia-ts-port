@@ -16,7 +16,7 @@ define(["require", "exports", './util', 'aurelia-binding'], function (require, e
                 Object.assign(this, nameOrConfig);
             }
             this.attribute = this.attribute || util_1.hyphenate(this.name);
-            this.defaultBindingMode = this.defaultBindingMode || aurelia_binding_1.ONE_WAY;
+            this.defaultBindingMode = this.defaultBindingMode || aurelia_binding_1.bindingMode.oneWay;
             this.changeHandler = this.changeHandler || null;
             this.owner = null;
         }

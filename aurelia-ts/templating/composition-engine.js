@@ -46,7 +46,10 @@ define(["require", "exports", 'aurelia-metadata', './view-strategy', './view-eng
                 else {
                     metadata = new html_behavior_1.HtmlBehaviorResource();
                     metadata.elementName = 'dynamic-element';
-                    doneLoading = metadata.load(childContainer, viewModel.constructor, instruction.view, true);
+                    doneLoading = metadata.load(childContainer, viewModel.constructor, instruction.view, true).then(function (viewFactory) {
+                        metadata.analyze(instruction.container || childContainer, viewModel.constructor);
+                        return viewFactory;
+                    });
                 }
                 return doneLoading.then(function (viewFactory) {
                     return metadata.create(childContainer, {

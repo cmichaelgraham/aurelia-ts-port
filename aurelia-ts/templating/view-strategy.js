@@ -9,9 +9,6 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-path', 'aurelia-loggi
         function ViewStrategy() {
         }
         ViewStrategy.prototype.makeRelativeTo = function (baseUrl) { };
-        ViewStrategy.prototype.loadViewFactory = function (viewEngine, options) {
-            throw new Error('A ViewStrategy must implement loadViewFactory(viewEngine, options).');
-        };
         ViewStrategy.normalize = function (value) {
             if (typeof value === 'string') {
                 value = new UseViewStrategy(value);
@@ -27,7 +24,7 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-path', 'aurelia-loggi
                 target = target.constructor;
             }
             annotation = aurelia_metadata_1.Origin.get(target);
-            strategy = aurelia_metadata_1.Metadata.on(target).first(ViewStrategy);
+            strategy = aurelia_metadata_1.Metadata.get(ViewStrategy.metadataKey, target);
             if (!strategy) {
                 if (!annotation) {
                     throw aurelia_logging_1.AggregateError('Cannot determinte default view strategy for object.', target);
@@ -39,6 +36,7 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-path', 'aurelia-loggi
             }
             return strategy;
         };
+        ViewStrategy.metadataKey = 'aurelia:view-strategy';
         return ViewStrategy;
     })();
     exports.ViewStrategy = ViewStrategy;

@@ -70,16 +70,13 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-loader', 'aurelia-bin
         return ResourceModule;
     })();
     var ResourceDescription = (function () {
-        function ResourceDescription(key, exportedValue, allMetadata, resourceTypeMeta) {
+        function ResourceDescription(key, exportedValue, resourceTypeMeta) {
             if (!resourceTypeMeta) {
-                if (!allMetadata) {
-                    allMetadata = aurelia_metadata_1.Metadata.on(exportedValue);
-                }
-                resourceTypeMeta = allMetadata.first(aurelia_metadata_1.ResourceType);
+                resourceTypeMeta = aurelia_metadata_1.Metadata.get(aurelia_metadata_1.Metadata.resource, exportedValue);
                 if (!resourceTypeMeta) {
                     resourceTypeMeta = new html_behavior_1.HtmlBehaviorResource();
                     resourceTypeMeta.elementName = util_1.hyphenate(key);
-                    allMetadata.add(resourceTypeMeta);
+                    Reflect.defineMetadata(aurelia_metadata_1.Metadata.resource, resourceTypeMeta, exportedValue);
                 }
             }
             if (resourceTypeMeta instanceof html_behavior_1.HtmlBehaviorResource) {
@@ -112,7 +109,7 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-loader', 'aurelia-bin
             return this.cache[moduleId];
         };
         ModuleAnalyzer.prototype.analyze = function (moduleId, moduleInstance, viewModelMember) {
-            var mainResource, fallbackValue, fallbackKey, fallbackMetadata, resourceTypeMeta, key, allMetadata, exportedValue, resources = [], conventional, viewStrategy, resourceModule;
+            var mainResource, fallbackValue, fallbackKey, resourceTypeMeta, key, exportedValue, resources = [], conventional, viewStrategy, resourceModule;
             resourceModule = this.cache[moduleId];
             if (resourceModule) {
                 return resourceModule;
@@ -130,8 +127,7 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-loader', 'aurelia-bin
                 if (key === viewModelMember || typeof exportedValue !== 'function') {
                     continue;
                 }
-                allMetadata = aurelia_metadata_1.Metadata.on(exportedValue);
-                resourceTypeMeta = allMetadata.first(aurelia_metadata_1.ResourceType);
+                resourceTypeMeta = aurelia_metadata_1.Metadata.get(aurelia_metadata_1.Metadata.resource, exportedValue);
                 if (resourceTypeMeta) {
                     if (resourceTypeMeta.attributeName === null && resourceTypeMeta.elementName === null) {
                         //no customeElement or customAttribute but behavior added by other metadata
@@ -142,10 +138,10 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-loader', 'aurelia-bin
                         resourceTypeMeta.elementName = util_1.hyphenate(key);
                     }
                     if (!mainResource && resourceTypeMeta instanceof html_behavior_1.HtmlBehaviorResource && resourceTypeMeta.elementName !== null) {
-                        mainResource = new ResourceDescription(key, exportedValue, allMetadata, resourceTypeMeta);
+                        mainResource = new ResourceDescription(key, exportedValue, resourceTypeMeta);
                     }
                     else {
-                        resources.push(new ResourceDescription(key, exportedValue, allMetadata, resourceTypeMeta));
+                        resources.push(new ResourceDescription(key, exportedValue, resourceTypeMeta));
                     }
                 }
                 else if (exportedValue instanceof view_strategy_1.ViewStrategy) {
@@ -157,26 +153,25 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-loader', 'aurelia-bin
                 else {
                     if (conventional = html_behavior_1.HtmlBehaviorResource.convention(key)) {
                         if (conventional.elementName !== null && !mainResource) {
-                            mainResource = new ResourceDescription(key, exportedValue, allMetadata, conventional);
+                            mainResource = new ResourceDescription(key, exportedValue, conventional);
                         }
                         else {
-                            resources.push(new ResourceDescription(key, exportedValue, allMetadata, conventional));
+                            resources.push(new ResourceDescription(key, exportedValue, conventional));
                         }
-                        allMetadata.add(conventional);
+                        Reflect.defineMetadata(aurelia_metadata_1.Metadata.resource, conventional, exportedValue);
                     }
                     else if (conventional = aurelia_binding_1.ValueConverterResource.convention(key)) {
-                        resources.push(new ResourceDescription(key, exportedValue, allMetadata, conventional));
-                        allMetadata.add(conventional);
+                        resources.push(new ResourceDescription(key, exportedValue, conventional));
+                        Reflect.defineMetadata(aurelia_metadata_1.Metadata.resource, conventional, exportedValue);
                     }
                     else if (!fallbackValue) {
                         fallbackValue = exportedValue;
                         fallbackKey = key;
-                        fallbackMetadata = allMetadata;
                     }
                 }
             }
             if (!mainResource && fallbackValue) {
-                mainResource = new ResourceDescription(fallbackKey, fallbackValue, fallbackMetadata);
+                mainResource = new ResourceDescription(fallbackKey, fallbackValue);
             }
             resourceModule.moduleInstance = moduleInstance;
             resourceModule.mainResource = mainResource;
