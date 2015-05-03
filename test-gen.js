@@ -47,6 +47,8 @@ buildTargets.rings.forEach(function(ring) {
             files: repo.files,
             out: 'aurelia-dts/' + ring.name + '/aurelia-' + repo.name + '.d.ts',
             main: 'aurelia-' + repo.name + '/index'
+        }, function(msg) {
+          console.log('      message: ' + msg);
         });
 
         console.log('');

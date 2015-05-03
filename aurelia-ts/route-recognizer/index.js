@@ -262,6 +262,7 @@ define(["require", "exports", './state', './segments'], function (require, expor
         }
         return RecognizeResults;
     })();
+    exports.RecognizeResults = RecognizeResults;
     function parse(route, names, types) {
         // normalize route as not starting with a '/'. Recognition will
         // also normalize.

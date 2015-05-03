@@ -314,7 +314,7 @@ export class RouteRecognizer {
   }
 }
 
-class RecognizeResults {
+export class RecognizeResults {
   splice;
   slice;
   push;
