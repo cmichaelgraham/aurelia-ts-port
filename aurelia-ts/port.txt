@@ -34,5 +34,5 @@ x    { name: 'templating-router' }
   { name: 'ring-5', repos: [
 o    { name: 'app-contacts' },
 o    { name: 'bootstrapper' },
-    { name: 'skeleton-navigation' }
+o    { name: 'skeleton-navigation' }
   ]}
