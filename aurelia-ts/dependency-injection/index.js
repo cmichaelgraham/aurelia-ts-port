@@ -13,7 +13,7 @@ define(["require", "exports", 'aurelia-metadata', './metadata', './container', '
         var deco = function (target) {
             target.inject = Reflect.getOwnMetadata(aurelia_metadata_1.Metadata.paramTypes, target) || container_1.emptyParameters;
         };
-        return target ? deco(target) : deco;
+        return (target ? deco(target) : deco);
     }
     exports.autoinject = autoinject;
     function inject() {

@@ -20,12 +20,12 @@ export {
 
 export {Container} from './container';
 
-export function autoinject(target){
+export function autoinject(target:any){
   var deco = function(target){
     target.inject = Reflect.getOwnMetadata(Metadata.paramTypes, target) || emptyParameters;
   };
 
-  return target ? deco(target) : deco;
+  return <any>(target ? deco(target) : deco);
 }
 
 export function inject(...rest){
