@@ -7,14 +7,51 @@ var merge = require('merge2');
 
 gulp.task('build-ts', function () {
 
-  console.log("xxx");
+  var tsProject = ts.createProject('tsconfig.json');
 
-  var tsProject = ts.createProject('tsconfig.json', { typescript: require('TypeScript') });
+  var tsResult =  gulp.src([
+        './aurelia-dts/**/*.d.ts'
+        ,'./animator-css/*.ts'
+        ,'./app-contacts/*.ts'
+        ,'./binding/*.ts'
+        ,'./bootstrapper/*.ts'
+        ,'./dependency-injection/*.ts'
+        ,'./event-aggregator/*.ts'
+        ,'./framework/*.ts'
+        ,'./history/*.ts'
+        ,'./history-browser/*.ts'
+        ,'./html-template-element/*.ts'
+        ,'./http-client/*.ts'
+        ,'./loader/*.ts'
+        ,'./loader-default/*.ts'
+        ,'./logging/*.ts'
+        ,'./metadata/*.ts'
+        ,'./path/*.ts'
+        ,'./router/*.ts'
+        ,'./route-recognizer/*.ts'
+        ,'./skeleton-navigation/*.ts'
+        ,'./skeleton-plugin/*.ts'
+        ,'./task-queue/*.ts'
+        ,'./templating/*.ts'
+        ,'./templating-binding/*.ts'
+        ,'./templating-resources/*.ts'
+        ,'./templating-router/*.ts'
+        ],
+        {base: "."})// tsProject.src() // instead of gulp.src(...)
+    .pipe(ts({
+         typescript: require('typescript'),
+         declarationFiles: false,
+         noExternalResolve: true,
+         target: "es6",
+         module: "system",
+         emitDecoratorMetadata: true
+    }));
 
-  var tsResult = tsProject.src() // instead of gulp.src(...)
-    .pipe(ts(tsProject));
+  console.log("hello");
 
-  return tsResult.js.pipe('release');
+    return tsResult.js.pipe(gulp.dest('../dist/system'));
+
+  // return tsResult.js.pipe('release');
 });
 
 var path = {
