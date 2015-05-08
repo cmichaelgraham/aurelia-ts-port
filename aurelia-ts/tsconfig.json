@@ -1,8 +1,8 @@
 {
-    "version": "1.5.1",
+    "version": "1.5.2",
     "compilerOptions": {
-        "target": "es5",
-        "module": "amd",
+        "target": "es6",
+        "module": "system",
         "declaration": false,
         "noImplicitAny": false,
         "removeComments": false,

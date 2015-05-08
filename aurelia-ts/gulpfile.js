@@ -4,9 +4,13 @@ var runSequence = require('run-sequence');
 var ts = require('gulp-typescript');
 var merge = require('merge2');
 
-var tsProject = ts.createProject('tsconfig.json', { typescript: require('typescript') });
 
 gulp.task('build-ts', function () {
+
+  console.log("xxx");
+
+  var tsProject = ts.createProject('tsconfig.json', { typescript: require('TypeScript') });
+
   var tsResult = tsProject.src() // instead of gulp.src(...)
     .pipe(ts(tsProject));
 
