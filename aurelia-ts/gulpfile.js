@@ -42,7 +42,7 @@ gulp.task('build-ts-amd', function() {
         ],
         {base: "."})// tsProject.src() // instead of gulp.src(...)
     .pipe(ts({
-         typescript: require('typescript'),
+         //typescript: require('typescript'),
          declarationFiles: false,
          noExternalResolve: true,
          target: "es5",
@@ -84,7 +84,7 @@ gulp.task('build-ts-es6', function() {
         ],
         {base: "."})// tsProject.src() // instead of gulp.src(...)
     .pipe(ts({
-         typescript: require('typescript'),
+         //typescript: require('typescript'),
          declarationFiles: false,
          noExternalResolve: true,
          target: "es6",
@@ -126,7 +126,7 @@ gulp.task('build-ts-commonjs', function() {
         ],
         {base: "."})// tsProject.src() // instead of gulp.src(...)
     .pipe(ts({
-         typescript: require('typescript'),
+         //typescript: require('typescript'),
          declarationFiles: false,
          noExternalResolve: true,
          target: "es5",
@@ -168,11 +168,11 @@ gulp.task('build-ts-system', function () {
         ],
         {base: "."})// tsProject.src() // instead of gulp.src(...)
     .pipe(ts({
-         typescript: require('typescript'),
+         //typescript: require('typescript'),
          declarationFiles: false,
          noExternalResolve: true,
-         target: "es6",
-         module: "systemjs",
+         target: "es5",
+         module: "system",
          emitDecoratorMetadata: true
     }));
 

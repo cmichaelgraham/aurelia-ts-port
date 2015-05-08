@@ -1,98 +1,121 @@
-import { Origin } from 'aurelia-metadata';
-import { Loader } from 'aurelia-loader';
-if (!window.System || !window.System.import) {
-    var sys = window.System = window.System || {};
-    sys.polyfilled = true;
-    sys.map = {};
-    sys['import'] = function (moduleId) {
-        return new Promise((resolve, reject) => {
-            require([moduleId], resolve, reject);
-        });
-    };
-    sys.normalize = function (url) {
-        return Promise.resolve(url);
-    };
-}
-function ensureOriginOnExports(executed, name) {
-    var target = executed, key, exportedValue;
-    if (target.__useDefault) {
-        target = target['default'];
-    }
-    Origin.set(target, new Origin(name, 'default'));
-    for (key in target) {
-        exportedValue = target[key];
-        if (typeof exportedValue === "function") {
-            Origin.set(exportedValue, new Origin(name, key));
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};System.register(['aurelia-metadata', 'aurelia-loader'], function(exports_1) {
+    var aurelia_metadata_1, aurelia_loader_1;
+    var require, define, sys, DefaultLoader;
+    function ensureOriginOnExports(executed, name) {
+        var target = executed, key, exportedValue;
+        if (target.__useDefault) {
+            target = target['default'];
         }
-    }
-    return executed;
-}
-export class DefaultLoader extends Loader {
-    constructor() {
-        super();
-        this.moduleRegistry = {};
-        var that = this;
-        if (window.System.polyfilled) {
-            define('view', [], {
-                'load': function (name, req, onload, config) {
-                    var entry = that.getOrCreateTemplateRegistryEntry(name), address;
-                    if (entry.templateIsLoaded) {
-                        onload(entry);
-                        return;
-                    }
-                    address = req.toUrl(name);
-                    that.importTemplate(address).then(template => {
-                        entry.setTemplate(template);
-                        onload(entry);
-                    });
-                }
-            });
-        }
-        else {
-            window.System.set('view', window.System.newModule({
-                'fetch': function (load, fetch) {
-                    var id = load.name.substring(0, load.name.indexOf('!'));
-                    var entry = load.metadata.templateRegistryEntry = that.getOrCreateTemplateRegistryEntry(id);
-                    if (entry.templateIsLoaded) {
-                        return '';
-                    }
-                    return that.importTemplate(load.address).then(template => {
-                        entry.setTemplate(template);
-                        return '';
-                    });
-                },
-                'instantiate': function (load) {
-                    return load.metadata.templateRegistryEntry;
-                }
-            }));
-        }
-    }
-    loadModule(id) {
-        return window.System.normalize(id).then(newId => {
-            var existing = this.moduleRegistry[newId];
-            if (existing) {
-                return existing;
+        aurelia_metadata_1.Origin.set(target, new aurelia_metadata_1.Origin(name, 'default'));
+        for (key in target) {
+            exportedValue = target[key];
+            if (typeof exportedValue === "function") {
+                aurelia_metadata_1.Origin.set(exportedValue, new aurelia_metadata_1.Origin(name, key));
             }
-            return window.System.import(newId).then(m => {
-                this.moduleRegistry[newId] = m;
-                return ensureOriginOnExports(m, newId);
-            });
-        });
-    }
-    loadAllModules(ids) {
-        var loads = [];
-        for (let id of ids) {
-            loads.push(this.loadModule(id));
         }
-        return Promise.all(loads);
+        return executed;
     }
-    loadTemplate(url) {
-        if (window.System.polyfilled) {
-            return window.System.import('view!' + url);
-        }
-        else {
-            return window.System.import(url + '!view');
+    return {
+        setters:[
+            function (_aurelia_metadata_1) {
+                aurelia_metadata_1 = _aurelia_metadata_1;
+            },
+            function (_aurelia_loader_1) {
+                aurelia_loader_1 = _aurelia_loader_1;
+            }],
+        execute: function() {
+            if (!window.System || !window.System.import) {
+                sys = window.System = window.System || {};
+                sys.polyfilled = true;
+                sys.map = {};
+                sys['import'] = function (moduleId) {
+                    return new Promise(function (resolve, reject) {
+                        require([moduleId], resolve, reject);
+                    });
+                };
+                sys.normalize = function (url) {
+                    return Promise.resolve(url);
+                };
+            }
+            DefaultLoader = (function (_super) {
+                __extends(DefaultLoader, _super);
+                function DefaultLoader() {
+                    _super.call(this);
+                    this.moduleRegistry = {};
+                    var that = this;
+                    if (window.System.polyfilled) {
+                        define('view', [], {
+                            'load': function (name, req, onload, config) {
+                                var entry = that.getOrCreateTemplateRegistryEntry(name), address;
+                                if (entry.templateIsLoaded) {
+                                    onload(entry);
+                                    return;
+                                }
+                                address = req.toUrl(name);
+                                that.importTemplate(address).then(function (template) {
+                                    entry.setTemplate(template);
+                                    onload(entry);
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        window.System.set('view', window.System.newModule({
+                            'fetch': function (load, fetch) {
+                                var id = load.name.substring(0, load.name.indexOf('!'));
+                                var entry = load.metadata.templateRegistryEntry = that.getOrCreateTemplateRegistryEntry(id);
+                                if (entry.templateIsLoaded) {
+                                    return '';
+                                }
+                                return that.importTemplate(load.address).then(function (template) {
+                                    entry.setTemplate(template);
+                                    return '';
+                                });
+                            },
+                            'instantiate': function (load) {
+                                return load.metadata.templateRegistryEntry;
+                            }
+                        }));
+                    }
+                }
+                DefaultLoader.prototype.loadModule = function (id) {
+                    var _this = this;
+                    return window.System.normalize(id).then(function (newId) {
+                        var existing = _this.moduleRegistry[newId];
+                        if (existing) {
+                            return existing;
+                        }
+                        return window.System.import(newId).then(function (m) {
+                            _this.moduleRegistry[newId] = m;
+                            return ensureOriginOnExports(m, newId);
+                        });
+                    });
+                };
+                DefaultLoader.prototype.loadAllModules = function (ids) {
+                    var loads = [];
+                    for (var _i = 0; _i < ids.length; _i++) {
+                        var id = ids[_i];
+                        loads.push(this.loadModule(id));
+                    }
+                    return Promise.all(loads);
+                };
+                DefaultLoader.prototype.loadTemplate = function (url) {
+                    if (window.System.polyfilled) {
+                        return window.System.import('view!' + url);
+                    }
+                    else {
+                        return window.System.import(url + '!view');
+                    }
+                };
+                return DefaultLoader;
+            })(aurelia_loader_1.Loader);
+            exports_1("DefaultLoader", DefaultLoader);
+            window.AureliaLoader = DefaultLoader;
         }
     }
-}
-window.AureliaLoader = DefaultLoader;
+});

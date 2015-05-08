@@ -1,15 +1,24 @@
-function newRecord(type, object, key, oldValue) {
-    return {
-        type: type,
-        object: object,
-        key: key,
-        oldValue: oldValue
-    };
-}
-export function getChangeRecords(map) {
-    var entries = [];
-    for (var key of map.keys()) {
-        entries.push(newRecord('added', map, key));
+System.register([], function(exports_1) {
+    function newRecord(type, object, key, oldValue) {
+        return {
+            type: type,
+            object: object,
+            key: key,
+            oldValue: oldValue
+        };
     }
-    return entries;
-}
+    function getChangeRecords(map) {
+        var entries = [];
+        for (var _i = 0, _a = map.keys(); _i < _a.length; _i++) {
+            var key = _a[_i];
+            entries.push(newRecord('added', map, key));
+        }
+        return entries;
+    }
+    exports_1("getChangeRecords", getChangeRecords);
+    return {
+        setters:[],
+        execute: function() {
+        }
+    }
+});

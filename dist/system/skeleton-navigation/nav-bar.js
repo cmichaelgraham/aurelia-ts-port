@@ -8,14 +8,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-import { bindable } from 'aurelia-framework';
-export class NavBar {
-    constructor() {
-        this.router = null;
+};System.register(['aurelia-framework'], function(exports_1) {
+    var aurelia_framework_1;
+    var NavBar;
+    return {
+        setters:[
+            function (_aurelia_framework_1) {
+                aurelia_framework_1 = _aurelia_framework_1;
+            }],
+        execute: function() {
+            NavBar = (function () {
+                function NavBar() {
+                    this.router = null;
+                }
+                __decorate([
+                    aurelia_framework_1.bindable, 
+                    __metadata('design:type', Object)
+                ], NavBar.prototype, "router");
+                return NavBar;
+            })();
+            exports_1("NavBar", NavBar);
+        }
     }
-}
-__decorate([
-    bindable, 
-    __metadata('design:type', Object)
-], NavBar.prototype, "router");
+});

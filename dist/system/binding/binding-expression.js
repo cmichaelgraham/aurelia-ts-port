@@ -1,78 +1,93 @@
-import { bindingMode } from './binding-modes';
-export class BindingExpression {
-    constructor(observerLocator, targetProperty, sourceExpression, mode, valueConverterLookupFunction, attribute) {
-        this.observerLocator = observerLocator;
-        this.targetProperty = targetProperty;
-        this.sourceExpression = sourceExpression;
-        this.mode = mode;
-        this.valueConverterLookupFunction = valueConverterLookupFunction;
-        this.attribute = attribute;
-        this.discrete = false;
-    }
-    createBinding(target) {
-        return new Binding(this.observerLocator, this.sourceExpression, target, this.targetProperty, this.mode, this.valueConverterLookupFunction);
-    }
-}
-class Binding {
-    constructor(observerLocator, sourceExpression, target, targetProperty, mode, valueConverterLookupFunction) {
-        this.observerLocator = observerLocator;
-        this.sourceExpression = sourceExpression;
-        this.targetProperty = observerLocator.getObserver(target, targetProperty);
-        this.mode = mode;
-        this.valueConverterLookupFunction = valueConverterLookupFunction;
-    }
-    getObserver(obj, propertyName) {
-        return this.observerLocator.getObserver(obj, propertyName);
-    }
-    bind(source) {
-        var targetProperty = this.targetProperty, info;
-        if ('bind' in targetProperty) {
-            targetProperty.bind();
-        }
-        if (this.mode == bindingMode.oneWay || this.mode == bindingMode.twoWay) {
-            if (this._disposeObserver) {
-                if (this.source === source) {
-                    return;
+System.register(['./binding-modes'], function(exports_1) {
+    var binding_modes_1;
+    var BindingExpression, Binding;
+    return {
+        setters:[
+            function (_binding_modes_1) {
+                binding_modes_1 = _binding_modes_1;
+            }],
+        execute: function() {
+            BindingExpression = (function () {
+                function BindingExpression(observerLocator, targetProperty, sourceExpression, mode, valueConverterLookupFunction, attribute) {
+                    this.observerLocator = observerLocator;
+                    this.targetProperty = targetProperty;
+                    this.sourceExpression = sourceExpression;
+                    this.mode = mode;
+                    this.valueConverterLookupFunction = valueConverterLookupFunction;
+                    this.attribute = attribute;
+                    this.discrete = false;
                 }
-                this.unbind();
-            }
-            info = this.sourceExpression.connect(this, source);
-            if (info.observer) {
-                this._disposeObserver = info.observer.subscribe(newValue => {
-                    var existing = targetProperty.getValue();
-                    if (newValue !== existing) {
-                        targetProperty.setValue(newValue);
+                BindingExpression.prototype.createBinding = function (target) {
+                    return new Binding(this.observerLocator, this.sourceExpression, target, this.targetProperty, this.mode, this.valueConverterLookupFunction);
+                };
+                return BindingExpression;
+            })();
+            exports_1("BindingExpression", BindingExpression);
+            Binding = (function () {
+                function Binding(observerLocator, sourceExpression, target, targetProperty, mode, valueConverterLookupFunction) {
+                    this.observerLocator = observerLocator;
+                    this.sourceExpression = sourceExpression;
+                    this.targetProperty = observerLocator.getObserver(target, targetProperty);
+                    this.mode = mode;
+                    this.valueConverterLookupFunction = valueConverterLookupFunction;
+                }
+                Binding.prototype.getObserver = function (obj, propertyName) {
+                    return this.observerLocator.getObserver(obj, propertyName);
+                };
+                Binding.prototype.bind = function (source) {
+                    var _this = this;
+                    var targetProperty = this.targetProperty, info;
+                    if ('bind' in targetProperty) {
+                        targetProperty.bind();
                     }
-                });
-            }
-            if (info.value !== undefined) {
-                targetProperty.setValue(info.value);
-            }
-            if (this.mode == bindingMode.twoWay) {
-                this._disposeListener = targetProperty.subscribe(newValue => {
-                    this.sourceExpression.assign(source, newValue, this.valueConverterLookupFunction);
-                });
-            }
-            this.source = source;
-        }
-        else {
-            var value = this.sourceExpression.evaluate(source, this.valueConverterLookupFunction);
-            if (value !== undefined) {
-                targetProperty.setValue(value);
-            }
+                    if (this.mode == binding_modes_1.bindingMode.oneWay || this.mode == binding_modes_1.bindingMode.twoWay) {
+                        if (this._disposeObserver) {
+                            if (this.source === source) {
+                                return;
+                            }
+                            this.unbind();
+                        }
+                        info = this.sourceExpression.connect(this, source);
+                        if (info.observer) {
+                            this._disposeObserver = info.observer.subscribe(function (newValue) {
+                                var existing = targetProperty.getValue();
+                                if (newValue !== existing) {
+                                    targetProperty.setValue(newValue);
+                                }
+                            });
+                        }
+                        if (info.value !== undefined) {
+                            targetProperty.setValue(info.value);
+                        }
+                        if (this.mode == binding_modes_1.bindingMode.twoWay) {
+                            this._disposeListener = targetProperty.subscribe(function (newValue) {
+                                _this.sourceExpression.assign(source, newValue, _this.valueConverterLookupFunction);
+                            });
+                        }
+                        this.source = source;
+                    }
+                    else {
+                        var value = this.sourceExpression.evaluate(source, this.valueConverterLookupFunction);
+                        if (value !== undefined) {
+                            targetProperty.setValue(value);
+                        }
+                    }
+                };
+                Binding.prototype.unbind = function () {
+                    if ('unbind' in this.targetProperty) {
+                        this.targetProperty.unbind();
+                    }
+                    if (this._disposeObserver) {
+                        this._disposeObserver();
+                        this._disposeObserver = null;
+                    }
+                    if (this._disposeListener) {
+                        this._disposeListener();
+                        this._disposeListener = null;
+                    }
+                };
+                return Binding;
+            })();
         }
     }
-    unbind() {
-        if ('unbind' in this.targetProperty) {
-            this.targetProperty.unbind();
-        }
-        if (this._disposeObserver) {
-            this._disposeObserver();
-            this._disposeObserver = null;
-        }
-        if (this._disposeListener) {
-            this._disposeListener();
-            this._disposeListener = null;
-        }
-    }
-}
+});

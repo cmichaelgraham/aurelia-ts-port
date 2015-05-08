@@ -8,24 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-import { valueConverter } from 'aurelia-binding';
-var SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
-export let SanitizeHtmlValueConverter = class {
-    constructor() {
-        this.sanitizer = SanitizeHtmlValueConverter.defaultSanitizer;
-    }
-    static defaultSanitizer(untrustedMarkup) {
-        return untrustedMarkup.replace(SCRIPT_REGEX, '');
-    }
-    toView(untrustedMarkup) {
-        if (untrustedMarkup === null) {
-            return null;
+};System.register(['aurelia-binding'], function(exports_1) {
+    var aurelia_binding_1;
+    var SCRIPT_REGEX, SanitizeHtmlValueConverter;
+    return {
+        setters:[
+            function (_aurelia_binding_1) {
+                aurelia_binding_1 = _aurelia_binding_1;
+            }],
+        execute: function() {
+            SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+            SanitizeHtmlValueConverter = (function () {
+                function SanitizeHtmlValueConverter() {
+                    this.sanitizer = SanitizeHtmlValueConverter.defaultSanitizer;
+                }
+                SanitizeHtmlValueConverter.defaultSanitizer = function (untrustedMarkup) {
+                    return untrustedMarkup.replace(SCRIPT_REGEX, '');
+                };
+                SanitizeHtmlValueConverter.prototype.toView = function (untrustedMarkup) {
+                    if (untrustedMarkup === null) {
+                        return null;
+                    }
+                    return this.sanitizer(untrustedMarkup);
+                };
+                SanitizeHtmlValueConverter = __decorate([
+                    aurelia_binding_1.valueConverter('sanitizeHtml'), 
+                    __metadata('design:paramtypes', [])
+                ], SanitizeHtmlValueConverter);
+                return SanitizeHtmlValueConverter;
+            })();
+            exports_1("SanitizeHtmlValueConverter", SanitizeHtmlValueConverter);
         }
-        return this.sanitizer(untrustedMarkup);
     }
-};
-SanitizeHtmlValueConverter = __decorate([
-    valueConverter('sanitizeHtml'), 
-    __metadata('design:paramtypes', [])
-], SanitizeHtmlValueConverter);
+});

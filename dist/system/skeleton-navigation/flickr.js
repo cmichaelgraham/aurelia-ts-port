@@ -8,26 +8,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-import { inject } from 'aurelia-framework';
-import { HttpClient } from 'aurelia-http-client';
-export let Flickr = class {
-    constructor(http) {
-        this.heading = 'Flickr';
-        this.images = [];
-        this.url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=rainier&tagmode=any&format=json';
-        this.http = http;
+};System.register(['aurelia-framework', 'aurelia-http-client'], function(exports_1) {
+    var aurelia_framework_1, aurelia_http_client_1;
+    var Flickr;
+    return {
+        setters:[
+            function (_aurelia_framework_1) {
+                aurelia_framework_1 = _aurelia_framework_1;
+            },
+            function (_aurelia_http_client_1) {
+                aurelia_http_client_1 = _aurelia_http_client_1;
+            }],
+        execute: function() {
+            Flickr = (function () {
+                function Flickr(http) {
+                    this.heading = 'Flickr';
+                    this.images = [];
+                    this.url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=rainier&tagmode=any&format=json';
+                    this.http = http;
+                }
+                Flickr.prototype.activate = function () {
+                    var _this = this;
+                    return this.http.jsonp(this.url).then(function (response) {
+                        _this.images = response.content.items;
+                    });
+                };
+                Flickr.prototype.canDeactivate = function () {
+                    return confirm('Are you sure you want to leave?');
+                };
+                Flickr = __decorate([
+                    aurelia_framework_1.inject(aurelia_http_client_1.HttpClient), 
+                    __metadata('design:paramtypes', [Object])
+                ], Flickr);
+                return Flickr;
+            })();
+            exports_1("Flickr", Flickr);
+        }
     }
-    activate() {
-        return this.http.jsonp(this.url).then(response => {
-            this.images = response.content.items;
-        });
-    }
-    canDeactivate() {
-        return confirm('Are you sure you want to leave?');
-    }
-};
-Flickr = __decorate([
-    inject(HttpClient), 
-    __metadata('design:paramtypes', [Object])
-], Flickr);
+});

@@ -1,20 +1,32 @@
-export class Animator {
-    static configureDefault(container, animatorInstance) {
-        container.registerInstance(Animator, Animator.instance = (animatorInstance || new Animator()));
+System.register([], function(exports_1) {
+    var Animator;
+    return {
+        setters:[],
+        execute: function() {
+            Animator = (function () {
+                function Animator() {
+                }
+                Animator.configureDefault = function (container, animatorInstance) {
+                    container.registerInstance(Animator, Animator.instance = (animatorInstance || new Animator()));
+                };
+                Animator.prototype.move = function () {
+                    return Promise.resolve(false);
+                };
+                Animator.prototype.enter = function (element) {
+                    return Promise.resolve(false);
+                };
+                Animator.prototype.leave = function (element) {
+                    return Promise.resolve(false);
+                };
+                Animator.prototype.removeClass = function (element, className) {
+                    return Promise.resolve(false);
+                };
+                Animator.prototype.addClass = function (element, className) {
+                    return Promise.resolve(false);
+                };
+                return Animator;
+            })();
+            exports_1("Animator", Animator);
+        }
     }
-    move() {
-        return Promise.resolve(false);
-    }
-    enter(element) {
-        return Promise.resolve(false);
-    }
-    leave(element) {
-        return Promise.resolve(false);
-    }
-    removeClass(element, className) {
-        return Promise.resolve(false);
-    }
-    addClass(element, className) {
-        return Promise.resolve(false);
-    }
-}
+});

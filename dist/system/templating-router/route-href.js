@@ -8,34 +8,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-import { customAttribute, bindable } from 'aurelia-templating';
-import { inject } from 'aurelia-dependency-injection';
-import { Router } from 'aurelia-router';
-export let RouteHref = class {
-    constructor(router, element) {
-        this.router = router;
-        this.element = element;
-    }
-    bind() {
-        this.processChange();
-    }
-    attributeChanged(value, previous) {
-        if (previous) {
-            this.element.removeAttribute(previous);
+};System.register(['aurelia-templating', 'aurelia-dependency-injection', 'aurelia-router'], function(exports_1) {
+    var aurelia_templating_1, aurelia_dependency_injection_1, aurelia_router_1;
+    var RouteHref;
+    return {
+        setters:[
+            function (_aurelia_templating_1) {
+                aurelia_templating_1 = _aurelia_templating_1;
+            },
+            function (_aurelia_dependency_injection_1) {
+                aurelia_dependency_injection_1 = _aurelia_dependency_injection_1;
+            },
+            function (_aurelia_router_1) {
+                aurelia_router_1 = _aurelia_router_1;
+            }],
+        execute: function() {
+            RouteHref = (function () {
+                function RouteHref(router, element) {
+                    this.router = router;
+                    this.element = element;
+                }
+                RouteHref.prototype.bind = function () {
+                    this.processChange();
+                };
+                RouteHref.prototype.attributeChanged = function (value, previous) {
+                    if (previous) {
+                        this.element.removeAttribute(previous);
+                    }
+                    this.processChange();
+                };
+                RouteHref.prototype.processChange = function () {
+                    var href = this.router.generate(this.route, this.params);
+                    this.element.setAttribute(this.attribute, href);
+                };
+                RouteHref = __decorate([
+                    aurelia_templating_1.customAttribute('route-href'),
+                    aurelia_templating_1.bindable({ name: 'route', changeHandler: 'processChange' }),
+                    aurelia_templating_1.bindable({ name: 'params', changeHandler: 'processChange' }),
+                    aurelia_templating_1.bindable({ name: 'attribute', defaultValue: 'href' }),
+                    aurelia_dependency_injection_1.inject(aurelia_router_1.Router, Element), 
+                    __metadata('design:paramtypes', [Object, Object])
+                ], RouteHref);
+                return RouteHref;
+            })();
+            exports_1("RouteHref", RouteHref);
         }
-        this.processChange();
     }
-    processChange() {
-        let href = this.router.generate(this.route, this.params);
-        this.element.setAttribute(this.attribute, href);
-    }
-};
-RouteHref = __decorate([
-    customAttribute('route-href'),
-    bindable({ name: 'route', changeHandler: 'processChange' }),
-    bindable({ name: 'params', changeHandler: 'processChange' }),
-    bindable({ name: 'attribute', defaultValue: 'href' }),
-    inject(Router, Element), 
-    __metadata('design:paramtypes', [Object, Object])
-], RouteHref);
+});
