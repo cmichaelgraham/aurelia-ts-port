@@ -4,11 +4,56 @@ var runSequence = require('run-sequence');
 var ts = require('gulp-typescript');
 var merge = require('merge2');
 
+gulp.task('build-ts', [
+  'build-ts-system', 
+  'build-ts-amd',
+  'build-ts-commonjs',
+  'build-ts-es6'
+  ], function() {});
 
-gulp.task('build-ts', function () {
+gulp.task('build-ts-amd', function() {
+  var tsResult =  gulp.src([
+        './aurelia-dts/**/*.d.ts'
+        ,'./animator-css/*.ts'
+        ,'./app-contacts/*.ts'
+        ,'./binding/*.ts'
+        ,'./bootstrapper/*.ts'
+        ,'./dependency-injection/*.ts'
+        ,'./event-aggregator/*.ts'
+        ,'./framework/*.ts'
+        ,'./history/*.ts'
+        ,'./history-browser/*.ts'
+        ,'./html-template-element/*.ts'
+        ,'./http-client/*.ts'
+        ,'./loader/*.ts'
+        ,'./loader-default/*.ts'
+        ,'./logging/*.ts'
+        ,'./metadata/*.ts'
+        ,'./path/*.ts'
+        ,'./router/*.ts'
+        ,'./route-recognizer/*.ts'
+        ,'./skeleton-navigation/*.ts'
+        ,'./skeleton-plugin/*.ts'
+        ,'./task-queue/*.ts'
+        ,'./templating/*.ts'
+        ,'./templating-binding/*.ts'
+        ,'./templating-resources/*.ts'
+        ,'./templating-router/*.ts'
+        ],
+        {base: "."})// tsProject.src() // instead of gulp.src(...)
+    .pipe(ts({
+         typescript: require('typescript'),
+         declarationFiles: false,
+         noExternalResolve: true,
+         target: "es5",
+         module: "amd",
+         emitDecoratorMetadata: true
+    }));
 
-  var tsProject = ts.createProject('tsconfig.json');
+    return tsResult.js.pipe(gulp.dest('../dist/amd'));
+});
 
+gulp.task('build-ts-es6', function() {
   var tsResult =  gulp.src([
         './aurelia-dts/**/*.d.ts'
         ,'./animator-css/*.ts'
@@ -43,15 +88,95 @@ gulp.task('build-ts', function () {
          declarationFiles: false,
          noExternalResolve: true,
          target: "es6",
-         module: "system",
+         module: "es6",
          emitDecoratorMetadata: true
     }));
 
-  console.log("hello");
+    return tsResult.js.pipe(gulp.dest('../dist/es6'));
+});
+
+gulp.task('build-ts-commonjs', function() {
+  var tsResult =  gulp.src([
+        './aurelia-dts/**/*.d.ts'
+        ,'./animator-css/*.ts'
+        ,'./app-contacts/*.ts'
+        ,'./binding/*.ts'
+        ,'./bootstrapper/*.ts'
+        ,'./dependency-injection/*.ts'
+        ,'./event-aggregator/*.ts'
+        ,'./framework/*.ts'
+        ,'./history/*.ts'
+        ,'./history-browser/*.ts'
+        ,'./html-template-element/*.ts'
+        ,'./http-client/*.ts'
+        ,'./loader/*.ts'
+        ,'./loader-default/*.ts'
+        ,'./logging/*.ts'
+        ,'./metadata/*.ts'
+        ,'./path/*.ts'
+        ,'./router/*.ts'
+        ,'./route-recognizer/*.ts'
+        ,'./skeleton-navigation/*.ts'
+        ,'./skeleton-plugin/*.ts'
+        ,'./task-queue/*.ts'
+        ,'./templating/*.ts'
+        ,'./templating-binding/*.ts'
+        ,'./templating-resources/*.ts'
+        ,'./templating-router/*.ts'
+        ],
+        {base: "."})// tsProject.src() // instead of gulp.src(...)
+    .pipe(ts({
+         typescript: require('typescript'),
+         declarationFiles: false,
+         noExternalResolve: true,
+         target: "es5",
+         module: "commonjs",
+         emitDecoratorMetadata: true
+    }));
+
+    return tsResult.js.pipe(gulp.dest('../dist/commonjs'));
+});
+
+gulp.task('build-ts-system', function () {
+  var tsResult =  gulp.src([
+        './aurelia-dts/**/*.d.ts'
+        ,'./animator-css/*.ts'
+        ,'./app-contacts/*.ts'
+        ,'./binding/*.ts'
+        ,'./bootstrapper/*.ts'
+        ,'./dependency-injection/*.ts'
+        ,'./event-aggregator/*.ts'
+        ,'./framework/*.ts'
+        ,'./history/*.ts'
+        ,'./history-browser/*.ts'
+        ,'./html-template-element/*.ts'
+        ,'./http-client/*.ts'
+        ,'./loader/*.ts'
+        ,'./loader-default/*.ts'
+        ,'./logging/*.ts'
+        ,'./metadata/*.ts'
+        ,'./path/*.ts'
+        ,'./router/*.ts'
+        ,'./route-recognizer/*.ts'
+        ,'./skeleton-navigation/*.ts'
+        ,'./skeleton-plugin/*.ts'
+        ,'./task-queue/*.ts'
+        ,'./templating/*.ts'
+        ,'./templating-binding/*.ts'
+        ,'./templating-resources/*.ts'
+        ,'./templating-router/*.ts'
+        ],
+        {base: "."})// tsProject.src() // instead of gulp.src(...)
+    .pipe(ts({
+         typescript: require('typescript'),
+         declarationFiles: false,
+         noExternalResolve: true,
+         target: "es6",
+         module: "systemjs",
+         emitDecoratorMetadata: true
+    }));
 
     return tsResult.js.pipe(gulp.dest('../dist/system'));
-
-  // return tsResult.js.pipe('release');
 });
 
 var path = {
