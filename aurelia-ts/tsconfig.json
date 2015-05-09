@@ -147,6 +147,7 @@
         "./templating-resources/if.ts",
         "./templating-resources/index.ts",
         "./templating-resources/repeat.ts",
+        "./templating-resources/replaceable.ts",
         "./templating-resources/sanitize-html.ts",
         "./templating-resources/show.ts",
         "./templating-resources/with.ts",

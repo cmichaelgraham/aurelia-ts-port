@@ -5,6 +5,7 @@ export function configure(aurelia){
     './with',
     './repeat',
     './show',
+    './replaceable',
     './global-behavior',
     './sanitize-html'
   );
@@ -17,3 +18,4 @@ export {Repeat} from './repeat';
 export {Show} from './show';
 export {GlobalBehavior} from './global-behavior';
 export {SanitizeHtmlValueConverter} from './sanitize-html';
+export {Replaceable} from './replaceable';
