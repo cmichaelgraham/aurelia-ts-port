@@ -121,14 +121,18 @@ function configureAurelia(aurelia){
       };
     }));
 
+    toLoad.push((<any>window).System.normalize('aurelia-templating-router', bName).then(templatingRouter => {
+      aurelia.use.router = function(){
+        aurelia.use.plugin(templatingRouter);
+        return this;
+      };
+    }));
+
     toLoad.push((<any>window).System.normalize('aurelia-history-browser', bName).then(historyBrowser => {
-      return (<any>window).System.normalize('aurelia-templating-router', bName).then(templatingRouter => {
-        aurelia.use.router = function(){
-          aurelia.use.plugin(historyBrowser);
-          aurelia.use.plugin(templatingRouter);
-          return this;
-        };
-      });
+      aurelia.use.history = function(){
+         aurelia.use.plugin(historyBrowser);
+         return this;
+       };
     }));
 
     toLoad.push((<any>window).System.normalize('aurelia-templating-resources', bName).then(name => {
@@ -151,6 +155,7 @@ function configureAurelia(aurelia){
       aurelia.use
         .defaultBindingLanguage()
         .defaultResources()
+        .history()
         .router()
         .eventAggregator();
       return this;
