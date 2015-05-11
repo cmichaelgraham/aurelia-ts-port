@@ -1,5 +1,5 @@
-System.register(['./content-selector', './animator'], function(exports_1) {
-    var content_selector_1, animator_1;
+System.register(['./content-selector', './animator', './util'], function(exports_1) {
+    var content_selector_1, animator_1, util_1;
     var ViewSlot;
     return {
         setters:[
@@ -8,6 +8,9 @@ System.register(['./content-selector', './animator'], function(exports_1) {
             },
             function (_animator_1) {
                 animator_1 = _animator_1;
+            },
+            function (_util_1) {
+                util_1 = _util_1;
             }],
         execute: function() {
             ViewSlot = (function () {
@@ -69,7 +72,7 @@ System.register(['./content-selector', './animator'], function(exports_1) {
                     if (this.isAttached) {
                         view.attached();
                         // Animate page itself
-                        var element = view.firstChild ? view.firstChild.nextElementSibling : null;
+                        var element = view.firstChild ? util_1.nextElementSibling(view.firstChild) : null;
                         if (view.firstChild &&
                             view.firstChild.nodeType === 8 &&
                             element &&
@@ -109,7 +112,7 @@ System.register(['./content-selector', './animator'], function(exports_1) {
                         }
                         return view;
                     };
-                    var element = view.firstChild && view.firstChild.nextElementSibling ? view.firstChild.nextElementSibling : null;
+                    var element = view.firstChild ? util_1.nextElementSibling(view.firstChild) : null;
                     if (view.firstChild &&
                         view.firstChild.nodeType === 8 &&
                         element &&
@@ -128,7 +131,7 @@ System.register(['./content-selector', './animator'], function(exports_1) {
                     var children = this.children, ii = children.length, i;
                     var rmPromises = [];
                     children.forEach(function (child) {
-                        var element = child.firstChild ? child.firstChild.nextElementSibling : null;
+                        var element = child.firstChild ? util_1.nextElementSibling(child.firstChild) : null;
                         if (child.firstChild &&
                             child.firstChild.nodeType === 8 &&
                             element &&
@@ -181,7 +184,7 @@ System.register(['./content-selector', './animator'], function(exports_1) {
                     for (i = 0, ii = children.length; i < ii; ++i) {
                         child = children[i];
                         child.attached();
-                        var element = child.firstChild ? child.firstChild.nextElementSibling : null;
+                        var element = child.firstChild ? util_1.nextElementSibling(child.firstChild) : null;
                         if (child.firstChild &&
                             child.firstChild.nodeType === 8 &&
                             element &&

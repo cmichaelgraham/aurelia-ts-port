@@ -38,7 +38,8 @@ var RouterView = (function () {
             viewPortInstruction.behavior = metadata.create(childContainer, {
                 executionContext: viewModel,
                 viewFactory: viewFactory,
-                suppressBind: true
+                suppressBind: true,
+                host: _this.element
             });
             if (waitToSwap) {
                 return;

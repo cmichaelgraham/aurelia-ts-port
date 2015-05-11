@@ -1,5 +1,6 @@
 define(["require", "exports", 'aurelia-route-recognizer', './navigation-context', './navigation-instruction', './router-configuration', './util'], function (require, exports, aurelia_route_recognizer_1, navigation_context_1, navigation_instruction_1, router_configuration_1, util_1) {
-    var isRooted = /^#?\//;
+    var isRootedPath = /^#?\//;
+    var isAbsoluteUrl = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
     var Router = (function () {
         function Router(container, history) {
             this.container = container;
@@ -46,6 +47,9 @@ define(["require", "exports", 'aurelia-route-recognizer', './navigation-context'
             return this;
         };
         Router.prototype.createRootedPath = function (fragment) {
+            if (isAbsoluteUrl.test(fragment)) {
+                return fragment;
+            }
             var path = '';
             if (this.baseUrl.length && this.baseUrl[0] !== '/') {
                 path += '/';
@@ -63,7 +67,7 @@ define(["require", "exports", 'aurelia-route-recognizer', './navigation-context'
             if (fragment === '') {
                 fragment = '/';
             }
-            if (isRooted.test(fragment)) {
+            if (isRootedPath.test(fragment)) {
                 fragment = normalizeAbsolutePath(fragment, this.history._hasPushState);
             }
             else {
@@ -114,8 +118,8 @@ define(["require", "exports", 'aurelia-route-recognizer', './navigation-context'
                 if (typeof first.handler === 'function') {
                     return evaluateNavigationStrategy(instruction, first.handler, first);
                 }
-                else if (first.config && 'navigationStrategy' in first.config) {
-                    return evaluateNavigationStrategy(instruction, first.config.navigationStrategy, first.config);
+                else if (first.handler && 'navigationStrategy' in first.handler) {
+                    return evaluateNavigationStrategy(instruction, first.handler.navigationStrategy, first.handler);
                 }
                 return Promise.resolve(instruction);
             }
@@ -134,7 +138,7 @@ define(["require", "exports", 'aurelia-route-recognizer', './navigation-context'
         Router.prototype.addRoute = function (config, navModel) {
             if (navModel === void 0) { navModel = {}; }
             validateRouteConfig(config);
-            if (!('viewPorts' in config)) {
+            if (!('viewPorts' in config) && !config.navigationStrategy) {
                 config.viewPorts = {
                     'default': {
                         moduleId: config.moduleId,
@@ -231,7 +235,7 @@ define(["require", "exports", 'aurelia-route-recognizer', './navigation-context'
             && (config.moduleId || config.redirect || config.viewPorts)
             && config.route !== null && config.route !== undefined;
         if (!isValid) {
-            throw new Error('Invalid Route Config: You must have at least a route and a moduleId, redirect, or viewPorts.');
+            throw new Error('Invalid Route Config: You must have at least a route and a moduleId, redirect, navigationStrategy or viewPorts.');
         }
     }
     function normalizeAbsolutePath(path, hasPushState) {

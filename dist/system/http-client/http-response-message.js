@@ -11,7 +11,7 @@ System.register(['./headers'], function(exports_1) {
                 function HttpResponseMessage(requestMessage, xhr, responseType, reviver) {
                     this.requestMessage = requestMessage;
                     this.statusCode = xhr.status;
-                    this.response = xhr.response;
+                    this.response = xhr.response || xhr.responseText;
                     this.isSuccess = xhr.status >= 200 && xhr.status < 400;
                     this.statusText = xhr.statusText;
                     this.reviver = reviver;

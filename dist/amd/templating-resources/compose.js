@@ -9,29 +9,68 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templating'], function (require, exports, aurelia_dependency_injection_1, aurelia_templating_1) {
+define(["require", "exports", 'aurelia-dependency-injection', "aurelia-task-queue", 'aurelia-templating'], function (require, exports, aurelia_dependency_injection_1, aurelia_task_queue_1, aurelia_templating_1) {
     var Compose = (function () {
-        function Compose(container, compositionEngine, viewSlot, viewResources) {
+        function Compose(element, container, compositionEngine, viewSlot, viewResources, taskQueue) {
+            this.element = element;
             this.container = container;
             this.compositionEngine = compositionEngine;
             this.viewSlot = viewSlot;
             this.viewResources = viewResources;
+            this.taskQueue = taskQueue;
         }
         Compose.prototype.bind = function (executionContext) {
             this.executionContext = executionContext;
-            processInstruction(this, { view: this.view, viewModel: this.viewModel, model: this.model });
+            processInstruction(this, createInstruction(this, {
+                view: this.view,
+                viewModel: this.viewModel,
+                model: this.model
+            }));
         };
         Compose.prototype.modelChanged = function (newValue, oldValue) {
-            var vm = this.currentViewModel;
-            if (vm && typeof vm.activate === 'function') {
-                vm.activate(newValue);
+            var _this = this;
+            if (this.currentInstruction) {
+                this.currentInstruction.model = newValue;
+                return;
             }
+            this.taskQueue.queueMicroTask(function () {
+                if (_this.currentInstruction) {
+                    _this.currentInstruction.model = newValue;
+                    return;
+                }
+                var vm = _this.currentViewModel;
+                if (vm && typeof vm.activate === 'function') {
+                    vm.activate(newValue);
+                }
+            });
         };
         Compose.prototype.viewChanged = function (newValue, oldValue) {
-            processInstruction(this, { view: newValue, viewModel: this.currentViewModel || this.viewModel, model: this.model });
+            var _this = this;
+            var instruction = createInstruction(this, {
+                view: newValue,
+                viewModel: this.currentViewModel || this.viewModel,
+                model: this.model
+            });
+            if (this.currentInstruction) {
+                this.currentInstruction = instruction;
+                return;
+            }
+            this.currentInstruction = instruction;
+            this.taskQueue.queueMicroTask(function () { return processInstruction(_this, _this.currentInstruction); });
         };
         Compose.prototype.viewModelChanged = function (newValue, oldValue) {
-            processInstruction(this, { viewModel: newValue, view: this.view, model: this.model });
+            var _this = this;
+            var instruction = createInstruction(this, {
+                viewModel: newValue,
+                view: this.view,
+                model: this.model
+            });
+            if (this.currentInstruction) {
+                this.currentInstruction = instruction;
+                return;
+            }
+            this.currentInstruction = instruction;
+            this.taskQueue.queueMicroTask(function () { return processInstruction(_this, _this.currentInstruction); });
         };
         Compose = __decorate([
             aurelia_templating_1.customElement('compose'),
@@ -39,20 +78,25 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
             aurelia_templating_1.bindable('view'),
             aurelia_templating_1.bindable('viewModel'),
             aurelia_templating_1.noView,
-            aurelia_dependency_injection_1.inject(aurelia_dependency_injection_1.Container, aurelia_templating_1.CompositionEngine, aurelia_templating_1.ViewSlot, aurelia_templating_1.ViewResources), 
-            __metadata('design:paramtypes', [Object, Object, Object, Object])
+            aurelia_dependency_injection_1.inject(Element, aurelia_dependency_injection_1.Container, aurelia_templating_1.CompositionEngine, aurelia_templating_1.ViewSlot, aurelia_templating_1.ViewResources, aurelia_task_queue_1.TaskQueue), 
+            __metadata('design:paramtypes', [Object, Object, Object, Object, Object, Object])
         ], Compose);
         return Compose;
     })();
     exports.Compose = Compose;
-    function processInstruction(composer, instruction) {
-        composer.compositionEngine.compose(Object.assign(instruction, {
+    function createInstruction(composer, instruction) {
+        return Object.assign(instruction, {
             executionContext: composer.executionContext,
             container: composer.container,
             viewSlot: composer.viewSlot,
             viewResources: composer.viewResources,
-            currentBehavior: composer.currentBehavior
-        })).then(function (next) {
+            currentBehavior: composer.currentBehavior,
+            host: composer.element
+        });
+    }
+    function processInstruction(composer, instruction) {
+        composer.currentInstruction = null;
+        composer.compositionEngine.compose(instruction).then(function (next) {
             composer.currentBehavior = next;
             composer.currentViewModel = next ? next.executionContext : null;
         });

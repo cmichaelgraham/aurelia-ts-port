@@ -21,10 +21,36 @@ var BindableProperty = (function () {
         this.changeHandler = this.changeHandler || null;
         this.owner = null;
     }
-    BindableProperty.prototype.registerWith = function (target, behavior) {
+    BindableProperty.prototype.registerWith = function (target, behavior, descriptor) {
         behavior.properties.push(this);
         behavior.attributes[this.attribute] = this;
         this.owner = behavior;
+        if (descriptor) {
+            this.descriptor = descriptor;
+            return this.configureDescriptor(behavior, descriptor);
+        }
+    };
+    BindableProperty.prototype.configureDescriptor = function (behavior, descriptor) {
+        var name = this.name;
+        descriptor.configurable = true;
+        descriptor.enumerable = true;
+        if ('initializer' in descriptor) {
+            this.defaultValue = descriptor.initializer;
+            delete descriptor.initializer;
+            delete descriptor.writable;
+        }
+        if ('value' in descriptor) {
+            this.defaultValue = descriptor.value;
+            delete descriptor.value;
+            delete descriptor.writable;
+        }
+        descriptor.get = function () {
+            return getObserver(behavior, this, name).getValue();
+        };
+        descriptor.set = function (value) {
+            getObserver(behavior, this, name).setValue(value);
+        };
+        return descriptor;
     };
     BindableProperty.prototype.defineOn = function (target, behavior) {
         var name = this.name, handlerName;
@@ -34,30 +60,26 @@ var BindableProperty = (function () {
                 this.changeHandler = handlerName;
             }
         }
-        Object.defineProperty(target.prototype, name, {
-            configurable: true,
-            enumerable: true,
-            get: function () {
-                return getObserver(behavior, this, name).getValue();
-            },
-            set: function (value) {
-                getObserver(behavior, this, name).setValue(value);
-            }
-        });
+        if (!this.descriptor) {
+            Object.defineProperty(target.prototype, name, this.configureDescriptor(behavior, {}));
+        }
     };
     BindableProperty.prototype.createObserver = function (executionContext) {
         var _this = this;
-        var selfSubscriber = null;
+        var selfSubscriber = null, defaultValue = this.defaultValue, initialValue;
         if (this.hasOptions) {
             return;
         }
         if (this.changeHandler !== null) {
             selfSubscriber = function (newValue, oldValue) { return executionContext[_this.changeHandler](newValue, oldValue); };
         }
-        return new BehaviorPropertyObserver(this.owner.taskQueue, executionContext, this.name, selfSubscriber);
+        if (defaultValue !== undefined) {
+            initialValue = typeof defaultValue === 'function' ? defaultValue.call(executionContext) : defaultValue;
+        }
+        return new BehaviorPropertyObserver(this.owner.taskQueue, executionContext, this.name, selfSubscriber, initialValue);
     };
     BindableProperty.prototype.initialize = function (executionContext, observerLookup, attributes, behaviorHandlesBind, boundProperties) {
-        var selfSubscriber, observer, attribute;
+        var selfSubscriber, observer, attribute, defaultValue = this.defaultValue;
         if (this.isDynamic) {
             for (var key in attributes) {
                 this.createDynamicProperty(executionContext, observerLookup, behaviorHandlesBind, key, attributes[key], boundProperties);
@@ -78,8 +100,7 @@ var BindableProperty = (function () {
                 else if (attribute) {
                     boundProperties.push({ observer: observer, binding: attribute.createBinding(executionContext) });
                 }
-                else if (this.defaultValue !== undefined) {
-                    executionContext[this.name] = this.defaultValue;
+                else if (defaultValue !== undefined) {
                     observer.call();
                 }
                 observer.selfSubscriber = selfSubscriber;
@@ -120,7 +141,7 @@ var BindableProperty = (function () {
 })();
 exports.BindableProperty = BindableProperty;
 var BehaviorPropertyObserver = (function () {
-    function BehaviorPropertyObserver(taskQueue, obj, propertyName, selfSubscriber) {
+    function BehaviorPropertyObserver(taskQueue, obj, propertyName, selfSubscriber, initialValue) {
         this.taskQueue = taskQueue;
         this.obj = obj;
         this.propertyName = propertyName;
@@ -128,6 +149,7 @@ var BehaviorPropertyObserver = (function () {
         this.notqueued = true;
         this.publishing = false;
         this.selfSubscriber = selfSubscriber;
+        this.currentValue = this.oldValue = initialValue;
     }
     BehaviorPropertyObserver.prototype.getValue = function () {
         return this.currentValue;
@@ -165,3 +187,4 @@ var BehaviorPropertyObserver = (function () {
     };
     return BehaviorPropertyObserver;
 })();
+exports.BehaviorPropertyObserver = BehaviorPropertyObserver;

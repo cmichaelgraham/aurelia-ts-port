@@ -86,7 +86,7 @@ export class HtmlBehaviorResource {
                 beforeCompile: target.beforeCompile
             };
             if (!viewStrategy.moduleId) {
-                viewStrategy.moduleId = (Origin.get(target)).moduleId;
+                viewStrategy.moduleId = Origin.get(target).moduleId;
             }
             return viewStrategy.loadViewFactory(container.get(ViewEngine), options).then(viewFactory => {
                 if (!transientView) {
@@ -108,7 +108,7 @@ export class HtmlBehaviorResource {
     compile(compiler, resources, node, instruction, parentNode) {
         if (this.liftsContent) {
             if (!instruction.viewFactory) {
-                var template = document.createElement('template'), fragment = document.createDocumentFragment();
+                var template = document.createElement('template'), fragment = document.createDocumentFragment(), part = node.getAttribute('part');
                 node.removeAttribute(instruction.originalAttrName);
                 if (node.parentNode) {
                     node.parentNode.replaceChild(template, node);
@@ -121,23 +121,47 @@ export class HtmlBehaviorResource {
                 }
                 fragment.appendChild(node);
                 instruction.viewFactory = compiler.compile(fragment, resources);
+                if (part) {
+                    instruction.viewFactory.part = part;
+                    node.removeAttribute('part');
+                }
                 node = template;
             }
         }
-        else if (this.elementName !== null && !this.usesShadowDOM && !this.skipContentProcessing && node.hasChildNodes()) {
-            //custom element
-            var fragment = document.createDocumentFragment(), currentChild = node.firstChild, nextSibling;
-            while (currentChild) {
-                nextSibling = currentChild.nextSibling;
-                fragment.appendChild(currentChild);
-                currentChild = nextSibling;
+        else if (this.elementName !== null) {
+            var partReplacements = {};
+            if (!this.skipContentProcessing && node.hasChildNodes()) {
+                if (!this.usesShadowDOM) {
+                    var fragment = document.createDocumentFragment(), currentChild = node.firstChild, nextSibling;
+                    while (currentChild) {
+                        nextSibling = currentChild.nextSibling;
+                        if (currentChild.tagName === 'TEMPLATE' && (toReplace = currentChild.getAttribute('replace-part'))) {
+                            partReplacements[toReplace] = compiler.compile(currentChild, resources);
+                        }
+                        else {
+                            fragment.appendChild(currentChild);
+                        }
+                        currentChild = nextSibling;
+                    }
+                    instruction.contentFactory = compiler.compile(fragment, resources);
+                }
+                else {
+                    var currentChild = node.firstChild, nextSibling, toReplace;
+                    while (currentChild) {
+                        nextSibling = currentChild.nextSibling;
+                        if (currentChild.tagName === 'TEMPLATE' && (toReplace = currentChild.getAttribute('replace-part'))) {
+                            partReplacements[toReplace] = compiler.compile(currentChild, resources);
+                        }
+                        currentChild = nextSibling;
+                    }
+                }
             }
-            instruction.contentFactory = compiler.compile(fragment, resources);
         }
+        instruction.partReplacements = partReplacements;
         instruction.suppressBind = true;
         return node;
     }
-    create(container, instruction = defaultInstruction, element = null, bindings) {
+    create(container, instruction = defaultInstruction, element = null, bindings = null) {
         var executionContext = instruction.executionContext || container.get(this.target), behaviorInstance = new BehaviorInstance(this, executionContext, instruction), viewFactory, host;
         if (this.liftsContent) {
             //template controller
@@ -151,12 +175,14 @@ export class HtmlBehaviorResource {
             }
             if (element) {
                 element.primaryBehavior = behaviorInstance;
+                if (this.usesShadowDOM) {
+                    host = element.createShadowRoot();
+                }
+                else {
+                    host = element;
+                }
                 if (behaviorInstance.view) {
-                    if (this.usesShadowDOM) {
-                        host = element.createShadowRoot();
-                    }
-                    else {
-                        host = element;
+                    if (!this.usesShadowDOM) {
                         if (instruction.contentFactory) {
                             var contentView = instruction.contentFactory.create(container, null, contentSelectorFactoryOptions);
                             ContentSelector.applySelectors(contentView, behaviorInstance.view.contentSelectors, (contentSelector, group) => contentSelector.add(group));
@@ -168,9 +194,20 @@ export class HtmlBehaviorResource {
                     }
                     behaviorInstance.view.appendNodesTo(host);
                 }
+                else if (this.childExpression) {
+                    bindings.push(this.childExpression.createBinding(element, behaviorInstance.executionContext));
+                }
             }
             else if (behaviorInstance.view) {
+                //dynamic element with view
                 behaviorInstance.view.owner = behaviorInstance;
+                if (this.childExpression) {
+                    behaviorInstance.view.addBinding(this.childExpression.createBinding(instruction.host, behaviorInstance.executionContext));
+                }
+            }
+            else if (this.childExpression) {
+                //dynamic element without view
+                bindings.push(this.childExpression.createBinding(instruction.host, behaviorInstance.executionContext));
             }
         }
         else if (this.childExpression) {

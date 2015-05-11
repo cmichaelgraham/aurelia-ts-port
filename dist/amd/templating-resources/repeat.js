@@ -74,11 +74,17 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-binding', 'aurelia-t
             if (!items) {
                 return;
             }
-            if (items instanceof Map) {
+            if (items instanceof Array) {
+                this.processArrayItems(items);
+            }
+            else if (items instanceof Map) {
                 this.processMapEntries(items);
             }
+            else if ((typeof items === 'number')) {
+                this.processNumber(items);
+            }
             else {
-                this.processArrayItems(items);
+                throw new Error('Object in "repeat" must be of type Array, Map or Number');
             }
         };
         Repeat.prototype.processArrayItems = function (items) {
@@ -107,6 +113,14 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-binding', 'aurelia-t
             this.disposeSubscription = observer.subscribe(function (record) {
                 _this.handleMapChangeRecords(items, record);
             });
+        };
+        Repeat.prototype.processNumber = function (value) {
+            var viewFactory = this.viewFactory, viewSlot = this.viewSlot, i, ii, row, view;
+            for (i = 0, ii = Math.floor(value); i < ii; ++i) {
+                row = this.createFullExecutionContext(i, i, ii);
+                view = viewFactory.create(row);
+                viewSlot.add(view);
+            }
         };
         Repeat.prototype.createBaseExecutionContext = function (data) {
             var context = {};

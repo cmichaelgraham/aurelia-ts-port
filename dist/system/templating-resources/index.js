@@ -1,6 +1,6 @@
-System.register(['./compose', './if', './with', './repeat', './show', './global-behavior', './sanitize-html'], function(exports_1) {
+System.register(['./compose', './if', './with', './repeat', './show', './global-behavior', './sanitize-html', './replaceable'], function(exports_1) {
     function configure(aurelia) {
-        aurelia.globalizeResources('./compose', './if', './with', './repeat', './show', './global-behavior', './sanitize-html');
+        aurelia.globalizeResources('./compose', './if', './with', './repeat', './show', './replaceable', './global-behavior', './sanitize-html');
     }
     exports_1("configure", configure);
     return {
@@ -25,6 +25,9 @@ System.register(['./compose', './if', './with', './repeat', './show', './global-
             },
             function (_sanitize_html_1) {
                 exports_1("SanitizeHtmlValueConverter", _sanitize_html_1["SanitizeHtmlValueConverter"]);
+            },
+            function (_replaceable_1) {
+                exports_1("Replaceable", _replaceable_1["Replaceable"]);
             }],
         execute: function() {
         }

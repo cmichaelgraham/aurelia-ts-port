@@ -79,7 +79,7 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-binding', 'aurelia-ta
                     beforeCompile: target.beforeCompile
                 };
                 if (!viewStrategy.moduleId) {
-                    viewStrategy.moduleId = (aurelia_metadata_1.Origin.get(target)).moduleId;
+                    viewStrategy.moduleId = aurelia_metadata_1.Origin.get(target).moduleId;
                 }
                 return viewStrategy.loadViewFactory(container.get(view_engine_1.ViewEngine), options).then(function (viewFactory) {
                     if (!transientView) {
@@ -101,7 +101,7 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-binding', 'aurelia-ta
         HtmlBehaviorResource.prototype.compile = function (compiler, resources, node, instruction, parentNode) {
             if (this.liftsContent) {
                 if (!instruction.viewFactory) {
-                    var template = document.createElement('template'), fragment = document.createDocumentFragment();
+                    var template = document.createElement('template'), fragment = document.createDocumentFragment(), part = node.getAttribute('part');
                     node.removeAttribute(instruction.originalAttrName);
                     if (node.parentNode) {
                         node.parentNode.replaceChild(template, node);
@@ -114,25 +114,50 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-binding', 'aurelia-ta
                     }
                     fragment.appendChild(node);
                     instruction.viewFactory = compiler.compile(fragment, resources);
+                    if (part) {
+                        instruction.viewFactory.part = part;
+                        node.removeAttribute('part');
+                    }
                     node = template;
                 }
             }
-            else if (this.elementName !== null && !this.usesShadowDOM && !this.skipContentProcessing && node.hasChildNodes()) {
-                //custom element
-                var fragment = document.createDocumentFragment(), currentChild = node.firstChild, nextSibling;
-                while (currentChild) {
-                    nextSibling = currentChild.nextSibling;
-                    fragment.appendChild(currentChild);
-                    currentChild = nextSibling;
+            else if (this.elementName !== null) {
+                var partReplacements = {};
+                if (!this.skipContentProcessing && node.hasChildNodes()) {
+                    if (!this.usesShadowDOM) {
+                        var fragment = document.createDocumentFragment(), currentChild = node.firstChild, nextSibling;
+                        while (currentChild) {
+                            nextSibling = currentChild.nextSibling;
+                            if (currentChild.tagName === 'TEMPLATE' && (toReplace = currentChild.getAttribute('replace-part'))) {
+                                partReplacements[toReplace] = compiler.compile(currentChild, resources);
+                            }
+                            else {
+                                fragment.appendChild(currentChild);
+                            }
+                            currentChild = nextSibling;
+                        }
+                        instruction.contentFactory = compiler.compile(fragment, resources);
+                    }
+                    else {
+                        var currentChild = node.firstChild, nextSibling, toReplace;
+                        while (currentChild) {
+                            nextSibling = currentChild.nextSibling;
+                            if (currentChild.tagName === 'TEMPLATE' && (toReplace = currentChild.getAttribute('replace-part'))) {
+                                partReplacements[toReplace] = compiler.compile(currentChild, resources);
+                            }
+                            currentChild = nextSibling;
+                        }
+                    }
                 }
-                instruction.contentFactory = compiler.compile(fragment, resources);
             }
+            instruction.partReplacements = partReplacements;
             instruction.suppressBind = true;
             return node;
         };
         HtmlBehaviorResource.prototype.create = function (container, instruction, element, bindings) {
             if (instruction === void 0) { instruction = defaultInstruction; }
             if (element === void 0) { element = null; }
+            if (bindings === void 0) { bindings = null; }
             var executionContext = instruction.executionContext || container.get(this.target), behaviorInstance = new behavior_instance_1.BehaviorInstance(this, executionContext, instruction), viewFactory, host;
             if (this.liftsContent) {
                 //template controller
@@ -146,12 +171,14 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-binding', 'aurelia-ta
                 }
                 if (element) {
                     element.primaryBehavior = behaviorInstance;
+                    if (this.usesShadowDOM) {
+                        host = element.createShadowRoot();
+                    }
+                    else {
+                        host = element;
+                    }
                     if (behaviorInstance.view) {
-                        if (this.usesShadowDOM) {
-                            host = element.createShadowRoot();
-                        }
-                        else {
-                            host = element;
+                        if (!this.usesShadowDOM) {
                             if (instruction.contentFactory) {
                                 var contentView = instruction.contentFactory.create(container, null, contentSelectorFactoryOptions);
                                 content_selector_1.ContentSelector.applySelectors(contentView, behaviorInstance.view.contentSelectors, function (contentSelector, group) { return contentSelector.add(group); });
@@ -163,9 +190,20 @@ define(["require", "exports", 'aurelia-metadata', 'aurelia-binding', 'aurelia-ta
                         }
                         behaviorInstance.view.appendNodesTo(host);
                     }
+                    else if (this.childExpression) {
+                        bindings.push(this.childExpression.createBinding(element, behaviorInstance.executionContext));
+                    }
                 }
                 else if (behaviorInstance.view) {
+                    //dynamic element with view
                     behaviorInstance.view.owner = behaviorInstance;
+                    if (this.childExpression) {
+                        behaviorInstance.view.addBinding(this.childExpression.createBinding(instruction.host, behaviorInstance.executionContext));
+                    }
+                }
+                else if (this.childExpression) {
+                    //dynamic element without view
+                    bindings.push(this.childExpression.createBinding(instruction.host, behaviorInstance.executionContext));
                 }
             }
             else if (this.childExpression) {

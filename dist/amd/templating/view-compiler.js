@@ -1,5 +1,5 @@
 define(["require", "exports", './view-factory', './binding-language'], function (require, exports, view_factory_1, binding_language_1) {
-    var nextInjectorId = 0, defaultCompileOptions = { targetShadowDOM: false }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot;
+    var nextInjectorId = 0, defaultCompileOptions = { targetShadowDOM: false }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot, needsTemplateFixup = !('content' in document.createElement('template'));
     function getNextInjectorId() {
         return ++nextInjectorId;
     }
@@ -34,12 +34,24 @@ define(["require", "exports", './view-factory', './binding-language'], function 
         ViewCompiler.inject = function () { return [binding_language_1.BindingLanguage]; };
         ViewCompiler.prototype.compile = function (templateOrFragment, resources, options) {
             if (options === void 0) { options = defaultCompileOptions; }
-            var instructions = [], targetShadowDOM = options.targetShadowDOM, content;
+            var instructions = [], targetShadowDOM = options.targetShadowDOM, content, part, temp;
             targetShadowDOM = targetShadowDOM && hasShadowDOM;
             if (options.beforeCompile) {
                 options.beforeCompile(templateOrFragment);
             }
+            if (typeof templateOrFragment === 'string') {
+                temp = document.createElement('template');
+                temp.innerHTML = templateOrFragment;
+                if (needsTemplateFixup) {
+                    temp.content = document.createDocumentFragment();
+                    while (temp.firstChild) {
+                        temp.content.appendChild(temp.firstChild);
+                    }
+                }
+                templateOrFragment = temp;
+            }
             if (templateOrFragment.content) {
+                part = templateOrFragment.getAttribute('part');
                 content = window.document.adoptNode(templateOrFragment.content, true);
             }
             else {
@@ -48,7 +60,11 @@ define(["require", "exports", './view-factory', './binding-language'], function 
             this.compileNode(content, resources, instructions, templateOrFragment, 'root', !targetShadowDOM);
             content.insertBefore(document.createComment('<view>'), content.firstChild);
             content.appendChild(document.createComment('</view>'));
-            return new view_factory_1.ViewFactory(content, instructions, resources);
+            var factory = new view_factory_1.ViewFactory(content, instructions, resources);
+            if (part) {
+                factory.part = part;
+            }
+            return factory;
         };
         ViewCompiler.prototype.compileNode = function (node, resources, instructions, parentNode, parentInjectorId, targetLightDOM) {
             switch (node.nodeType) {
@@ -89,6 +105,7 @@ define(["require", "exports", './view-factory', './binding-language'], function 
             }
             else if (tagName === 'template') {
                 viewFactory = this.compile(node, resources);
+                viewFactory.part = node.getAttribute('part');
             }
             else {
                 type = resources.getElement(tagName);

@@ -65,7 +65,7 @@ define(["require", "exports"], function (require, exports) {
             next.reject = function (error) {
                 next.status = exports.pipelineStatus.rejected;
                 next.output = error;
-                return Promise.reject(createResult(ctx, next));
+                return Promise.resolve(createResult(ctx, next));
             };
             next.status = exports.pipelineStatus.running;
             return next();

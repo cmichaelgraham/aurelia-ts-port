@@ -98,14 +98,17 @@ System.register(['aurelia-framework', 'aurelia-logging-console'], function(expor
                     return this;
                 };
             }));
+            toLoad.push(window.System.normalize('aurelia-templating-router', bName).then(function (templatingRouter) {
+                aurelia.use.router = function () {
+                    aurelia.use.plugin(templatingRouter);
+                    return this;
+                };
+            }));
             toLoad.push(window.System.normalize('aurelia-history-browser', bName).then(function (historyBrowser) {
-                return window.System.normalize('aurelia-templating-router', bName).then(function (templatingRouter) {
-                    aurelia.use.router = function () {
-                        aurelia.use.plugin(historyBrowser);
-                        aurelia.use.plugin(templatingRouter);
-                        return this;
-                    };
-                });
+                aurelia.use.history = function () {
+                    aurelia.use.plugin(historyBrowser);
+                    return this;
+                };
             }));
             toLoad.push(window.System.normalize('aurelia-templating-resources', bName).then(function (name) {
                 window.System.map['aurelia-templating-resources'] = name;
@@ -125,6 +128,7 @@ System.register(['aurelia-framework', 'aurelia-logging-console'], function(expor
                 aurelia.use
                     .defaultBindingLanguage()
                     .defaultResources()
+                    .history()
                     .router()
                     .eventAggregator();
                 return this;

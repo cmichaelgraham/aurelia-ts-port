@@ -1,5 +1,5 @@
 function configure(aurelia) {
-    aurelia.globalizeResources('./compose', './if', './with', './repeat', './show', './global-behavior', './sanitize-html');
+    aurelia.globalizeResources('./compose', './if', './with', './repeat', './show', './replaceable', './global-behavior', './sanitize-html');
 }
 exports.configure = configure;
 var compose_1 = require('./compose');
@@ -16,3 +16,5 @@ var global_behavior_1 = require('./global-behavior');
 exports.GlobalBehavior = global_behavior_1.GlobalBehavior;
 var sanitize_html_1 = require('./sanitize-html');
 exports.SanitizeHtmlValueConverter = sanitize_html_1.SanitizeHtmlValueConverter;
+var replaceable_1 = require('./replaceable');
+exports.Replaceable = replaceable_1.Replaceable;

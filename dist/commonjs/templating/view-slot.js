@@ -1,5 +1,6 @@
 var content_selector_1 = require('./content-selector');
 var animator_1 = require('./animator');
+var util_1 = require('./util');
 var ViewSlot = (function () {
     function ViewSlot(anchor, anchorIsContainer, executionContext, animator) {
         if (animator === void 0) { animator = animator_1.Animator.instance; }
@@ -59,7 +60,7 @@ var ViewSlot = (function () {
         if (this.isAttached) {
             view.attached();
             // Animate page itself
-            var element = view.firstChild ? view.firstChild.nextElementSibling : null;
+            var element = view.firstChild ? util_1.nextElementSibling(view.firstChild) : null;
             if (view.firstChild &&
                 view.firstChild.nodeType === 8 &&
                 element &&
@@ -99,7 +100,7 @@ var ViewSlot = (function () {
             }
             return view;
         };
-        var element = view.firstChild && view.firstChild.nextElementSibling ? view.firstChild.nextElementSibling : null;
+        var element = view.firstChild ? util_1.nextElementSibling(view.firstChild) : null;
         if (view.firstChild &&
             view.firstChild.nodeType === 8 &&
             element &&
@@ -118,7 +119,7 @@ var ViewSlot = (function () {
         var children = this.children, ii = children.length, i;
         var rmPromises = [];
         children.forEach(function (child) {
-            var element = child.firstChild ? child.firstChild.nextElementSibling : null;
+            var element = child.firstChild ? util_1.nextElementSibling(child.firstChild) : null;
             if (child.firstChild &&
                 child.firstChild.nodeType === 8 &&
                 element &&
@@ -171,7 +172,7 @@ var ViewSlot = (function () {
         for (i = 0, ii = children.length; i < ii; ++i) {
             child = children[i];
             child.attached();
-            var element = child.firstChild ? child.firstChild.nextElementSibling : null;
+            var element = child.firstChild ? util_1.nextElementSibling(child.firstChild) : null;
             if (child.firstChild &&
                 child.firstChild.nodeType === 8 &&
                 element &&

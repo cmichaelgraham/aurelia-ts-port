@@ -35,7 +35,8 @@ define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templatin
                 viewPortInstruction.behavior = metadata.create(childContainer, {
                     executionContext: viewModel,
                     viewFactory: viewFactory,
-                    suppressBind: true
+                    suppressBind: true,
+                    host: _this.element
                 });
                 if (waitToSwap) {
                     return;

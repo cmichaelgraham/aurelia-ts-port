@@ -58,7 +58,8 @@ var CompositionEngine = (function () {
                 return metadata.create(childContainer, {
                     executionContext: viewModel,
                     viewFactory: viewFactory,
-                    suppressBind: true
+                    suppressBind: true,
+                    host: instruction.host
                 });
             });
         });
@@ -70,6 +71,9 @@ var CompositionEngine = (function () {
             : instruction.viewModel;
         return this.viewEngine.importViewModelResource(instruction.viewModel).then(function (viewModelResource) {
             childContainer.autoRegister(viewModelResource.value);
+            if (instruction.host) {
+                childContainer.registerInstance(Element, instruction.host);
+            }
             instruction.viewModel = childContainer.viewModel = childContainer.get(viewModelResource.value);
             instruction.viewModelResource = viewModelResource;
             return instruction;

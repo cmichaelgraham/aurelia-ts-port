@@ -64,7 +64,7 @@ export class Pipeline {
         next.reject = error => {
             next.status = pipelineStatus.rejected;
             next.output = error;
-            return Promise.reject(createResult(ctx, next));
+            return Promise.resolve(createResult(ctx, next));
         };
         next.status = pipelineStatus.running;
         return next();

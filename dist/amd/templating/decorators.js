@@ -45,7 +45,7 @@ define(["require", "exports", 'aurelia-metadata', './bindable-property', './chil
                 nameOrConfigOrTarget.name = key;
             }
             prop = new bindable_property_1.BindableProperty(nameOrConfigOrTarget);
-            prop.registerWith(actualTarget, resource);
+            return prop.registerWith(actualTarget, resource, descriptor);
         };
         if (!nameOrConfigOrTarget) {
             return deco;

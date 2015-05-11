@@ -75,7 +75,9 @@ define(["require", "exports"], function (require, exports) {
                 }, false);
                 // Step 4: check if parent element is defined to stagger animations otherwise trigger active immediately
                 var parent = element.parentElement, delay = 0;
-                if (parent.classList.contains('au-stagger')) {
+                if (parent !== null &&
+                    parent !== undefined &&
+                    parent.classList.contains('au-stagger')) {
                     var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
                     delay = _this.getElementAnimationDelay(parent) * elemPos;
                     setTimeout(function () {
@@ -128,7 +130,9 @@ define(["require", "exports"], function (require, exports) {
                 }, false);
                 // Step 4: check if parent element is defined to stagger animations otherwise trigger leave immediately
                 var parent = element.parentElement, delay = 0;
-                if (parent.classList.contains('au-stagger')) {
+                if (parent !== null &&
+                    parent !== undefined &&
+                    parent.classList.contains('au-stagger')) {
                     var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
                     delay = _this.getElementAnimationDelay(parent) * elemPos;
                     setTimeout(function () {

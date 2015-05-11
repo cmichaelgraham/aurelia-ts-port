@@ -1,6 +1,6 @@
 import { ViewFactory } from './view-factory';
 import { BindingLanguage } from './binding-language';
-var nextInjectorId = 0, defaultCompileOptions = { targetShadowDOM: false }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot;
+var nextInjectorId = 0, defaultCompileOptions = { targetShadowDOM: false }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot, needsTemplateFixup = !('content' in document.createElement('template'));
 function getNextInjectorId() {
     return ++nextInjectorId;
 }
@@ -34,12 +34,24 @@ export class ViewCompiler {
     }
     static inject() { return [BindingLanguage]; }
     compile(templateOrFragment, resources, options = defaultCompileOptions) {
-        var instructions = [], targetShadowDOM = options.targetShadowDOM, content;
+        var instructions = [], targetShadowDOM = options.targetShadowDOM, content, part, temp;
         targetShadowDOM = targetShadowDOM && hasShadowDOM;
         if (options.beforeCompile) {
             options.beforeCompile(templateOrFragment);
         }
+        if (typeof templateOrFragment === 'string') {
+            temp = document.createElement('template');
+            temp.innerHTML = templateOrFragment;
+            if (needsTemplateFixup) {
+                temp.content = document.createDocumentFragment();
+                while (temp.firstChild) {
+                    temp.content.appendChild(temp.firstChild);
+                }
+            }
+            templateOrFragment = temp;
+        }
         if (templateOrFragment.content) {
+            part = templateOrFragment.getAttribute('part');
             content = window.document.adoptNode(templateOrFragment.content, true);
         }
         else {
@@ -48,7 +60,11 @@ export class ViewCompiler {
         this.compileNode(content, resources, instructions, templateOrFragment, 'root', !targetShadowDOM);
         content.insertBefore(document.createComment('<view>'), content.firstChild);
         content.appendChild(document.createComment('</view>'));
-        return new ViewFactory(content, instructions, resources);
+        var factory = new ViewFactory(content, instructions, resources);
+        if (part) {
+            factory.part = part;
+        }
+        return factory;
     }
     compileNode(node, resources, instructions, parentNode, parentInjectorId, targetLightDOM) {
         switch (node.nodeType) {
@@ -89,6 +105,7 @@ export class ViewCompiler {
         }
         else if (tagName === 'template') {
             viewFactory = this.compile(node, resources);
+            viewFactory.part = node.getAttribute('part');
         }
         else {
             type = resources.getElement(tagName);

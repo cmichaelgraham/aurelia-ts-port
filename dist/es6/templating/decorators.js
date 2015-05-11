@@ -46,7 +46,7 @@ export function bindable(nameOrConfigOrTarget, key, descriptor) {
             nameOrConfigOrTarget.name = key;
         }
         prop = new BindableProperty(nameOrConfigOrTarget);
-        prop.registerWith(actualTarget, resource);
+        return prop.registerWith(actualTarget, resource, descriptor);
     };
     if (!nameOrConfigOrTarget) {
         return deco;

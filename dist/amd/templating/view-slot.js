@@ -1,4 +1,4 @@
-define(["require", "exports", './content-selector', './animator'], function (require, exports, content_selector_1, animator_1) {
+define(["require", "exports", './content-selector', './animator', './util'], function (require, exports, content_selector_1, animator_1, util_1) {
     var ViewSlot = (function () {
         function ViewSlot(anchor, anchorIsContainer, executionContext, animator) {
             if (animator === void 0) { animator = animator_1.Animator.instance; }
@@ -58,7 +58,7 @@ define(["require", "exports", './content-selector', './animator'], function (req
             if (this.isAttached) {
                 view.attached();
                 // Animate page itself
-                var element = view.firstChild ? view.firstChild.nextElementSibling : null;
+                var element = view.firstChild ? util_1.nextElementSibling(view.firstChild) : null;
                 if (view.firstChild &&
                     view.firstChild.nodeType === 8 &&
                     element &&
@@ -98,7 +98,7 @@ define(["require", "exports", './content-selector', './animator'], function (req
                 }
                 return view;
             };
-            var element = view.firstChild && view.firstChild.nextElementSibling ? view.firstChild.nextElementSibling : null;
+            var element = view.firstChild ? util_1.nextElementSibling(view.firstChild) : null;
             if (view.firstChild &&
                 view.firstChild.nodeType === 8 &&
                 element &&
@@ -117,7 +117,7 @@ define(["require", "exports", './content-selector', './animator'], function (req
             var children = this.children, ii = children.length, i;
             var rmPromises = [];
             children.forEach(function (child) {
-                var element = child.firstChild ? child.firstChild.nextElementSibling : null;
+                var element = child.firstChild ? util_1.nextElementSibling(child.firstChild) : null;
                 if (child.firstChild &&
                     child.firstChild.nodeType === 8 &&
                     element &&
@@ -170,7 +170,7 @@ define(["require", "exports", './content-selector', './animator'], function (req
             for (i = 0, ii = children.length; i < ii; ++i) {
                 child = children[i];
                 child.attached();
-                var element = child.firstChild ? child.firstChild.nextElementSibling : null;
+                var element = child.firstChild ? util_1.nextElementSibling(child.firstChild) : null;
                 if (child.firstChild &&
                     child.firstChild.nodeType === 8 &&
                     element &&

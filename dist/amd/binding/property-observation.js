@@ -97,15 +97,16 @@ define(["require", "exports"], function (require, exports) {
             return propertyObserver;
         };
         OoObjectObserver.prototype.handleChanges = function (changeRecords) {
-            var updates = {}, observers = this.observers, i = changeRecords.length;
-            while (i--) {
-                var change = changeRecords[i], name = change.name;
-                if (!(name in updates)) {
-                    var observer = observers[name];
-                    updates[name] = true;
-                    if (observer) {
-                        observer.trigger(change.object[name], change.oldValue);
-                    }
+            var updates = {}, observers = this.observers, change, observer;
+            for (var i = 0, ii = changeRecords.length; i < ii; ++i) {
+                change = changeRecords[i];
+                updates[change.name] = change;
+            }
+            for (var key in updates) {
+                observer = observers[key],
+                    change = updates[key];
+                if (observer) {
+                    observer.trigger(change.object[key], change.oldValue);
                 }
             }
         };

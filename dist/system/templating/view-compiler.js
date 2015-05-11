@@ -1,6 +1,6 @@
 System.register(['./view-factory', './binding-language'], function(exports_1) {
     var view_factory_1, binding_language_1;
-    var nextInjectorId, defaultCompileOptions, hasShadowDOM, ViewCompiler;
+    var nextInjectorId, defaultCompileOptions, hasShadowDOM, needsTemplateFixup, ViewCompiler;
     function getNextInjectorId() {
         return ++nextInjectorId;
     }
@@ -37,7 +37,7 @@ System.register(['./view-factory', './binding-language'], function(exports_1) {
                 binding_language_1 = _binding_language_1;
             }],
         execute: function() {
-            nextInjectorId = 0, defaultCompileOptions = { targetShadowDOM: false }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot;
+            nextInjectorId = 0, defaultCompileOptions = { targetShadowDOM: false }, hasShadowDOM = !!HTMLElement.prototype.createShadowRoot, needsTemplateFixup = !('content' in document.createElement('template'));
             ViewCompiler = (function () {
                 function ViewCompiler(bindingLanguage) {
                     this.bindingLanguage = bindingLanguage;
@@ -45,12 +45,24 @@ System.register(['./view-factory', './binding-language'], function(exports_1) {
                 ViewCompiler.inject = function () { return [binding_language_1.BindingLanguage]; };
                 ViewCompiler.prototype.compile = function (templateOrFragment, resources, options) {
                     if (options === void 0) { options = defaultCompileOptions; }
-                    var instructions = [], targetShadowDOM = options.targetShadowDOM, content;
+                    var instructions = [], targetShadowDOM = options.targetShadowDOM, content, part, temp;
                     targetShadowDOM = targetShadowDOM && hasShadowDOM;
                     if (options.beforeCompile) {
                         options.beforeCompile(templateOrFragment);
                     }
+                    if (typeof templateOrFragment === 'string') {
+                        temp = document.createElement('template');
+                        temp.innerHTML = templateOrFragment;
+                        if (needsTemplateFixup) {
+                            temp.content = document.createDocumentFragment();
+                            while (temp.firstChild) {
+                                temp.content.appendChild(temp.firstChild);
+                            }
+                        }
+                        templateOrFragment = temp;
+                    }
                     if (templateOrFragment.content) {
+                        part = templateOrFragment.getAttribute('part');
                         content = window.document.adoptNode(templateOrFragment.content, true);
                     }
                     else {
@@ -59,7 +71,11 @@ System.register(['./view-factory', './binding-language'], function(exports_1) {
                     this.compileNode(content, resources, instructions, templateOrFragment, 'root', !targetShadowDOM);
                     content.insertBefore(document.createComment('<view>'), content.firstChild);
                     content.appendChild(document.createComment('</view>'));
-                    return new view_factory_1.ViewFactory(content, instructions, resources);
+                    var factory = new view_factory_1.ViewFactory(content, instructions, resources);
+                    if (part) {
+                        factory.part = part;
+                    }
+                    return factory;
                 };
                 ViewCompiler.prototype.compileNode = function (node, resources, instructions, parentNode, parentInjectorId, targetLightDOM) {
                     switch (node.nodeType) {
@@ -100,6 +116,7 @@ System.register(['./view-factory', './binding-language'], function(exports_1) {
                     }
                     else if (tagName === 'template') {
                         viewFactory = this.compile(node, resources);
+                        viewFactory.part = node.getAttribute('part');
                     }
                     else {
                         type = resources.getElement(tagName);
