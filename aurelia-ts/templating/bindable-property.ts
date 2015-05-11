@@ -185,7 +185,7 @@ export class BindableProperty {
   }
 }
 
-class BehaviorPropertyObserver {
+export class BehaviorPropertyObserver {
   taskQueue;
   obj;
   propertyName;

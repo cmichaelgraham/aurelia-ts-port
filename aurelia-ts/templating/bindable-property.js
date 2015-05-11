@@ -137,7 +137,7 @@ export class BindableProperty {
         observer.selfSubscriber = selfSubscriber;
     }
 }
-class BehaviorPropertyObserver {
+export class BehaviorPropertyObserver {
     constructor(taskQueue, obj, propertyName, selfSubscriber, initialValue) {
         this.taskQueue = taskQueue;
         this.obj = obj;
