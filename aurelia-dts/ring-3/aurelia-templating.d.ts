@@ -292,7 +292,7 @@ declare module 'aurelia-templating/html-behavior' {
 	    viewStrategy: any;
 	    viewFactory: any;
 	    constructor();
-	    static convention(name: any, existing: any): any;
+	    static convention(name: any, existing?: any): any;
 	    analyze(container: any, target: any): void;
 	    load(container: any, target: any, viewStrategy: any, transientView: any): any;
 	    register(registry: any, name: any): void;
