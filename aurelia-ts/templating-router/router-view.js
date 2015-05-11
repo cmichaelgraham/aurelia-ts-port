@@ -1,4 +1,4 @@
-if (typeof __decorate !== "function") __decorate = function (decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
     switch (arguments.length) {
         case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
@@ -6,58 +6,58 @@ if (typeof __decorate !== "function") __decorate = function (decorators, target,
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-if (typeof __metadata !== "function") __metadata = function (k, v) {
+var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define(["require", "exports", 'aurelia-dependency-injection', 'aurelia-templating', 'aurelia-router', 'aurelia-metadata'], function (require, exports, aurelia_dependency_injection_1, aurelia_templating_1, aurelia_router_1, aurelia_metadata_1) {
-    var RouterView = (function () {
-        function RouterView(element, container, viewSlot, router) {
-            this.element = element;
-            this.container = container;
-            this.viewSlot = viewSlot;
-            this.router = router;
-            this.router.registerViewPort(this, this.element.getAttribute('name'));
+import { Container, inject } from 'aurelia-dependency-injection';
+import { ViewSlot, ViewStrategy, customElement, noView } from 'aurelia-templating';
+import { Router } from 'aurelia-router';
+import { Origin } from 'aurelia-metadata';
+export let RouterView = class {
+    constructor(element, container, viewSlot, router) {
+        this.element = element;
+        this.container = container;
+        this.viewSlot = viewSlot;
+        this.router = router;
+        this.router.registerViewPort(this, this.element.getAttribute('name'));
+    }
+    bind(executionContext) {
+        this.container.viewModel = executionContext;
+    }
+    process(viewPortInstruction, waitToSwap) {
+        var component = viewPortInstruction.component, viewStrategy = component.view, childContainer = component.childContainer, viewModel = component.executionContext, viewModelResource = component.viewModelResource, metadata = viewModelResource.metadata;
+        if (!viewStrategy && 'getViewStrategy' in viewModel) {
+            viewStrategy = viewModel.getViewStrategy();
         }
-        RouterView.prototype.bind = function (executionContext) {
-            this.container.viewModel = executionContext;
-        };
-        RouterView.prototype.process = function (viewPortInstruction, waitToSwap) {
-            var _this = this;
-            var component = viewPortInstruction.component, viewStrategy = component.view, childContainer = component.childContainer, viewModel = component.executionContext, viewModelResource = component.viewModelResource, metadata = viewModelResource.metadata;
-            if (!viewStrategy && 'getViewStrategy' in viewModel) {
-                viewStrategy = viewModel.getViewStrategy();
-            }
-            if (viewStrategy) {
-                viewStrategy = aurelia_templating_1.ViewStrategy.normalize(viewStrategy);
-                viewStrategy.makeRelativeTo((aurelia_metadata_1.Origin.get(component.router.container.viewModel.constructor)).moduleId);
-            }
-            return metadata.load(childContainer, viewModelResource.value, viewStrategy, true).then(function (viewFactory) {
-                viewPortInstruction.behavior = metadata.create(childContainer, {
-                    executionContext: viewModel,
-                    viewFactory: viewFactory,
-                    suppressBind: true
-                });
-                if (waitToSwap) {
-                    return;
-                }
-                _this.swap(viewPortInstruction);
+        if (viewStrategy) {
+            viewStrategy = ViewStrategy.normalize(viewStrategy);
+            viewStrategy.makeRelativeTo((Origin.get(component.router.container.viewModel.constructor)).moduleId);
+        }
+        return metadata.load(childContainer, viewModelResource.value, viewStrategy, true).then(viewFactory => {
+            viewPortInstruction.behavior = metadata.create(childContainer, {
+                executionContext: viewModel,
+                viewFactory: viewFactory,
+                suppressBind: true,
+                host: this.element
             });
-        };
-        RouterView.prototype.swap = function (viewPortInstruction) {
-            viewPortInstruction.behavior.view.bind(viewPortInstruction.behavior.executionContext);
-            this.viewSlot.swap(viewPortInstruction.behavior.view);
-            if (this.view) {
-                this.view.unbind();
+            if (waitToSwap) {
+                return;
             }
-            this.view = viewPortInstruction.behavior.view;
-        };
-        RouterView = __decorate([
-            aurelia_templating_1.customElement('router-view'),
-            aurelia_templating_1.noView,
-            aurelia_dependency_injection_1.inject(Element, aurelia_dependency_injection_1.Container, aurelia_templating_1.ViewSlot, aurelia_router_1.Router), 
-            __metadata('design:paramtypes', [Object, Object, Object, Object])
-        ], RouterView);
-        return RouterView;
-    })();
-    exports.RouterView = RouterView;
-});
+            this.swap(viewPortInstruction);
+        });
+    }
+    swap(viewPortInstruction) {
+        viewPortInstruction.behavior.view.bind(viewPortInstruction.behavior.executionContext);
+        this.viewSlot.swap(viewPortInstruction.behavior.view);
+        if (this.view) {
+            this.view.unbind();
+        }
+        this.view = viewPortInstruction.behavior.view;
+    }
+};
+RouterView = __decorate([
+    customElement('router-view'),
+    noView,
+    inject(Element, Container, ViewSlot, Router), 
+    __metadata('design:paramtypes', [Object, Object, Object, Object])
+], RouterView);

@@ -4,7 +4,8 @@ import {BindingLanguage} from './binding-language';
 
 var nextInjectorId = 0,
     defaultCompileOptions = { targetShadowDOM:false },
-    hasShadowDOM = !!(<any>HTMLElement.prototype).createShadowRoot;
+    hasShadowDOM = !!(<any>HTMLElement.prototype).createShadowRoot,
+    needsTemplateFixup = !('content' in document.createElement('template'));
 
 function getNextInjectorId(){
   return ++nextInjectorId;
@@ -52,7 +53,7 @@ export class ViewCompiler {
   compile(templateOrFragment, resources, options:any=defaultCompileOptions){
     var instructions = [],
         targetShadowDOM = options.targetShadowDOM,
-        content;
+        content, part, temp;
 
     targetShadowDOM = targetShadowDOM && hasShadowDOM;
 
@@ -60,7 +61,22 @@ export class ViewCompiler {
       options.beforeCompile(templateOrFragment);
     }
 
+    if(typeof templateOrFragment === 'string'){
+      temp = document.createElement('template');
+      temp.innerHTML = templateOrFragment;
+
+      if(needsTemplateFixup){
+        temp.content = document.createDocumentFragment();
+        while(temp.firstChild){
+          temp.content.appendChild(temp.firstChild);
+        }
+      }
+
+      templateOrFragment = temp;
+    }
+
     if(templateOrFragment.content){
+      part = templateOrFragment.getAttribute('part');
       content = (<any>window).document.adoptNode(templateOrFragment.content, true);
     }else{
       content = templateOrFragment;
@@ -71,7 +87,13 @@ export class ViewCompiler {
     content.insertBefore(document.createComment('<view>'), content.firstChild);
     content.appendChild(document.createComment('</view>'));
 
-    return new ViewFactory(content, instructions, resources);
+    var factory = new ViewFactory(content, instructions, resources);
+
+    if(part){
+      factory.part = part;
+    }
+
+    return factory;
   }
 
   compileNode(node, resources, instructions, parentNode, parentInjectorId, targetLightDOM){
@@ -123,6 +145,7 @@ export class ViewCompiler {
       return node.nextSibling;
     } else if(tagName === 'template'){
       viewFactory = this.compile(node, resources);
+      viewFactory.part = node.getAttribute('part');
     } else{
       type = resources.getElement(tagName);
       if(type){

@@ -4,6 +4,7 @@ export class BehaviorInstance {
   public isAttached;
   public boundProperties;
   public view;
+  contentView;
   constructor(behavior, executionContext, instruction){
     this.behavior = behavior;
     this.executionContext = executionContext;
@@ -17,7 +18,7 @@ export class BehaviorInstance {
         i, ii;
 
     behavior.ensurePropertiesDefined(executionContext, observerLookup);
-    
+
     for(i = 0, ii = properties.length; i < ii; ++i){
       properties[i].initialize(executionContext, observerLookup, attributes, handlesBind, boundProperties);
     }

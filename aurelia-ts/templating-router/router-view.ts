@@ -45,7 +45,8 @@ export class RouterView {
       viewPortInstruction.behavior = metadata.create(childContainer, {
         executionContext:viewModel,
         viewFactory:viewFactory,
-        suppressBind:true
+        suppressBind:true,
+        host:this.element
       });
 
       if(waitToSwap){
