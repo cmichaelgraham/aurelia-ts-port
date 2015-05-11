@@ -28,7 +28,7 @@ export class PathObserver {
         //add new observers
         var observersAreComplete = this.observers.length === this.path.length;
         for (let i = 0; i < this.path.length; i++) {
-            let observer = this.observers[i];
+            var observer = this.observers[i];
             if (!observer) {
                 let currentPath = this.path[i];
                 observer = this.observerLocator.getObserver(currentSubject, currentPath);

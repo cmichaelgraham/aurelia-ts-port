@@ -35,6 +35,7 @@ var buildTargets = {
     { name: 'ring-4', repos: [
       { name: 'framework' },
       { name: 'animator-css' },
+      { name: 'validation' },
       { name: 'templating-binding' },
       { name: 'templating-resources' },
       { name: 'templating-router' }

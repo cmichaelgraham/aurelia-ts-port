@@ -51,6 +51,7 @@
         "./aurelia-dts/ring-4/aurelia-templating-binding.d.ts",
         "./aurelia-dts/ring-4/aurelia-templating-resources.d.ts",
         "./aurelia-dts/ring-4/aurelia-templating-router.d.ts",
+        "./aurelia-dts/ring-4/aurelia-validation.d.ts",
         "./aurelia-dts/ring-5/aurelia-app-contacts.d.ts",
         "./aurelia-dts/ring-5/aurelia-bootstrapper.d.ts",
         "./aurelia-dts/ring-5/aurelia-skeleton-navigation.d.ts",

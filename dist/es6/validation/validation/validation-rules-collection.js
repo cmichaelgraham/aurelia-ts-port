@@ -41,7 +41,7 @@ export class ValidationRulesCollection {
         //validate rules
         if (executeRules) {
             for (let i = 0; i < this.validationRules.length; i++) {
-                let rule = this.validationRules[i];
+                var rule = this.validationRules[i];
                 checks = checks.then((previousRuleResult) => {
                     //Earlier in the chain, something resolved to an invalid result. Chain it.
                     if (previousRuleResult.isValid === false) {
@@ -71,7 +71,7 @@ export class ValidationRulesCollection {
         }
         //validate collections
         for (let i = 0; i < this.validationCollections.length; i++) {
-            let validationCollection = this.validationCollections[i];
+            var validationCollection = this.validationCollections[i];
             checks = checks.then((previousValidationResult) => {
                 if (previousValidationResult.isValid)
                     return validationCollection.validate(newValue, locale);

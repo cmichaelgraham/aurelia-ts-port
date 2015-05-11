@@ -78,7 +78,7 @@ export class ValidationGroup {
         this.isValidating = true;
         var promise = Promise.resolve(true);
         for (let i = this.validationProperties.length - 1; i >= 0; i--) {
-            let validatorProperty = this.validationProperties[i];
+            var validatorProperty = this.validationProperties[i];
             promise = promise.then(() => { return validatorProperty.validateCurrentValue(forceDirty, forceExecution); });
         }
         promise = promise.catch(() => {

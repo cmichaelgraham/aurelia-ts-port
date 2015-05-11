@@ -30,17 +30,17 @@ define(["require", "exports"], function (require, exports) {
             //add new observers
             var observersAreComplete = this.observers.length === this.path.length;
             for (var i = 0; i < this.path.length; i++) {
-                var observer_1 = this.observers[i];
-                if (!observer_1) {
+                var observer = this.observers[i];
+                if (!observer) {
                     var currentPath = this.path[i];
-                    observer_1 = this.observerLocator.getObserver(currentSubject, currentPath);
-                    this.observers.push(observer_1);
-                    var subscription = observer_1.subscribe(function (newValue, oldValue) {
-                        _this.observeParts(observer_1.propertyName);
+                    observer = this.observerLocator.getObserver(currentSubject, currentPath);
+                    this.observers.push(observer);
+                    var subscription = observer.subscribe(function (newValue, oldValue) {
+                        _this.observeParts(observer.propertyName);
                     });
-                    observer_1.subscription = subscription;
+                    observer.subscription = subscription;
                 }
-                var currentValue = observer_1.getValue();
+                var currentValue = observer.getValue();
                 if (currentValue === undefined || currentValue === null) {
                     break;
                 }
