@@ -3,7 +3,7 @@ define(["require", "exports"], function (require, exports) {
         function NameExpression(name, mode) {
             this.property = name;
             this.discrete = true;
-            this.mode = (mode || 'view-model').toLowerCase();
+            this.mode = mode.replace(/-([a-z])/g, function (m, w) { return w.toUpperCase(); });
         }
         NameExpression.prototype.createBinding = function (target) {
             return new NameBinder(this.property, target, this.mode);
@@ -14,15 +14,17 @@ define(["require", "exports"], function (require, exports) {
     var NameBinder = (function () {
         function NameBinder(property, target, mode) {
             this.property = property;
-            switch (mode) {
-                case 'element':
-                    this.target = target;
-                    break;
-                case 'view-model':
-                    this.target = target.primaryBehavior ? target.primaryBehavior.executionContext : target;
-                    break;
-                default:
-                    throw new Error('Name expressions do not support mode: ' + mode);
+            if (mode === 'element') {
+                this.target = target;
+            }
+            else {
+                this.target = target[mode];
+                if (this.target === undefined) {
+                    throw new Error("Attempted to reference \"" + mode + "\", but it was not found on the target element.");
+                }
+                else {
+                    this.target = this.target.executionContext || this.target;
+                }
             }
         }
         NameBinder.prototype.bind = function (source) {

@@ -46,6 +46,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                         'formmethod': 'formMethod',
                         'formnovalidate': 'formNoValidate',
                         'formtarget': 'formTarget',
+                        'rowspan': 'rowSpan',
+                        'colspan': 'colSpan'
                     };
                 }
                 TemplatingBindingLanguage.inject = function () { return [aurelia_binding_1.Parser, aurelia_binding_1.ObserverLocator, syntax_interpreter_1.SyntaxInterpreter]; };
@@ -56,7 +58,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                         info.attrName = parts[0].trim();
                         info.attrValue = attrValue;
                         info.command = parts[1].trim();
-                        info.expression = null;
+                        if (info.command === 'ref') {
+                            info.expression = new aurelia_binding_1.NameExpression(attrValue, info.attrName);
+                            info.command = null;
+                            info.attrName = 'ref';
+                        }
+                        else {
+                            info.expression = null;
+                        }
                     }
                     else if (attrName == 'ref') {
                         info.attrName = attrName;

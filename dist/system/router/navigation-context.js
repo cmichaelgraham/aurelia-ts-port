@@ -80,6 +80,12 @@ System.register(['./navigation-plan'], function(exports_1) {
                         delaySwaps.forEach(function (x) { return x.viewPort.swap(x.viewPortInstruction); });
                     });
                 };
+                NavigationContext.prototype.updateTitle = function () {
+                    var title = this.buildTitle();
+                    if (title) {
+                        document.title = title;
+                    }
+                };
                 NavigationContext.prototype.buildTitle = function (separator) {
                     if (separator === void 0) { separator = ' | '; }
                     var next = this.nextInstruction, title = next.config.navModel.title || '', viewPortInstructions = next.viewPortInstructions, childTitles = [];
@@ -108,10 +114,7 @@ System.register(['./navigation-plan'], function(exports_1) {
                 }
                 CommitChangesStep.prototype.run = function (navigationContext, next) {
                     return navigationContext.commitChanges(true).then(function () {
-                        var title = navigationContext.buildTitle();
-                        if (title) {
-                            document.title = title;
-                        }
+                        navigationContext.updateTitle();
                         return next();
                     });
                 };

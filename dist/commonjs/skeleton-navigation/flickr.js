@@ -15,7 +15,7 @@ var Flickr = (function () {
     function Flickr(http) {
         this.heading = 'Flickr';
         this.images = [];
-        this.url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=rainier&tagmode=any&format=json';
+        this.url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=mountain&tagmode=any&format=json';
         this.http = http;
     }
     Flickr.prototype.activate = function () {

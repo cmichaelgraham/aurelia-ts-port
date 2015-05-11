@@ -158,8 +158,6 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-logging-console'], f
                 aurelia = new aurelia_framework_1.Aurelia(loader);
                 aurelia.host = appHost;
                 return configureAurelia(aurelia).then(function () { return m.configure(aurelia); });
-            }).catch(function (e) {
-                setTimeout(function () { throw e; }, 0);
             });
         }
         else {
@@ -171,8 +169,6 @@ define(["require", "exports", 'aurelia-framework', 'aurelia-logging-console'], f
                 }
                 aurelia.use.standardConfiguration();
                 return aurelia.start().then(function (a) { return a.setRoot(); });
-            }).catch(function (e) {
-                setTimeout(function () { throw e; }, 0);
             });
         }
     }

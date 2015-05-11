@@ -1,4 +1,4 @@
-import { Parser, ObserverLocator, EventManager, ListenerExpression, BindingExpression, NameExpression, CallExpression, bindingMode } from 'aurelia-binding';
+import { Parser, ObserverLocator, EventManager, ListenerExpression, BindingExpression, CallExpression, bindingMode } from 'aurelia-binding';
 export class SyntaxInterpreter {
     constructor(parser, observerLocator, eventManager) {
         this.parser = parser;
@@ -115,7 +115,4 @@ SyntaxInterpreter.prototype['one-time'] = function (resources, element, info, ex
     var instruction = existingInstruction || { attrName: info.attrName, attributes: {} };
     instruction.attributes[info.attrName] = new BindingExpression(this.observerLocator, this.attributeMap[info.attrName] || info.attrName, this.parser.parse(info.attrValue), bindingMode.oneTime, resources.valueConverterLookupFunction);
     return instruction;
-};
-SyntaxInterpreter.prototype["view-model"] = function (resources, element, info) {
-    return new NameExpression(info.attrValue, 'view-model');
 };

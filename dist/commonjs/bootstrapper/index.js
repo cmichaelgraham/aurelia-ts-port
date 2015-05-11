@@ -159,8 +159,6 @@ function handleApp(appHost) {
             aurelia = new aurelia_framework_1.Aurelia(loader);
             aurelia.host = appHost;
             return configureAurelia(aurelia).then(function () { return m.configure(aurelia); });
-        }).catch(function (e) {
-            setTimeout(function () { throw e; }, 0);
         });
     }
     else {
@@ -172,8 +170,6 @@ function handleApp(appHost) {
             }
             aurelia.use.standardConfiguration();
             return aurelia.start().then(function (a) { return a.setRoot(); });
-        }).catch(function (e) {
-            setTimeout(function () { throw e; }, 0);
         });
     }
 }

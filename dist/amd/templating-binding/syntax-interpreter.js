@@ -118,7 +118,4 @@ define(["require", "exports", 'aurelia-binding'], function (require, exports, au
         instruction.attributes[info.attrName] = new aurelia_binding_1.BindingExpression(this.observerLocator, this.attributeMap[info.attrName] || info.attrName, this.parser.parse(info.attrValue), aurelia_binding_1.bindingMode.oneTime, resources.valueConverterLookupFunction);
         return instruction;
     };
-    SyntaxInterpreter.prototype["view-model"] = function (resources, element, info) {
-        return new aurelia_binding_1.NameExpression(info.attrValue, 'view-model');
-    };
 });

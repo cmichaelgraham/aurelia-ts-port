@@ -159,12 +159,12 @@ define(["require", "exports", 'aurelia-logging', 'aurelia-dependency-injection',
                 this.host = applicationHost;
             }
             this.host.aurelia = this;
-            this.container.registerInstance(Element, this.host);
             compositionEngine = this.container.get(index_1.CompositionEngine);
             instruction.viewModel = root;
             instruction.container = instruction.childContainer = this.container;
             instruction.viewSlot = new index_1.ViewSlot(this.host, true);
             instruction.viewSlot.transformChildNodesIntoView();
+            instruction.host = this.host;
             return compositionEngine.compose(instruction).then(function (root) {
                 _this.root = root;
                 instruction.viewSlot.attached();

@@ -59,6 +59,12 @@ export class NavigationContext {
             delaySwaps.forEach(x => x.viewPort.swap(x.viewPortInstruction));
         });
     }
+    updateTitle() {
+        let title = this.buildTitle();
+        if (title) {
+            document.title = title;
+        }
+    }
     buildTitle(separator = ' | ') {
         var next = this.nextInstruction, title = next.config.navModel.title || '', viewPortInstructions = next.viewPortInstructions, childTitles = [];
         for (var viewPortName in viewPortInstructions) {
@@ -82,10 +88,7 @@ export class NavigationContext {
 export class CommitChangesStep {
     run(navigationContext, next) {
         return navigationContext.commitChanges(true).then(() => {
-            var title = navigationContext.buildTitle();
-            if (title) {
-                document.title = title;
-            }
+            navigationContext.updateTitle();
             return next();
         });
     }

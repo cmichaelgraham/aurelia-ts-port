@@ -39,6 +39,7 @@ gulp.task('build-ts-amd', function() {
         ,'./templating-binding/*.ts'
         ,'./templating-resources/*.ts'
         ,'./templating-router/*.ts'
+        ,'./validation/**/*.ts'
         ],
         {base: "."})// tsProject.src() // instead of gulp.src(...)
     .pipe(ts({
@@ -81,6 +82,7 @@ gulp.task('build-ts-es6', function() {
         ,'./templating-binding/*.ts'
         ,'./templating-resources/*.ts'
         ,'./templating-router/*.ts'
+        ,'./validation/**/*.ts'
         ],
         {base: "."})// tsProject.src() // instead of gulp.src(...)
     .pipe(ts({
@@ -123,6 +125,7 @@ gulp.task('build-ts-commonjs', function() {
         ,'./templating-binding/*.ts'
         ,'./templating-resources/*.ts'
         ,'./templating-router/*.ts'
+        ,'./validation/**/*.ts'
         ],
         {base: "."})// tsProject.src() // instead of gulp.src(...)
     .pipe(ts({
@@ -165,6 +168,7 @@ gulp.task('build-ts-system', function () {
         ,'./templating-binding/*.ts'
         ,'./templating-resources/*.ts'
         ,'./templating-router/*.ts'
+        ,'./validation/**/*.ts'
         ],
         {base: "."})// tsProject.src() // instead of gulp.src(...)
     .pipe(ts({
