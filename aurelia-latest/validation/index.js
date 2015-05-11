@@ -6,6 +6,7 @@ export * from './validation/validation-rules';
 export {Validation} from './validation/validation';
 export {ValidateCustomAttribute} from './validation/validate-custom-attribute';
 export {ValidateCustomAttributeViewStrategy} from './validation/validate-custom-attribute-view-strategy';
+export {ValidateCustomAttributeViewStrategyBase} from './validation/validate-custom-attribute-view-strategy';
 export {ensure} from './validation/decorators';
 
 
@@ -19,6 +20,6 @@ export function configure(aurelia, configCallback) {
   {
     configCallback(Validation.defaults);
   }
-  aurelia.container.registerInstance(ValidationConfig, Validation.defaults);
+  aurelia.withSingleton(ValidationConfig, Validation.defaults);
   return Validation.defaults.locale();
 }
