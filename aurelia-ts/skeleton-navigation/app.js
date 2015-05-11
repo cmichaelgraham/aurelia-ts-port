@@ -1,17 +1,13 @@
-define(["require", "exports", 'bootstrap', 'bootstrap/css/bootstrap.css!'], function (require, exports) {
-    var App = (function () {
-        function App() {
-        }
-        App.prototype.configureRouter = function (config, router) {
-            this.router = router;
-            config.title = 'Aurelia';
-            config.map([
-                { route: ['', 'welcome'], moduleId: './welcome', nav: true, title: 'Welcome' },
-                { route: 'flickr', moduleId: './flickr', nav: true },
-                { route: 'child-router', moduleId: './child-router', nav: true, title: 'Child Router' }
-            ]);
-        };
-        return App;
-    })();
-    exports.App = App;
-});
+import 'bootstrap';
+import 'bootstrap/css/bootstrap.css!';
+export class App {
+    configureRouter(config, router) {
+        this.router = router;
+        config.title = 'Aurelia';
+        config.map([
+            { route: ['', 'welcome'], moduleId: './welcome', nav: true, title: 'Welcome' },
+            { route: 'flickr', moduleId: './flickr', nav: true, title: 'Flickr' },
+            { route: 'child-router', moduleId: './child-router', nav: true, title: 'Child Router' }
+        ]);
+    }
+}

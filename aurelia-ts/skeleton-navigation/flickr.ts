@@ -6,8 +6,8 @@ export class Flickr{
   public heading = 'Flickr';
   public images = [];
   public http;
-  public url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=rainier&tagmode=any&format=json';
-  
+  public url = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=mountain&tagmode=any&format=json';
+
   constructor(http){
     this.http = http;
   }

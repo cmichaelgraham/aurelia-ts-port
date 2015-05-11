@@ -1,113 +1,95 @@
-define(["require", "exports", './navigation-plan'], function (require, exports, navigation_plan_1) {
-    var NavigationContext = (function () {
-        function NavigationContext(router, nextInstruction) {
-            this.router = router;
-            this.nextInstruction = nextInstruction;
-            this.currentInstruction = router.currentInstruction;
-            this.prevInstruction = router.currentInstruction;
+import { activationStrategy } from './navigation-plan';
+export class NavigationContext {
+    constructor(router, nextInstruction) {
+        this.router = router;
+        this.nextInstruction = nextInstruction;
+        this.currentInstruction = router.currentInstruction;
+        this.prevInstruction = router.currentInstruction;
+    }
+    getAllContexts(acc = []) {
+        acc.push(this);
+        if (this.plan) {
+            for (var key in this.plan) {
+                this.plan[key].childNavigationContext && this.plan[key].childNavigationContext.getAllContexts(acc);
+            }
         }
-        NavigationContext.prototype.getAllContexts = function (acc) {
-            if (acc === void 0) { acc = []; }
-            acc.push(this);
-            if (this.plan) {
-                for (var key in this.plan) {
-                    this.plan[key].childNavigationContext && this.plan[key].childNavigationContext.getAllContexts(acc);
-                }
+        return acc;
+    }
+    get nextInstructions() {
+        return this.getAllContexts().map(c => c.nextInstruction).filter(c => c);
+    }
+    get currentInstructions() {
+        return this.getAllContexts().map(c => c.currentInstruction).filter(c => c);
+    }
+    get prevInstructions() {
+        return this.getAllContexts().map(c => c.prevInstruction).filter(c => c);
+    }
+    commitChanges(waitToSwap) {
+        var next = this.nextInstruction, prev = this.prevInstruction, viewPortInstructions = next.viewPortInstructions, router = this.router, loads = [], delaySwaps = [];
+        router.currentInstruction = next;
+        if (prev) {
+            prev.config.navModel.isActive = false;
+        }
+        next.config.navModel.isActive = true;
+        router.refreshBaseUrl();
+        router.refreshNavigation();
+        for (var viewPortName in viewPortInstructions) {
+            var viewPortInstruction = viewPortInstructions[viewPortName];
+            var viewPort = router.viewPorts[viewPortName];
+            if (!viewPort) {
+                throw new Error(`There was no router-view found in the view for ${viewPortInstruction.moduleId}.`);
             }
-            return acc;
-        };
-        Object.defineProperty(NavigationContext.prototype, "nextInstructions", {
-            get: function () {
-                return this.getAllContexts().map(function (c) { return c.nextInstruction; }).filter(function (c) { return c; });
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(NavigationContext.prototype, "currentInstructions", {
-            get: function () {
-                return this.getAllContexts().map(function (c) { return c.currentInstruction; }).filter(function (c) { return c; });
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(NavigationContext.prototype, "prevInstructions", {
-            get: function () {
-                return this.getAllContexts().map(function (c) { return c.prevInstruction; }).filter(function (c) { return c; });
-            },
-            enumerable: true,
-            configurable: true
-        });
-        NavigationContext.prototype.commitChanges = function (waitToSwap) {
-            var next = this.nextInstruction, prev = this.prevInstruction, viewPortInstructions = next.viewPortInstructions, router = this.router, loads = [], delaySwaps = [];
-            router.currentInstruction = next;
-            if (prev) {
-                prev.config.navModel.isActive = false;
-            }
-            next.config.navModel.isActive = true;
-            router.refreshBaseUrl();
-            router.refreshNavigation();
-            for (var viewPortName in viewPortInstructions) {
-                var viewPortInstruction = viewPortInstructions[viewPortName];
-                var viewPort = router.viewPorts[viewPortName];
-                if (!viewPort) {
-                    throw new Error("There was no router-view found in the view for " + viewPortInstruction.moduleId + ".");
+            if (viewPortInstruction.strategy === activationStrategy.replace) {
+                if (waitToSwap) {
+                    delaySwaps.push({ viewPort, viewPortInstruction });
                 }
-                if (viewPortInstruction.strategy === navigation_plan_1.activationStrategy.replace) {
-                    if (waitToSwap) {
-                        delaySwaps.push({ viewPort: viewPort, viewPortInstruction: viewPortInstruction });
-                    }
-                    loads.push(viewPort.process(viewPortInstruction, waitToSwap).then(function (x) {
-                        if ('childNavigationContext' in viewPortInstruction) {
-                            return viewPortInstruction.childNavigationContext.commitChanges();
-                        }
-                    }));
-                }
-                else {
+                loads.push(viewPort.process(viewPortInstruction, waitToSwap).then(x => {
                     if ('childNavigationContext' in viewPortInstruction) {
-                        loads.push(viewPortInstruction.childNavigationContext.commitChanges(waitToSwap));
+                        return viewPortInstruction.childNavigationContext.commitChanges();
                     }
-                }
+                }));
             }
-            return Promise.all(loads).then(function () {
-                delaySwaps.forEach(function (x) { return x.viewPort.swap(x.viewPortInstruction); });
-            });
-        };
-        NavigationContext.prototype.buildTitle = function (separator) {
-            if (separator === void 0) { separator = ' | '; }
-            var next = this.nextInstruction, title = next.config.navModel.title || '', viewPortInstructions = next.viewPortInstructions, childTitles = [];
-            for (var viewPortName in viewPortInstructions) {
-                var viewPortInstruction = viewPortInstructions[viewPortName];
+            else {
                 if ('childNavigationContext' in viewPortInstruction) {
-                    var childTitle = viewPortInstruction.childNavigationContext.buildTitle(separator);
-                    if (childTitle) {
-                        childTitles.push(childTitle);
-                    }
+                    loads.push(viewPortInstruction.childNavigationContext.commitChanges(waitToSwap));
                 }
             }
-            if (childTitles.length) {
-                title = childTitles.join(separator) + (title ? separator : '') + title;
-            }
-            if (this.router.title) {
-                title += (title ? separator : '') + this.router.title;
-            }
-            return title;
-        };
-        return NavigationContext;
-    })();
-    exports.NavigationContext = NavigationContext;
-    var CommitChangesStep = (function () {
-        function CommitChangesStep() {
         }
-        CommitChangesStep.prototype.run = function (navigationContext, next) {
-            return navigationContext.commitChanges(true).then(function () {
-                var title = navigationContext.buildTitle();
-                if (title) {
-                    document.title = title;
+        return Promise.all(loads).then(() => {
+            delaySwaps.forEach(x => x.viewPort.swap(x.viewPortInstruction));
+        });
+    }
+    updateTitle() {
+        let title = this.buildTitle();
+        if (title) {
+            document.title = title;
+        }
+    }
+    buildTitle(separator = ' | ') {
+        var next = this.nextInstruction, title = next.config.navModel.title || '', viewPortInstructions = next.viewPortInstructions, childTitles = [];
+        for (var viewPortName in viewPortInstructions) {
+            var viewPortInstruction = viewPortInstructions[viewPortName];
+            if ('childNavigationContext' in viewPortInstruction) {
+                var childTitle = viewPortInstruction.childNavigationContext.buildTitle(separator);
+                if (childTitle) {
+                    childTitles.push(childTitle);
                 }
-                return next();
-            });
-        };
-        return CommitChangesStep;
-    })();
-    exports.CommitChangesStep = CommitChangesStep;
-});
+            }
+        }
+        if (childTitles.length) {
+            title = childTitles.join(separator) + (title ? separator : '') + title;
+        }
+        if (this.router.title) {
+            title += (title ? separator : '') + this.router.title;
+        }
+        return title;
+    }
+}
+export class CommitChangesStep {
+    run(navigationContext, next) {
+        return navigationContext.commitChanges(true).then(() => {
+            navigationContext.updateTitle();
+            return next();
+        });
+    }
+}

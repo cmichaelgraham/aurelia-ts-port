@@ -119,6 +119,7 @@
         "./router/activation.ts",
         "./router/app-router.ts",
         "./router/index.ts",
+        "./router/nav-model.ts",
         "./router/navigation-commands.ts",
         "./router/navigation-context.ts",
         "./router/navigation-instruction.ts",

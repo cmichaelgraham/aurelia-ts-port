@@ -3,6 +3,7 @@ import {RouteRecognizer} from 'aurelia-route-recognizer';
 import {join} from 'aurelia-path';
 import {NavigationContext} from './navigation-context';
 import {NavigationInstruction} from './navigation-instruction';
+import {NavModel} from './nav-model';
 import {RouterConfiguration} from './router-configuration';
 import {processPotential} from './util';
 
@@ -10,19 +11,20 @@ const isRootedPath = /^#?\//;
 const isAbsoluteUrl = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
 export class Router {
-  public container;
-  public history;
-  public viewPorts;
-  public baseUrl;
-  public isConfigured;
-  public parent;
-  public navigation;
-  public recognizer;
-  public childRecognizer;
-  public catchAllHandler;
-  public routes;
-  public fallbackOrder;
-  public isNavigating;
+  container;
+  history;
+  viewPorts;
+  baseUrl;
+  isConfigured;
+  parent;
+  navigation;
+  recognizer;
+  childRecognizer;
+  catchAllHandler;
+  routes;
+  fallbackOrder;
+  currentInstruction;
+  isNavigating;
   constructor(container, history) {
     this.container = container;
     this.history = history;
@@ -175,7 +177,8 @@ export class Router {
   }
 
   createNavigationContext(instruction) {
-    return new NavigationContext(this, instruction);
+    instruction.navigationContext = new NavigationContext(this, instruction);
+    return instruction.navigationContext;
   }
 
   generate(name, params) {
@@ -187,7 +190,18 @@ export class Router {
     return this.createRootedPath(path);
   }
 
-  addRoute(config, navModel:any={}) {
+  createNavModel(config) {
+    let navModel = new NavModel(this, config.route);
+    navModel.title = config.title;
+    navModel.order = config.nav;
+    navModel.href = config.href;
+    navModel.settings = config.settings;
+    navModel.config = config;
+
+    return navModel;
+  }
+
+  addRoute(config, navModel) {
     validateRouteConfig(config);
 
     if (!('viewPorts' in config) && !config.navigationStrategy) {
@@ -199,17 +213,15 @@ export class Router {
       };
     }
 
-    navModel.title = navModel.title || config.title;
-    navModel.setTitle = newTitle => {
-      navModel.title = newTitle;
+    if (!navModel) {
+      navModel = this.createNavModel(config);
     }
-    navModel.settings = config.settings || (config.settings = {});
 
     this.routes.push(config);
-    var state = this.recognizer.add({path:config.route, handler: config});
+    let state = this.recognizer.add({path:config.route, handler: config});
 
     if (config.route) {
-      var withChild, settings = config.settings;
+      let withChild, settings = config.settings;
       delete config.settings;
       withChild = JSON.parse(JSON.stringify(config));
       config.settings = settings;
@@ -226,19 +238,9 @@ export class Router {
 
     config.navModel = navModel;
 
-    if ((config.nav || 'order' in navModel) && this.navigation.indexOf(navModel) === -1) {
-      navModel.order = navModel.order || config.nav;
-      navModel.href = navModel.href || config.href;
-      navModel.isActive = false;
-      navModel.config = config;
-
-      if (!config.href) {
-        if (state.types.dynamics || state.types.stars) {
+    if ((navModel.order || navModel.order === 0) && this.navigation.indexOf(navModel) === -1) {
+      if ((!navModel.href && navModel.href != '') && (state.types.dynamics || state.types.stars)) {
           throw new Error('Invalid route config: dynamic routes must specify an href to be included in the navigation model.');
-        }
-
-        navModel.relativeHref = config.route;
-        navModel.href = '';
       }
 
       if (typeof navModel.order != 'number') {
@@ -283,6 +285,14 @@ export class Router {
     this.catchAllHandler = callback;
   }
 
+  updateTitle() {
+    if (this.parent) {
+      return this.parent.updateTitle();
+    }
+
+    this.currentInstruction.navigationContext.updateTitle();
+  }
+
   reset() {
     this.fallbackOrder = 100;
     this.recognizer = new RouteRecognizer();
@@ -295,12 +305,16 @@ export class Router {
 }
 
 function validateRouteConfig(config) {
-  let isValid = typeof config === 'object'
-    && (config.moduleId || config.redirect || config.viewPorts)
-    && config.route !== null && config.route !== undefined;
+  if (typeof config !== 'object') {
+    throw new Error('Invalid Route Config');
+  }
 
-  if (!isValid) {
-    throw new Error('Invalid Route Config: You must have at least a route and a moduleId, redirect, navigationStrategy or viewPorts.');
+  if (typeof config.route !== 'string') {
+    throw new Error('Invalid Route Config: You must specify a route pattern.');
+  }
+
+  if (!(config.moduleId || config.redirect || config.navigationStrategy || config.viewPorts)) {
+    throw new Error('Invalid Route Config: You must specify a moduleId, redirect, navigationStrategy, or viewPorts.')
   }
 }
 
