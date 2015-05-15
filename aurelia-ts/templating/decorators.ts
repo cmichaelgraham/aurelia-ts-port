@@ -6,7 +6,7 @@ import {ElementConfigResource} from './element-config';
 import {ViewStrategy, UseViewStrategy, NoViewStrategy} from './view-strategy';
 import {HtmlBehaviorResource} from './html-behavior';
 
-export function behavior(override){
+export function behavior(override):any{
   return function(target){
     if(override instanceof HtmlBehaviorResource){
       Reflect.defineMetadata(Metadata.resource, override, target);
@@ -19,7 +19,7 @@ export function behavior(override){
 
 Decorators.configure.parameterizedDecorator('behavior', behavior);
 
-export function customElement(name){
+export function customElement(name):any{
   return function(target){
     var resource = Metadata.getOrCreateOwn(Metadata.resource, HtmlBehaviorResource, target);
     resource.elementName = name;
@@ -28,7 +28,7 @@ export function customElement(name){
 
 Decorators.configure.parameterizedDecorator('customElement', customElement);
 
-export function customAttribute(name){
+export function customAttribute(name):any{
   return function(target){
     var resource = Metadata.getOrCreateOwn(Metadata.resource, HtmlBehaviorResource, target);
     resource.attributeName = name;
@@ -89,7 +89,7 @@ export function dynamicOptions(target?):any{
 
 Decorators.configure.simpleDecorator('dynamicOptions', dynamicOptions);
 
-export function syncChildren(property, changeHandler, selector){
+export function syncChildren(property, changeHandler, selector):any{
   return function(target){
     var resource = Metadata.getOrCreateOwn(Metadata.resource, HtmlBehaviorResource, target);
     resource.childExpression = new ChildObserver(property, changeHandler, selector);
@@ -98,7 +98,7 @@ export function syncChildren(property, changeHandler, selector){
 
 Decorators.configure.parameterizedDecorator('syncChildren', syncChildren);
 
-export function useShadowDOM(target){
+export function useShadowDOM(target):any{
   var deco = function(target){
     var resource = Metadata.getOrCreateOwn(Metadata.resource, HtmlBehaviorResource, target);
     resource.targetShadowDOM = true;
@@ -109,7 +109,7 @@ export function useShadowDOM(target){
 
 Decorators.configure.simpleDecorator('useShadowDOM', useShadowDOM);
 
-export function skipContentProcessing(target){
+export function skipContentProcessing(target):any{
   var deco = function(target){
     var resource = Metadata.getOrCreateOwn(Metadata.resource, HtmlBehaviorResource, target);
     resource.skipContentProcessing = true;
@@ -120,7 +120,7 @@ export function skipContentProcessing(target){
 
 Decorators.configure.simpleDecorator('skipContentProcessing', skipContentProcessing);
 
-export function viewStrategy(strategy){
+export function viewStrategy(strategy):any{
   return function(target){
     Reflect.defineMetadata(ViewStrategy.metadataKey, strategy, target);
   }
@@ -128,7 +128,7 @@ export function viewStrategy(strategy){
 
 Decorators.configure.parameterizedDecorator('viewStrategy', useView);
 
-export function useView(path){
+export function useView(path):any{
   return viewStrategy(new UseViewStrategy(path));
 }
 
@@ -144,7 +144,7 @@ export function noView(target?):any{
 
 Decorators.configure.simpleDecorator('noView', noView);
 
-export function elementConfig(target){
+export function elementConfig(target):any{
   var deco = function(target){
     Reflect.defineMetadata(Metadata.resource, new ElementConfigResource(), target);
   };
