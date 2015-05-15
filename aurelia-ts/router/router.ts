@@ -201,7 +201,7 @@ export class Router {
     return navModel;
   }
 
-  addRoute(config, navModel) {
+  addRoute(config, navModel?) {
     validateRouteConfig(config);
 
     if (!('viewPorts' in config) && !config.navigationStrategy) {
