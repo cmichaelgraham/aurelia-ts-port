@@ -349,19 +349,19 @@ declare module 'aurelia-templating/element-config' {
 
 }
 declare module 'aurelia-templating/decorators' {
-	export function behavior(override: any): (target: any) => void;
-	export function customElement(name: any): (target: any) => void;
-	export function customAttribute(name: any): (target: any) => void;
+	export function behavior(override: any): any;
+	export function customElement(name: any): any;
+	export function customAttribute(name: any): any;
 	export function templateController(target?: any): any;
 	export function bindable(nameOrConfigOrTarget: any, key?: any, descriptor?: any): any;
 	export function dynamicOptions(target?: any): any;
-	export function syncChildren(property: any, changeHandler: any, selector: any): (target: any) => void;
-	export function useShadowDOM(target: any): void | ((target: any) => void);
-	export function skipContentProcessing(target: any): void | ((target: any) => void);
-	export function viewStrategy(strategy: any): (target: any) => void;
-	export function useView(path: any): (target: any) => void;
+	export function syncChildren(property: any, changeHandler: any, selector: any): any;
+	export function useShadowDOM(target: any): any;
+	export function skipContentProcessing(target: any): any;
+	export function viewStrategy(strategy: any): any;
+	export function useView(path: any): any;
 	export function noView(target?: any): any;
-	export function elementConfig(target: any): void | ((target: any) => void);
+	export function elementConfig(target: any): any;
 
 }
 declare module 'aurelia-templating/index' {
