@@ -34,7 +34,7 @@ export class View {
     }
   }
 
-  bind(executionContext, systemUpdate){
+  bind(executionContext, systemUpdate?){
     var context, behaviors, bindings, children, i, ii;
 
     if(systemUpdate && !this.systemControlled){

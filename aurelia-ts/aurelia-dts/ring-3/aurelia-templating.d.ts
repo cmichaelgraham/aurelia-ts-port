@@ -176,7 +176,7 @@ declare module 'aurelia-templating/view' {
 	    owner: any;
 	    constructor(fragment: any, behaviors: any, bindings: any, children: any, systemControlled: any, contentSelectors: any);
 	    created(executionContext: any): void;
-	    bind(executionContext: any, systemUpdate: any): void;
+	    bind(executionContext: any, systemUpdate?: any): void;
 	    addBinding(binding: any): void;
 	    unbind(): void;
 	    insertNodesBefore(refNode: any): void;
@@ -375,6 +375,7 @@ declare module 'aurelia-templating/index' {
 	export { ViewEngine } from 'aurelia-templating/view-engine';
 	export { ViewFactory, BoundViewFactory } from 'aurelia-templating/view-factory';
 	export { ViewSlot } from 'aurelia-templating/view-slot';
+	export { View } from 'aurelia-templating/view';
 	export { BindingLanguage } from 'aurelia-templating/binding-language';
 	export { CompositionEngine } from 'aurelia-templating/composition-engine';
 	export { Animator } from 'aurelia-templating/animator';
