@@ -325,8 +325,8 @@ declare module 'aurelia-dependency-injection/index' {
 	export function autoinject(target: any): any;
 	export function inject(...rest: any[]): (target: any) => void;
 	export function registration(value: any): (target: any) => void;
-	export function transient(key: any): (target: any) => void;
-	export function singleton(keyOrRegisterInChild: any, registerInChild?: boolean): (target: any) => void;
+	export function transient(key?: any): (target: any) => void;
+	export function singleton(keyOrRegisterInChild?: any, registerInChild?: boolean): (target: any) => void;
 	export function instanceActivator(value: any): (target: any) => void;
 	export function factory(): (target: any) => void;
 

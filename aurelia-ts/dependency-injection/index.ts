@@ -40,11 +40,11 @@ export function registration(value){
   }
 }
 
-export function transient(key){
+export function transient(key?){
   return registration(new TransientRegistration(key));
 }
 
-export function singleton(keyOrRegisterInChild, registerInChild=false){
+export function singleton(keyOrRegisterInChild?, registerInChild=false){
   return registration(new SingletonRegistration(keyOrRegisterInChild, registerInChild));
 }
 
