@@ -74,7 +74,7 @@ export class Container {
   * @param {Object} key The key that identifies the dependency at resolution time; usually a constructor function.
   * @param {Function} [fn] The constructor function to use when the dependency needs to be instantiated.
   */
-  registerTransient(key, fn) {
+  registerTransient(key, fn?) {
     fn = fn || key;
     this.registerHandler(key, x => x.invoke(fn));
   }
@@ -86,7 +86,7 @@ export class Container {
   * @param {Object} key The key that identifies the dependency at resolution time; usually a constructor function.
   * @param {Function} [fn] The constructor function to use when the dependency needs to be instantiated.
   */
-  registerSingleton(key, fn) {
+  registerSingleton(key, fn?) {
     var singleton = null;
     fn = fn || key;
     this.registerHandler(key, x => singleton || (singleton = x.invoke(fn)));
@@ -135,7 +135,7 @@ export class Container {
   * @param {Object} key The key that identifies the dependency at resolution time; usually a constructor function.
   * @param {Function} handler The resolution function to use when the dependency is needed. It will be passed one arguement, the container instance that is invoking it.
   */
-  registerHandler(key, handler) {
+  registerHandler(key, handler?) {
     this.getOrCreateEntry(key).push(handler);
   }
 
