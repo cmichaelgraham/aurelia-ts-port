@@ -234,7 +234,7 @@ declare module 'aurelia-dependency-injection/container' {
 	    * @param {Object} key The key that identifies the dependency at resolution time; usually a constructor function.
 	    * @param {Function} [fn] The constructor function to use when the dependency needs to be instantiated.
 	    */
-	    registerTransient(key: any, fn: any): void;
+	    registerTransient(key: any, fn?: any): void;
 	    /**
 	    * Registers a type (constructor function) such that the container always returns the same instance for each request.
 	    *
@@ -242,7 +242,7 @@ declare module 'aurelia-dependency-injection/container' {
 	    * @param {Object} key The key that identifies the dependency at resolution time; usually a constructor function.
 	    * @param {Function} [fn] The constructor function to use when the dependency needs to be instantiated.
 	    */
-	    registerSingleton(key: any, fn: any): void;
+	    registerSingleton(key: any, fn?: any): void;
 	    /**
 	    * Registers a type (constructor function) by inspecting its registration annotations. If none are found, then the default singleton registration is used.
 	    *
@@ -265,7 +265,7 @@ declare module 'aurelia-dependency-injection/container' {
 	    * @param {Object} key The key that identifies the dependency at resolution time; usually a constructor function.
 	    * @param {Function} handler The resolution function to use when the dependency is needed. It will be passed one arguement, the container instance that is invoking it.
 	    */
-	    registerHandler(key: any, handler: any): void;
+	    registerHandler(key: any, handler?: any): void;
 	    /**
 	    * Unregisters based on key.
 	    *
