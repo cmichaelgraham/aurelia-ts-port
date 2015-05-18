@@ -136,6 +136,26 @@ declare module 'aurelia-http-client/request-builder' {
 	    * @return {Promise} A cancellable promise object.
 	    */
 	    send(): any;
+	    asDelete: () => RequestBuilder;
+	    asGet: () => RequestBuilder;
+	    asHead: () => RequestBuilder;
+	    asOptions: () => RequestBuilder;
+	    asPatch: () => RequestBuilder;
+	    asPost: () => RequestBuilder;
+	    asPut: () => RequestBuilder;
+	    asJsonp: () => RequestBuilder;
+	    withUrl: (url: any) => RequestBuilder;
+	    withContent: (content: any) => RequestBuilder;
+	    withBaseUrl: (baseUrl: any) => RequestBuilder;
+	    withParams: (params: any) => RequestBuilder;
+	    withResponseType: (responseType: any) => RequestBuilder;
+	    withTimeout: (timeout: any) => RequestBuilder;
+	    withHeader: (key: any, value: any) => RequestBuilder;
+	    withCredentials: (value: any) => RequestBuilder;
+	    withReviver: (reviver: any) => RequestBuilder;
+	    withReplacer: (replacer: any) => RequestBuilder;
+	    withProgressCallback: (progressCallback: any) => RequestBuilder;
+	    withCallbackParameterName: (callbackParameterName: any) => RequestBuilder;
 	}
 
 }
